@@ -128,39 +128,14 @@
                                                             placeholder="Commentaire sur la mission"
                                                             name="comment">{{ $mission->comment }}</textarea>
                                                     </div>
-                                                    @php $modified = str_replace('-', '', $mission->id); @endphp
-                                                    <script>
-                                                        function tabFonction{{ $modified }}() {
-                                                            const table = document.getElementById("MissionTab{{ str_replace('-', '', $mission->id) }}");
-                                                            const row = table.insertRow(1);
-                                                            const cell1 = row.insertCell(0);
-                                                            const cell2 = row.insertCell(1);
-                                                            const cell3 = row.insertCell(2);
-                                                            const cell4 = row.insertCell(3);
-                                                            const cell5 = row.insertCell(4);
-                                                            cell1.innerHTML = '<input type="text" placeholder="Titre tâche" class="btn" name="title_missionline_A' + table
-                                                                .rows.length + '" id="title_missionline_A' + table.rows.length + '">'
-
-
-                                                                cell2.innerHTML = `<input type="text" placeholder="Quantité tâche" class="btn" 
-                                                                name="quantity_missionline_A`+table.rows.length+`" 
-                                                                id="quantity_missionline_A`+table.rows.length+`" 
-                                                                onchange=calculate('total_missionline_A`+table.rows.length+`','quantity_missionline_A`+ table.rows.length+`','price_missionline_A`+table.rows.length+`') >`
-                                                        
-                                                            cell3.innerHTML = `<input type="text" placeholder="Prix tâche" class="btn" 
-                                                            name="price_missionline_A`+table.rows.length+`" 
-                                                            id="price_missionline_A`+table.rows.length+`" 
-                                                            onchange=calculate('total_missionline_A`+table.rows.length+`','quantity_missionline_A`+ table.rows.length+`','price_missionline_A`+table.rows.length+`') >`
-
-
-                                                        cell4.innerHTML = '<input type="text" placeholder="Unité tâche" class="btn" name="unity_missionline_A' + table
-                                                            .rows.length + '" id="unity_missionline_A' + table.rows.length + '">'
-                                                        cell5.innerHTML = '<span id="total_missionline_A' + table.rows.length +
-                                                            '" aria-disabled="true" id="total_missionline_A ' + table.rows.length + '"> 0.00 </span>'
-                                                        }
-                                                    </script>
+                                                    @php $tmp = 0; @endphp
+                                                    {{-- @foreach($missionLines as $missionLine)
+                                                        @if($missionLine->mission_id === $mission->id)
+                                                            @php $tmp++; @endphp
+                                                        @endif
+                                                    @endforeach --}}
                                                     <div class="mt-3 col-md-6 input-group input-group-ml">
-                                                        <p onclick="tabFonction{{ $modified }}()">
+                                                        <p onclick="tabFonction{{ $tmp }}()">
                                                             Ajouter une nouvelle
                                                             ligne <span id="add_new_line"><i
                                                                     class="far fa-plus-square"></i></span>
@@ -179,63 +154,60 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr class="table-light">
-                                                                    <td><input type="text" class="btn"
-                                                                            name="title_missionline_A0"
-                                                                            id="title_missionline_A0"
-                                                                            placeholder="Titre tâche"></td>
-                                                                    <td><input type="text" class="btn"
-                                                                            name="quantity_missionline_A0"
-                                                                            id="quantity_missionline_A0"
-                                                                            placeholder="Quantité tâche"
-                                                                            onchange="calculate('total_missionline_A0','quantity_missionline_A0','price_missionline_A0')"
-                                                                            </td>
-                                                                    <td><input type=" text" class="btn"
-                                                                            name="price_missionline_A0"
-                                                                            id="price_missionline_A0"
-                                                                            placeholder="Prix tâche"
-                                                                            onchange="calculate('total_missionline_A0','quantity_missionline_A0','price_missionline_A0')"
-                                                                            </td>
-                                                                    <td><input type="text" class="btn"
-                                                                            name="unity_missionline_A0"
-                                                                            id="unity_missionline_A0"
-                                                                            placeholder="Unité tâche"></td>
-                                                                    <td><span id="total_missionline_A0"
-                                                                            aria-disabled="true">0.00</span></td>
-                                                                </tr>
                                                                 @foreach ($missionLines as $missionLine)
                                                                     @if ($missionLine->mission_id === $mission->id)
                                                                         <tr>
                                                                             <td><input type="text" class="btn"
-                                                                                    name="title_missionline_{{ $missionLine->id }}"
-                                                                                    id="title_missionline_{{ $missionLine->id }}"
+                                                                                    name="title_missionline_A{{ $tmp }}"
+                                                                                    id="title_missionline_A{{ $missionLine->id }}"
                                                                                     value="{{ $missionLine->title }}">
                                                                             </td>
                                                                             <td><input type="text" class="btn"
-                                                                                    name="quantity_missionline_{{ $missionLine->id }}"
-                                                                                    id="quantity_missionline_{{ $missionLine->id }}"
+                                                                                    name="quantity_missionline_A{{ $tmp }}"
+                                                                                    id="quantity_missionline_A{{ $missionLine->id }}"
                                                                                     value="{{ $missionLine->quantity }}"
                                                                                     onchange="calculate('total_missionline_{{ $missionLine->id }}','quantity_missionline_{{ $missionLine->id }}','price_missionline_{{ $missionLine->id }}')"
                                                                                     </td>
                                                                             <td><input type="text" class="btn"
-                                                                                    name="price_missionline_{{ $missionLine->id }}"
-                                                                                    id="price_missionline_{{ $missionLine->id }}"
+                                                                                    name="price_missionline_A{{ $tmp }}"
+                                                                                    id="price_missionline_A{{ $missionLine->id }}"
                                                                                     value="{{ $missionLine->price }}"
                                                                                     onchange="calculate('total_missionline_{{ $missionLine->id }}','quantity_missionline_{{ $missionLine->id }}','price_missionline_{{ $missionLine->id }}')"
                                                                                     </td>
                                                                             <td><input type="text" class="btn"
-                                                                                    name="unity_missionline_{{ $missionLine->id }}"
-                                                                                    id="unity_missionline_{{ $missionLine->id }}"
+                                                                                    name="unity_missionline_A{{ $tmp }}"
+                                                                                    id="unity_missionline_A{{ $missionLine->id }}"
                                                                                     value="{{ $missionLine->unity }}">
                                                                             </td>
                                                                             <td><span
-                                                                                    id="total_missionline_{{ $missionLine->id }}"
+                                                                                    id="total_missionline_A{{ $missionLine->id }}"
                                                                                     aria-disabled="true"></span></td>
                                                                         </tr>
+                                                                        @php $tmp++; @endphp
                                                                     @endif
                                                                 @endforeach
                                                             </tbody>
                                                         </table>
+                                                        <script>
+                                                            let temp = {{$tmp}};
+                                                            function tabFonction{{ $tmp }}() {
+                                                                const table = document.getElementById("MissionTab{{ str_replace('-', '', $mission->id) }}");
+                                                                const row = table.insertRow(1);
+                                                                const cell1 = row.insertCell(0);
+                                                                const cell2 = row.insertCell(1);
+                                                                const cell3 = row.insertCell(2);
+                                                                const cell4 = row.insertCell(3);
+                                                                const cell5 = row.insertCell(4);
+                                                                cell1.innerHTML = '<input type="text" placeholder="Titre tâche" class="btn" name="title_missionline_A['+temp+']" id="title_missionline_A['+temp+']">'
+                                                                cell2.innerHTML = `<input type="text" placeholder="Quantité tâche" class="btn" name="quantity_missionline_A[`+temp+`]" id="quantity_missionline_A[`+temp+`]" 
+                                                                onchange=calculate('total_missionline_A[`+temp+`]','quantity_missionline_A[`+temp+`]','price_missionline_A[`+temp+`]') >`
+                                                                cell3.innerHTML = `<input type="text" placeholder="Prix tâche" class="btn" name="price_missionline_A[`+temp+`]" id="price_missionline_A[`+temp+`]" 
+                                                                onchange=calculate('total_missionline_A[`+temp+`]','quantity_missionline_A[`+temp+`]','price_missionline_A[`+temp+`]') >`
+                                                                cell4.innerHTML = '<input type="text" placeholder="Unité tâche" class="btn" name="unity_missionline_A['+temp+']" id="unity_missionline_A['+temp+']">'
+                                                                cell5.innerHTML = '<span id="total_missionline_A['+temp+']" aria-disabled="true" id="total_missionline_A['+temp+']"> 0.00 </span>';
+                                                                temp++;
+                                                            } 
+                                                        </script>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">

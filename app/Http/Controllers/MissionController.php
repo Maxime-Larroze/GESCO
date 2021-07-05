@@ -91,22 +91,23 @@ class MissionController extends Controller
             'comment'=>$request->comment,
         ]);
         
-        for ($i=0; $i < 100; $i++) { 
+        
+        for ($i=0; $i < count($request->title_missionline_A); $i++) { 
             // dd($request);
-            dd($request->title_missionline_A.$i);
+            // dd(count($request->title_missionline_A));
 
-            if(!empty($request->title_missionline_A.$i))
+            if(!empty($request->title_missionline_A[$i]))
             {
-                
                 MissionLine::create([
                     'mission_id'=>$request->mission_id,
-                    'title'=>$request->title_missionline_A+$i,
-                    'quantity'=>$request->quantity_missionline_A+$i,
-                    'price'=>$request->price_missionline_A+$i,
-                    'unity'=>$request->unity_missionline_A+$i
+                    'title'=>$request->title_missionline_A[$i],
+                    'quantity'=>$request->quantity_missionline_A[$i],
+                    'price'=>$request->price_missionline_A[$i],
+                    'unity'=>$request->unity_missionline_A[$i]
                 ]);
             }
         }
+        return redirect()->route('missions.show');
     }
 
     /**
