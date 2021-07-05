@@ -91,6 +91,7 @@
                     @yield('auth.profil.interface.update')
                     @yield('auth.organisation.interface.show')
                     @yield('auth.mission.interface.show')
+                    @yield('auth.dashboard.interface.show')
 
 
                 </div>

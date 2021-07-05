@@ -1,10 +1,10 @@
-@extends('auth.dashboard')
+@extends('auth.template')
 @section('auth.mission.interface.show')
     <script>
         function calculate(id_total, id_quantite, id_unite) {
-            document.getElementById(id_total).textContent = document.getElementById(id_quantite)
-                .value *
-                document.getElementById(id_unite).value;
+            document.getElementById(id_total).textContent = Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(
+                document.getElementById(id_quantite).value * document.getElementById(id_unite).value
+            );
         }
     </script>
     <div class="row mt-2">
@@ -53,7 +53,7 @@
                                 <div class="modal" id="ModalMission{{ $mission->id }}">
                                     <div class="modal-dialog modal-xl modal-dialog-centered">
                                         <div class="modal-content">
-                                            <form action="{{ route('organisations.update') }}" method="POST">
+                                            <form action="{{ route('missions.update') }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
                                                 <input type="hidden" name="mission_id" value="{{ $mission->id }}">
@@ -69,7 +69,7 @@
                                                             <span class="input-group-text text-danger"><i
                                                                     class="fas fa-fingerprint"></i></span>
                                                         </div>
-                                                        <input type="text" value="{{ $mission->reference }}"
+                                                        <input type="text" name="reference" value="{{ $mission->reference }}"
                                                             class="input-group form-control" disabled>
                                                     </div>
                                                     <div class="mt-3 col-md-6 input-group input-group-ml">
@@ -96,7 +96,7 @@
                                                             <span class="input-group-text text-danger"><i
                                                                     class="far fa-registered"></i></span>
                                                         </div>
-                                                        <select name="type" class="custom-select" required>
+                                                        <select name="organisation_id" class="custom-select" required>
                                                             @foreach ($organisations as $organisation)
                                                                 @if ($mission->organisation_id === $organisation->id)
                                                                     <option value="{{ $organisation->id }}" selected>
@@ -140,24 +140,23 @@
                                                             const cell5 = row.insertCell(4);
                                                             cell1.innerHTML = '<input type="text" placeholder="Titre tâche" class="btn" name="title_missionline_A' + table
                                                                 .rows.length + '" id="title_missionline_A' + table.rows.length + '">'
-                                                            cell2.innerHTML = '<input type="text" placeholder="Quantité tâche" class="btn" name = "quantity_missionline_A' +
-                                                                table.rows.length + '" id="quantity_missionline_A' + table.rows.length +
-                                                                '" onchange="calculate(
-                                                            total_missionline_A ' + table.rows.length +',
-                                                                quantity_missionline_A ' + table.rows.length + ',
-                                                                price_missionline_A ' + table.rows.length + ')
-                                                        ">'
-                                                        cell3.innerHTML = '<input type="text" placeholder="Prix tâche" class="btn" name="price_missionline_A' + table
-                                                            .rows.length + '" id="price_missionline_A' + table.rows.length +
-                                                            '" onchange="calculate(
-                                                        total_missionline_A ' + table.rows.length +',
-                                                            quantity_missionline_A ' + table.rows.length + ',
-                                                            price_missionline_A ' + table.rows.length + ')
-                                                        ">'
+
+
+                                                                cell2.innerHTML = `<input type="text" placeholder="Quantité tâche" class="btn" 
+                                                                name="quantity_missionline_A`+table.rows.length+`" 
+                                                                id="quantity_missionline_A`+table.rows.length+`" 
+                                                                onchange=calculate('total_missionline_A`+table.rows.length+`','quantity_missionline_A`+ table.rows.length+`','price_missionline_A`+table.rows.length+`') >`
+                                                        
+                                                            cell3.innerHTML = `<input type="text" placeholder="Prix tâche" class="btn" 
+                                                            name="price_missionline_A`+table.rows.length+`" 
+                                                            id="price_missionline_A`+table.rows.length+`" 
+                                                            onchange=calculate('total_missionline_A`+table.rows.length+`','quantity_missionline_A`+ table.rows.length+`','price_missionline_A`+table.rows.length+`') >`
+
+
                                                         cell4.innerHTML = '<input type="text" placeholder="Unité tâche" class="btn" name="unity_missionline_A' + table
                                                             .rows.length + '" id="unity_missionline_A' + table.rows.length + '">'
                                                         cell5.innerHTML = '<span id="total_missionline_A' + table.rows.length +
-                                                            '" aria-disabled="true" id="total_missionline_A ' + table.rows.length + '"> 0.00 < /span>'
+                                                            '" aria-disabled="true" id="total_missionline_A ' + table.rows.length + '"> 0.00 </span>'
                                                         }
                                                     </script>
                                                     <div class="mt-3 col-md-6 input-group input-group-ml">

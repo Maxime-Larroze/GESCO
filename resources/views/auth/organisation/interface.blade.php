@@ -1,8 +1,8 @@
-@extends('auth.dashboard')
+@extends('auth.template')
 @section('auth.organisation.interface.show')
     <div class="row mt-2">
         <div class="col-lg-12 text-center">
-            <h3 class="text-center">Liste des entreprises disponibles</h3>
+            <h3 class="text-center">Liste des entreprises</h3>
             <hr>
             <a data-toggle="modal" data-target="#NewModalOrganisation"><button class="btn btn-success"><i
                         class="far fa-plus-square"></i> Créer une organisation</button></a>

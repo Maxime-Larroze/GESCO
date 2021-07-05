@@ -1,4 +1,4 @@
-@extends('auth.dashboard')
+@extends('auth.template')
 @section('auth.profil.interface.update')
 <div class="row">
     <div class="col-lg-2"></div>

@@ -82,9 +82,31 @@ class MissionController extends Controller
      * @param  \App\Models\Mission  $mission
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Mission $mission)
+    public function update(Request $request)
     {
-        //
+        Mission::find($request->mission_id)->update([
+            'title'=>$request->title,
+            'deposit'=>$request->deposit,
+            'organisation_id'=>$request->organisation_id,
+            'comment'=>$request->comment,
+        ]);
+        
+        for ($i=0; $i < 100; $i++) { 
+            // dd($request);
+            dd($request->title_missionline_A.$i);
+
+            if(!empty($request->title_missionline_A.$i))
+            {
+                
+                MissionLine::create([
+                    'mission_id'=>$request->mission_id,
+                    'title'=>$request->title_missionline_A+$i,
+                    'quantity'=>$request->quantity_missionline_A+$i,
+                    'price'=>$request->price_missionline_A+$i,
+                    'unity'=>$request->unity_missionline_A+$i
+                ]);
+            }
+        }
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Mission;
+use App\Models\Organisation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -16,7 +18,13 @@ class DashboardController extends Controller
     public function DashboardView()
     {
         $user = Auth::user();
-        return view('auth.dashboard', ['user' => $user]);
+        $nbMissionTermine = count(Mission::where('ended_at', '!=', null)->get());
+        $nbMissionEnCours = count(Mission::where('ended_at', null)->get());
+        $endMissions = Mission::where('ended_at', '!=', null)->get();
+        $MissionEnCours = Mission::where('ended_at', '!=', null)->get();
+        $organisations = Organisation::all();
+        return view('auth.dashboard.interface', ['user' => $user, 'nbMissionEnCours'=>$nbMissionEnCours, 'nbMissionTermine'=>$nbMissionTermine, 
+        'endMissions'=>$endMissions, 'MissionEnCours'=>$MissionEnCours, 'organisations'=>$organisations]);
     }
 
     public function Logout(Request $request)
@@ -25,24 +33,5 @@ class DashboardController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect()->route('home');
-    }
-
-    public function Login(Request $request)
-    {
-        request()->validate([
-            'email' => 'required',
-            'password' => 'required'
-        ]);
-        if ($request->remember == 'on') {
-            $request->remember = true;
-        } else {
-            $request->remember = false;
-        }
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->email], $request->remember)) {
-            Log::info("Connexion de l'utilisateur " . Auth::user()->id . " le " . Carbon::now());
-            $user = Auth::user();
-            return redirect()->route('dashboard');
-        }
-        redirect()->route('home')->withError(['connexion' => 'Connexion impossible. Veuillez vérifier votre identifiant / mot de passe']);
     }
 }
