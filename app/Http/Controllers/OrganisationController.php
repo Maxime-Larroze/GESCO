@@ -80,6 +80,7 @@ class OrganisationController extends Controller
      */
     public function update(Request $request)
     {
+        dd($request);
         $organisation = Organisation::find($request->organisation_id)->update(
             [
                 'name' => $request->name,

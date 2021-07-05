@@ -52,7 +52,7 @@
                     </a>
                     <div class="dropdown-menu bg-dark" aria-labelledby="DDgestion">
                         <a class="dropdown-item text-white" href="{{ route('organisations.show') }}"><i
-                                class="far fa-registered"></i> Gestion des organisations</a>
+                                class="far fa-registered"></i> Gestion des entreprises</a>
                         <a class="dropdown-item text-white" href="{{ route('missions.show') }}"><i
                                 class="fas fa-thumbtack"></i> Gestion des missions</a>
                     </div>
