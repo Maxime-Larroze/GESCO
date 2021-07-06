@@ -6,6 +6,9 @@
                 document.getElementById(id_quantite).value * document.getElementById(id_unite).value
             );
         }
+        function trash(id_table, id_row) {
+            document.getElementById(id_table).deleteRow(id_row);
+        }
     </script>
     <div class="row mt-2">
         <div class="col-lg-12 text-center">
@@ -86,10 +89,10 @@
                                                             <span class="input-group-text text-danger"><i
                                                                     class="fas fa-euro-sign"></i></span>
                                                         </div>
-                                                        <input type="number" name="deposit"
+                                                        <input type="number"
                                                             value="{{ $mission->deposit }}"
                                                             class="input-group form-control" placeholder="Montant du dépot"
-                                                            required>
+                                                            disabled>
                                                     </div>
                                                     <div class="mt-3 col-md-6 input-group input-group-ml">
                                                         <div class="input-group-prepend">
@@ -129,21 +132,16 @@
                                                             name="comment">{{ $mission->comment }}</textarea>
                                                     </div>
                                                     @php $tmp = 0; @endphp
-                                                    {{-- @foreach($missionLines as $missionLine)
-                                                        @if($missionLine->mission_id === $mission->id)
-                                                            @php $tmp++; @endphp
-                                                        @endif
-                                                    @endforeach --}}
                                                     <div class="mt-3 col-md-6 input-group input-group-ml">
-                                                        <p onclick="tabFonction{{ $tmp }}()">
+                                                        <p onclick="tabFonction_{{ str_replace('-', '', $mission->id) }}()">
                                                             Ajouter une nouvelle
                                                             ligne <span id="add_new_line"><i
                                                                     class="far fa-plus-square"></i></span>
                                                         </p>
                                                     </div>
                                                     <script>
-                                                        let temp = {{$tmp}};
-                                                        function tabFonction{{ $tmp }}() {
+                                                        var temp = {{$tmp}};
+                                                        function tabFonction_{{str_replace('-', '', $mission->id) }}() {
                                                             const table = document.getElementById("MissionTab{{ str_replace('-', '', $mission->id) }}");
                                                             const row = table.insertRow(1);
                                                             const cell1 = row.insertCell(0);
@@ -151,6 +149,7 @@
                                                             const cell3 = row.insertCell(2);
                                                             const cell4 = row.insertCell(3);
                                                             const cell5 = row.insertCell(4);
+                                                            const cell6 = row.insertCell(5);
                                                             cell1.innerHTML = '<input type="text" placeholder="Titre tâche" class="btn" name="title_missionline_A['+temp+']" id="title_missionline_A['+temp+']">'
                                                             cell2.innerHTML = `<input type="text" placeholder="Quantité tâche" class="btn" name="quantity_missionline_A[`+temp+`]" id="quantity_missionline_A[`+temp+`]" 
                                                             onchange=calculate('total_missionline_A[`+temp+`]','quantity_missionline_A[`+temp+`]','price_missionline_A[`+temp+`]') >`
@@ -162,7 +161,7 @@
                                                         } 
                                                     </script>
                                                     <div class="mt-3 col-md-12">
-                                                        <table class="table table-hover table-striped mb-5 text-center mt-2"
+                                                        <table class="table table-responsive table-hover table-striped mb-5 text-center mt-2"
                                                             id="MissionTab{{ str_replace('-', '', $mission->id) }}">
                                                             <thead class="thead-light">
                                                                 <tr>
@@ -171,6 +170,7 @@
                                                                     <th>Prix</th>
                                                                     <th>Unité</th>
                                                                     <th>Total</th>
+                                                                    <th>Option</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -178,31 +178,32 @@
                                                                     @if ($missionLine->mission_id === $mission->id)
                                                                         <tr>
                                                                             <td><input type="text" class="btn"
-                                                                                    name="title_missionline_A[{{ $tmp }}]"
-                                                                                    id="title_missionline_A{{ $missionLine->id }}"
+                                                                                    name="title_missionline_B[{{ $tmp }}]"
+                                                                                    id="title_missionline_B{{ $missionLine->id }}"
                                                                                     value="{{ $missionLine->title }}">
-                                                                                    <input type="hidden" name="missionLine_id_[{{ $tmp }}" value="{{ $missionLine->id }}" />
+                                                                                    <input type="hidden" name="missionLine_id_[{{ $tmp }}]" value="{{ $missionLine->id }}" />
                                                                             </td>
                                                                             <td><input type="text" class="btn"
-                                                                                    name="quantity_missionline_A[{{ $tmp }}]"
-                                                                                    id="quantity_missionline_A{{ $missionLine->id }}"
+                                                                                    name="quantity_missionline_B[{{ $tmp }}]"
+                                                                                    id="quantity_missionline_B{{ $missionLine->id }}"
                                                                                     value="{{ $missionLine->quantity }}"
-                                                                                    onchange="calculate('total_missionline_{{ $missionLine->id }}','quantity_missionline_{{ $missionLine->id }}','price_missionline_{{ $missionLine->id }}')"
-                                                                                    </td>
+                                                                                    onchange="calculate('total_missionline_B{{ $missionLine->id }}','quantity_missionline_B{{ $missionLine->id }}','price_missionline_B{{ $missionLine->id }}')"
+                                                                            </td>
                                                                             <td><input type="text" class="btn"
-                                                                                    name="price_missionline_A[{{ $tmp }}]"
-                                                                                    id="price_missionline_A{{ $missionLine->id }}"
+                                                                                    name="price_missionline_B[{{ $tmp }}]"
+                                                                                    id="price_missionline_B{{ $missionLine->id }}"
                                                                                     value="{{ $missionLine->price }}"
-                                                                                    onchange="calculate('total_missionline_{{ $missionLine->id }}','quantity_missionline_{{ $missionLine->id }}','price_missionline_{{ $missionLine->id }}')"
-                                                                                    </td>
+                                                                                    onchange="calculate('total_missionline_B{{ $missionLine->id }}','quantity_missionline_B{{ $missionLine->id }}','price_missionline_B{{ $missionLine->id }}')"
+                                                                            </td>
                                                                             <td><input type="text" class="btn"
-                                                                                    name="unity_missionline_A[{{ $tmp }}]"
-                                                                                    id="unity_missionline_A{{ $missionLine->id }}"
+                                                                                    name="unity_missionline_B[{{ $tmp }}]"
+                                                                                    id="unity_missionline_B{{ $missionLine->id }}"
                                                                                     value="{{ $missionLine->unity }}">
                                                                             </td>
                                                                             <td><span
-                                                                                    id="total_missionline_A{{ $missionLine->id }}"
+                                                                                    id="total_missionline_B{{ $missionLine->id }}"
                                                                                     aria-disabled="true">{{number_format($missionLine->price * $missionLine->quantity, 2) }} €</span></td>
+                                                                            <td><span onclick="trash('MissionTab{{ str_replace('-', '', $mission->id) }}', '{{ $tmp+1 }}')"><i class="fas fa-trash-alt text-danger"></i></span></td>
                                                                         </tr>
                                                                         @php $tmp++; @endphp
                                                                     @endif
@@ -243,13 +244,6 @@
                             </div>
                             <input type="text" name="title" value="{{ old('title') }}" class="input-group form-control"
                                 placeholder="Titre de la mission" required>
-                        </div>
-                        <div class="mt-3 col-md-6 input-group input-group-ml">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text text-danger"><i class="fas fa-euro-sign"></i></span>
-                            </div>
-                            <input type="number" name="deposit" value="{{ old('deposit') }}"
-                                class="input-group form-control" placeholder="Montant du dépot" required>
                         </div>
                         <div class="mt-3 col-md-6 input-group input-group-ml">
                             <div class="input-group-prepend">

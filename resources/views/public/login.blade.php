@@ -36,18 +36,15 @@
                     </div>
                     <div class="col-lg-4 text-center text-danger mb-3"><a class="text-danger"
                             href="{{ route('register.google') }}"><button type="submit" id="btn_submit"
-                                class="btn btn-danger">Se connecter avec Google <i
-                                    class="fas fa-sign-in-alt"></i></button></a>
+                                class="btn btn-danger">Se connecter avec Google <i class="fab fa-google"></i></button></a>
                     </div>
                     <div class="col-lg-4 text-center text-white mb-3"><a class="text-white"
                             href="{{ route('register.github') }}"><button type="submit" id="btn_submit"
-                                class="btn btn-dark">Se connecter avec Github <i
-                                    class="fas fa-sign-in-alt"></i></button></a>
+                                class="btn btn-dark">Se connecter avec Github <i class="fab fa-github"></i></button></a>
                     </div>
                     <div class="col-lg-4 text-center text-danger mb-3"><a class="text-danger"
                             href="{{ route('register.facebook') }}"><button type="submit" id="btn_submit"
-                                class="btn btn-primary">Se connecter avec Facebook <i
-                                    class="fas fa-sign-in-alt"></i></button></a>
+                                class="btn btn-primary">Se connecter avec Facebook <i class="fab fa-facebook"></i></button></a>
                     </div>
                 </div>
             </div>

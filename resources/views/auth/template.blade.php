@@ -23,18 +23,15 @@
     <script src="{{ asset('CDN/bootstrap.min.js') }}"></script>
     <script src="{{ asset('CDN/a076d05399.js') }}"></script>
 
-    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-    <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.3.0/mdb.min.css" rel="stylesheet" />
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.3.0/mdb.min.js"></script>
 
 </head>
 
 <body class="antialiased">
-    <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
+    <nav class="navbar navbar-expand-lg  navbar-light fixed-top">
         <a class="navbar-brand text-danger" href="{{ route('dashboard') }}">Hackenathon System</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -42,19 +39,21 @@
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="{{ route('dashboard') }}"><i class="fas fa-chart-line"></i>
+                    <a class="nav-link" href="{{ route('dashboard') }}"><i class="fas fa-chart-line"></i>
                         Tabbleau de bord</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-white" href="#" id="DDgestion" data-toggle="dropdown"
+                    <a class="nav-link dropdown-toggle" href="#" id="DDgestion" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-tasks"></i> Gestion
                     </a>
-                    <div class="dropdown-menu bg-dark" aria-labelledby="DDgestion">
-                        <a class="dropdown-item text-white" href="{{ route('organisations.show') }}"><i
+                    <div class="dropdown-menu" aria-labelledby="DDgestion">
+                        <a class="dropdown-item" href="{{ route('organisations.show') }}"><i
                                 class="far fa-registered"></i> Gestion des entreprises</a>
-                        <a class="dropdown-item text-white" href="{{ route('missions.show') }}"><i
+                        <a class="dropdown-item" href="{{ route('missions.show') }}"><i
                                 class="fas fa-thumbtack"></i> Gestion des missions</a>
+                        <a class="dropdown-item" href="{{ route('missions.show') }}">
+                            <i class="fas fa-file-invoice-dollar"></i> Gestion des factures</a>
                     </div>
                 </li>
 
@@ -63,15 +62,15 @@
             <span class="navbar-text">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownMenuLink"
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img class="rounded-circle img img-fluid"
-                                alt="{{ $user->firstname }} {{ $user->lastname }}" width="60px" height="60px"
+                                alt="{{ $user->firstname }} {{ $user->lastname }}" width="30px" height="30px"
                                 src="{{ $user->picture }}" data-holder-rendered="true"> {{ $user->firstname }}
                             {{ $user->lastname }}
                         </a>
-                        <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="{{ route('profil') }}"><i class="fas fa-user"></i> Mon
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item text-dark" href="{{ route('profil') }}"><i class="fas fa-user"></i> Mon
                                 profil</a>
                             <a class="dropdown-item text-danger" href="{{ route('logout') }}"><i
                                     class="fas fa-power-off"></i> Déconnexion</a>
@@ -93,7 +92,6 @@
                     @yield('auth.mission.interface.show')
                     @yield('auth.dashboard.interface.show')
 
-
                 </div>
             </div>
         </div>
@@ -108,8 +106,7 @@
         </div>
     </div>
 
-    <div class="text-center bg-dark fixed-bottom text-white">
-        {{-- <p class="mt-2">Version {{$last_version->libelle}} ({{$last_version->numero}})</p> --}}
+    <div class="text-center fixed-bottom">
         <p class="mt-2">Copyright 2021 &copy; Hackenathon System</p>
     </div>
 

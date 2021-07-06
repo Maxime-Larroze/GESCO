@@ -52,5 +52,8 @@ Route::middleware('auth')->group(function () {
         Route::delete('/missions', [MissionController::class, 'destroy'])->name('missions.destroy');
         Route::put('/missions', [MissionController::class, 'update'])->name('missions.update');
         Route::post('/missions', [MissionController::class, 'create'])->name('missions.create');
+
+        Route::get('/devis/generate/{id}', [PDFController::class, 'show'])->name('pdf.show');
+        Route::get('/devis/generate/{id}/download', [PDFController::class, 'store'])->name('pdf.store');
     });
 });

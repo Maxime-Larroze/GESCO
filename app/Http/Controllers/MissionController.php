@@ -36,7 +36,7 @@ class MissionController extends Controller
                 'organisation_id' => $request->organisation_id,
                 'title' => $request->title,
                 'comment' => $request->comment,
-                'deposit' => $request->deposit,
+                'deposit' => 0,
             ]
         );
         return redirect()->route('missions.show');
@@ -84,42 +84,46 @@ class MissionController extends Controller
      */
     public function update(Request $request)
     {
+        $depot = 0;
+        $missionlines = MissionLine::where("mission_id", $request->mission_id)->delete();
+        if(!empty($request->title_missionline_A))
+        {
+            for ($i=0; $i < count($request->title_missionline_A); $i++) { 
+                if(!empty($request->title_missionline_A[$i]))
+                {
+                    MissionLine::create([
+                        'mission_id'=>$request->mission_id,
+                        'title'=>$request->title_missionline_A[$i],
+                        'quantity'=>$request->quantity_missionline_A[$i],
+                        'price'=>$request->price_missionline_A[$i],
+                        'unity'=>$request->unity_missionline_A[$i]
+                    ]);
+                    $depot += $request->quantity_missionline_A[$i] * $request->price_missionline_A[$i];
+                }
+            }
+        }
+        if(!empty($request->title_missionline_B))
+        {
+            for ($j=0; $j < count($request->title_missionline_B); $j++) { 
+                if(!empty($request->title_missionline_B[array_keys($request->title_missionline_B)[$j]]))
+                {
+                    MissionLine::create([
+                        'mission_id'=>$request->mission_id,
+                        'title'=>$request->title_missionline_B[array_keys($request->title_missionline_B)[$j]],
+                        'quantity'=>$request->quantity_missionline_B[array_keys($request->title_missionline_B)[$j]],
+                        'price'=>$request->price_missionline_B[array_keys($request->title_missionline_B)[$j]],
+                        'unity'=>$request->unity_missionline_B[array_keys($request->title_missionline_B)[$j]]
+                    ]);
+                    $depot += $request->price_missionline_B[array_keys($request->title_missionline_B)[$j]] * $request->quantity_missionline_B[array_keys($request->title_missionline_B)[$j]];
+                }
+            }
+        }
         Mission::find($request->mission_id)->update([
             'title'=>$request->title,
-            'deposit'=>$request->deposit,
+            'deposit'=>$depot*0.45,
             'organisation_id'=>$request->organisation_id,
             'comment'=>$request->comment,
         ]);
-        
-        
-        for ($i=0; $i < count($request->title_missionline_A); $i++) { 
-            // dd($request);
-            // dd(count($request->title_missionline_A));
-
-            if(!empty($request->missionLine_id_[$i]))
-            {
-                dd($request);
-                //update MissionLine
-                MissionLine::find($request->missionLine_id_[$i])->update([
-                    'mission_id'=>$request->mission_id,
-                    'title'=>$request->title_missionline_A[$i],
-                    'quantity'=>$request->quantity_missionline_A[$i],
-                    'price'=>$request->price_missionline_A[$i],
-                    'unity'=>$request->unity_missionline_A[$i]
-                ]);
-            }
-            elseif(!empty($request->title_missionline_A[$i]) && empty($request->missionLine_id_[$i]))
-            {
-                dd($request);
-                MissionLine::create([
-                    'mission_id'=>$request->mission_id,
-                    'title'=>$request->title_missionline_A[$i],
-                    'quantity'=>$request->quantity_missionline_A[$i],
-                    'price'=>$request->price_missionline_A[$i],
-                    'unity'=>$request->unity_missionline_A[$i]
-                ]);
-            }
-        }
         return redirect()->route('missions.show');
     }
 
