@@ -1,18 +1,11 @@
-@extends('auth.template')
-@section('auth.mission.interface.show')
-    <script>
-        function calculate(id_total, id_quantite, id_unite) {
-            document.getElementById(id_total).textContent = Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(
-                document.getElementById(id_quantite).value * document.getElementById(id_unite).value
-            );
-        }
-    </script>
+@extends('auth.dashboard')
+@section('auth.tache.interface.show')
     <div class="row mt-2">
         <div class="col-lg-12 text-center">
-            <h3 class="text-center">Liste des missions</h3>
+            <h3 class="text-center">Liste des tâches</h3>
             <hr>
             <a data-toggle="modal" data-target="#NewModalMission"><button class="btn btn-success"><i
-                        class="far fa-plus-square"></i> Créer une nouvelle mission</button></a>
+                        class="far fa-plus-square"></i> Créer une tâche</button></a>
             <table class="table table-hover table-striped mb-5 text-center mt-2">
                 <thead class="thead-light">
                     <tr>
@@ -53,7 +46,7 @@
                                 <div class="modal" id="ModalMission{{ $mission->id }}">
                                     <div class="modal-dialog modal-xl modal-dialog-centered">
                                         <div class="modal-content">
-                                            <form action="{{ route('missions.update') }}" method="POST">
+                                            <form action="{{ route('organisations.update') }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
                                                 <input type="hidden" name="mission_id" value="{{ $mission->id }}">
@@ -69,7 +62,7 @@
                                                             <span class="input-group-text text-danger"><i
                                                                     class="fas fa-fingerprint"></i></span>
                                                         </div>
-                                                        <input type="text" name="reference" value="{{ $mission->reference }}"
+                                                        <input type="text" value="{{ $mission->reference }}"
                                                             class="input-group form-control" disabled>
                                                     </div>
                                                     <div class="mt-3 col-md-6 input-group input-group-ml">
@@ -96,7 +89,7 @@
                                                             <span class="input-group-text text-danger"><i
                                                                     class="far fa-registered"></i></span>
                                                         </div>
-                                                        <select name="organisation_id" class="custom-select" required>
+                                                        <select name="type" class="custom-select" required>
                                                             @foreach ($organisations as $organisation)
                                                                 @if ($mission->organisation_id === $organisation->id)
                                                                     <option value="{{ $organisation->id }}" selected>
@@ -128,42 +121,13 @@
                                                             placeholder="Commentaire sur la mission"
                                                             name="comment">{{ $mission->comment }}</textarea>
                                                     </div>
-                                                    @php $tmp = 0; @endphp
-                                                    {{-- @foreach($missionLines as $missionLine)
-                                                        @if($missionLine->mission_id === $mission->id)
-                                                            @php $tmp++; @endphp
-                                                        @endif
-                                                    @endforeach --}}
                                                     <div class="mt-3 col-md-6 input-group input-group-ml">
-                                                        <p onclick="tabFonction{{ $tmp }}()">
-                                                            Ajouter une nouvelle
-                                                            ligne <span id="add_new_line"><i
-                                                                    class="far fa-plus-square"></i></span>
-                                                        </p>
+                                                        <p>Ajouter une nouvelle ligne <span id="add_new_line"><i
+                                                                    class="far fa-plus-square"></i></span></p>
                                                     </div>
-                                                    <script>
-                                                        let temp = {{$tmp}};
-                                                        function tabFonction{{ $tmp }}() {
-                                                            const table = document.getElementById("MissionTab{{ str_replace('-', '', $mission->id) }}");
-                                                            const row = table.insertRow(1);
-                                                            const cell1 = row.insertCell(0);
-                                                            const cell2 = row.insertCell(1);
-                                                            const cell3 = row.insertCell(2);
-                                                            const cell4 = row.insertCell(3);
-                                                            const cell5 = row.insertCell(4);
-                                                            cell1.innerHTML = '<input type="text" placeholder="Titre tâche" class="btn" name="title_missionline_A['+temp+']" id="title_missionline_A['+temp+']">'
-                                                            cell2.innerHTML = `<input type="text" placeholder="Quantité tâche" class="btn" name="quantity_missionline_A[`+temp+`]" id="quantity_missionline_A[`+temp+`]" 
-                                                            onchange=calculate('total_missionline_A[`+temp+`]','quantity_missionline_A[`+temp+`]','price_missionline_A[`+temp+`]') >`
-                                                            cell3.innerHTML = `<input type="text" placeholder="Prix tâche" class="btn" name="price_missionline_A[`+temp+`]" id="price_missionline_A[`+temp+`]" 
-                                                            onchange=calculate('total_missionline_A[`+temp+`]','quantity_missionline_A[`+temp+`]','price_missionline_A[`+temp+`]') >`
-                                                            cell4.innerHTML = '<input type="text" placeholder="Unité tâche" class="btn" name="unity_missionline_A['+temp+']" id="unity_missionline_A['+temp+']">'
-                                                            cell5.innerHTML = '<span id="total_missionline_A['+temp+']" aria-disabled="true" id="total_missionline_A['+temp+']"> 0.00 </span>';
-                                                            temp++;
-                                                        } 
-                                                    </script>
                                                     <div class="mt-3 col-md-12">
-                                                        <table class="table table-hover table-striped mb-5 text-center mt-2"
-                                                            id="MissionTab{{ str_replace('-', '', $mission->id) }}">
+                                                        <table
+                                                            class="table table-hover table-striped mb-5 text-center mt-2">
                                                             <thead class="thead-light">
                                                                 <tr>
                                                                     <th>Titre</th>
@@ -178,33 +142,25 @@
                                                                     @if ($missionLine->mission_id === $mission->id)
                                                                         <tr>
                                                                             <td><input type="text" class="btn"
-                                                                                    name="title_missionline_A[{{ $tmp }}]"
-                                                                                    id="title_missionline_A{{ $missionLine->id }}"
+                                                                                    name="title_missionline_{{ $missionLine->id }}"
                                                                                     value="{{ $missionLine->title }}">
-                                                                                    <input type="hidden" name="missionLine_id_[{{ $tmp }}" value="{{ $missionLine->id }}" />
                                                                             </td>
                                                                             <td><input type="text" class="btn"
-                                                                                    name="quantity_missionline_A[{{ $tmp }}]"
-                                                                                    id="quantity_missionline_A{{ $missionLine->id }}"
-                                                                                    value="{{ $missionLine->quantity }}"
-                                                                                    onchange="calculate('total_missionline_{{ $missionLine->id }}','quantity_missionline_{{ $missionLine->id }}','price_missionline_{{ $missionLine->id }}')"
-                                                                                    </td>
+                                                                                    name="quantity_missionline_{{ $missionLine->id }}"
+                                                                                    value="{{ $missionLine->quantity }}">
+                                                                            </td>
                                                                             <td><input type="text" class="btn"
-                                                                                    name="price_missionline_A[{{ $tmp }}]"
-                                                                                    id="price_missionline_A{{ $missionLine->id }}"
-                                                                                    value="{{ $missionLine->price }}"
-                                                                                    onchange="calculate('total_missionline_{{ $missionLine->id }}','quantity_missionline_{{ $missionLine->id }}','price_missionline_{{ $missionLine->id }}')"
-                                                                                    </td>
+                                                                                    name="price_missionline_{{ $missionLine->id }}"
+                                                                                    value="{{ $missionLine->price }}">
+                                                                            </td>
                                                                             <td><input type="text" class="btn"
-                                                                                    name="unity_missionline_A[{{ $tmp }}]"
-                                                                                    id="unity_missionline_A{{ $missionLine->id }}"
+                                                                                    name="unity_missionline_{{ $missionLine->id }}"
                                                                                     value="{{ $missionLine->unity }}">
                                                                             </td>
                                                                             <td><span
-                                                                                    id="total_missionline_A{{ $missionLine->id }}"
-                                                                                    aria-disabled="true">{{number_format($missionLine->price * $missionLine->quantity, 2) }} €</span></td>
+                                                                                    id="total_missionline_{{ $missionLine->id }}"
+                                                                                    aria-disabled="true"></span></td>
                                                                         </tr>
-                                                                        @php $tmp++; @endphp
                                                                     @endif
                                                                 @endforeach
                                                             </tbody>

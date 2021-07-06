@@ -96,8 +96,21 @@ class MissionController extends Controller
             // dd($request);
             // dd(count($request->title_missionline_A));
 
-            if(!empty($request->title_missionline_A[$i]))
+            if(!empty($request->missionLine_id_[$i]))
             {
+                dd($request);
+                //update MissionLine
+                MissionLine::find($request->missionLine_id_[$i])->update([
+                    'mission_id'=>$request->mission_id,
+                    'title'=>$request->title_missionline_A[$i],
+                    'quantity'=>$request->quantity_missionline_A[$i],
+                    'price'=>$request->price_missionline_A[$i],
+                    'unity'=>$request->unity_missionline_A[$i]
+                ]);
+            }
+            elseif(!empty($request->title_missionline_A[$i]) && empty($request->missionLine_id_[$i]))
+            {
+                dd($request);
                 MissionLine::create([
                     'mission_id'=>$request->mission_id,
                     'title'=>$request->title_missionline_A[$i],
