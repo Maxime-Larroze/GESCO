@@ -40,7 +40,7 @@
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('dashboard') }}"><i class="fas fa-chart-line"></i>
-                        Tabbleau de bord</a>
+                        Tableau de bord</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="DDgestion" data-toggle="dropdown"
@@ -49,11 +49,12 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="DDgestion">
                         <a class="dropdown-item" href="{{ route('organisations.show') }}"><i
-                                class="far fa-registered"></i> Gestion des entreprises</a>
+                                class="far fa-registered"></i> Mes clients</a>
                         <a class="dropdown-item" href="{{ route('missions.show') }}"><i
-                                class="fas fa-thumbtack"></i> Gestion des missions</a>
-                        <a class="dropdown-item" href="{{ route('missions.show') }}">
-                            <i class="fas fa-file-invoice-dollar"></i> Gestion des factures</a>
+                                class="fas fa-thumbtack"></i> Mes missions</a>
+                        <a class="dropdown-item" href="{{ route('factures.show') }}"><i class="fas fa-file-invoice-dollar"></i> Mes devis</a>
+                        <a class="dropdown-item" href="{{ route('factures.show') }}"><i class="fas fa-file-invoice-dollar"></i> Mes factures d'accompte</a>
+                        <a class="dropdown-item" href="{{ route('factures.show') }}"><i class="fas fa-file-invoice-dollar"></i> Mes factures</a>
                     </div>
                 </li>
 
@@ -91,6 +92,7 @@
                     @yield('auth.organisation.interface.show')
                     @yield('auth.mission.interface.show')
                     @yield('auth.dashboard.interface.show')
+                    @yield('auth.facture.interface.show')
 
                 </div>
             </div>
@@ -110,6 +112,62 @@
         <p class="mt-2">Copyright 2021 &copy; Hackenathon System</p>
     </div>
 
+    <script>
+        function sortTable(table_id, column_id) {
+          var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+          table = document.getElementById(table_id);
+          switching = true;
+          // Set the sorting direction to ascending:
+          dir = "asc";
+          /* Make a loop that will continue until
+          no switching has been done: */
+          while (switching) {
+            // Start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /* Loop through all table rows (except the
+            first, which contains table headers): */
+            for (i = 1; i < (rows.length - 1); i++) {
+              // Start by saying there should be no switching:
+              shouldSwitch = false;
+              /* Get the two elements you want to compare,
+              one from current row and one from the next: */
+              x = rows[i].getElementsByTagName("TD")[column_id];
+              y = rows[i + 1].getElementsByTagName("TD")[column_id];
+              /* Check if the two rows should switch place,
+              based on the direction, asc or desc: */
+              if (dir == "asc") {
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                  // If so, mark as a switch and break the loop:
+                  shouldSwitch = true;
+                  break;
+                }
+              } else if (dir == "desc") {
+                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                  // If so, mark as a switch and break the loop:
+                  shouldSwitch = true;
+                  break;
+                }
+              }
+            }
+            if (shouldSwitch) {
+              /* If a switch has been marked, make the switch
+              and mark that a switch has been done: */
+              rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+              switching = true;
+              // Each time a switch is done, increase this count by 1:
+              switchcount ++;
+            } else {
+              /* If no switching has been done AND the direction is "asc",
+              set the direction to "desc" and run the while loop again. */
+              if (switchcount == 0 && dir == "asc") {
+                dir = "desc";
+                switching = true;
+              }
+            }
+          }
+        }
+        </script>
 </body>
 
 </html>

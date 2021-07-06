@@ -5,6 +5,7 @@ use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\MissionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FacebookController;
+use App\Http\Controllers\FactureController;
 use App\Http\Controllers\GithubController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrganisationController;
@@ -53,6 +54,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/missions', [MissionController::class, 'update'])->name('missions.update');
         Route::post('/missions', [MissionController::class, 'create'])->name('missions.create');
 
+        Route::get('/factures', [FactureController::class, 'show'])->name('factures.show');
         Route::get('/devis/generate/{id}', [PDFController::class, 'show'])->name('pdf.show');
         Route::get('/devis/generate/{id}/download', [PDFController::class, 'store'])->name('pdf.store');
     });

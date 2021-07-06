@@ -16,13 +16,13 @@
             <hr>
             <a data-toggle="modal" data-target="#NewModalMission"><button class="btn btn-success"><i
                         class="far fa-plus-square"></i> Créer une nouvelle mission</button></a>
-            <table class="table table-hover table-striped mb-5 text-center mt-2">
+            <table class="table table-hover table-striped mb-5 text-center mt-2" id="mission_Table">
                 <thead class="thead-light">
                     <tr>
-                        <th>Référence</th>
-                        <th>Titre</th>
-                        <th>Organisation</th>
-                        <th>Terminé</th>
+                        <th><span onclick="sortTable('mission_Table', 0)">Référence</span></th>
+                        <th><span onclick="sortTable('mission_Table', 1)">Titre</span></th>
+                        <th><span onclick="sortTable('mission_Table', 2)">Organisation</span></th>
+                        <th><span onclick="sortTable('mission_Table', 3)">Terminé</span></th>
                         <th>Options</th>
                     </tr>
                 </thead>

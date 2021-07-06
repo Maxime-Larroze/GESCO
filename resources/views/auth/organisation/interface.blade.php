@@ -6,13 +6,13 @@
             <hr>
             <a data-toggle="modal" data-target="#NewModalOrganisation"><button class="btn btn-success"><i
                         class="far fa-plus-square"></i> Créer une organisation</button></a>
-            <table class="table table-hover table-striped mb-5 text-center mt-2">
+            <table class="table table-hover table-striped mb-5 text-center mt-2" id="organisation_table">
                 <thead class="thead-light">
                     <tr>
-                        <th>Nom</th>
-                        <th>Adresse email</th>
-                        <th>Téléphone</th>
-                        <th>Type</th>
+                        <th onclick="sortTable('organisation_table', 0)">Nom</th>
+                        <th onclick="sortTable('organisation_table', 1)">Adresse email</th>
+                        <th onclick="sortTable('organisation_table', 2)">Téléphone</th>
+                        <th onclick="sortTable('organisation_table', 3)">Type</th>
                         <th>Options</th>
                     </tr>
                 </thead>

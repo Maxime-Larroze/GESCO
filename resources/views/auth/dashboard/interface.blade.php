@@ -29,13 +29,13 @@
         <div class="col-lg-12 text-center">
             <hr>
             <h2>Mission(s) en cours</h2>
-            <table class="table table-hover table-striped mb-5 text-center mt-2">
+            <table class="table table-hover table-striped mb-5 text-center mt-2" id="mission_encours_table">
                 <thead class="thead-light">
                     <tr>
-                        <th>Référence</th>
-                        <th>Titre</th>
-                        <th>Organisation</th>
-                        <th>Terminé</th>
+                        <th onclick="sortTable('mission_encours_table', 0)">Référence</th>
+                        <th onclick="sortTable('mission_encours_table', 1)">Titre</th>
+                        <th onclick="sortTable('mission_encours_table', 2)">Organisation</th>
+                        <th onclick="sortTable('mission_encours_table', 3)">Terminé</th>
                     </tr>
                 </thead>
                 @if(Empty($endMissions))
@@ -63,13 +63,13 @@
         <div class="col-lg-12 text-center">
             <hr>
             <h2>Mission(s) terminée(s)</h2>
-            <table class="table table-hover table-striped mb-5 text-center mt-2">
+            <table class="table table-hover table-striped mb-5 text-center mt-2" id="mission_termine_table">
                 <thead class="thead-light">
                     <tr>
-                        <th>Référence</th>
-                        <th>Titre</th>
-                        <th>Organisation</th>
-                        <th>Crée le</th>
+                        <th onclick="sortTable('mission_termine_table', 0">Référence</th>
+                        <th onclick="sortTable('mission_termine_table', 1">Titre</th>
+                        <th onclick="sortTable('mission_termine_table', 2">Organisation</th>
+                        <th onclick="sortTable('mission_termine_table', 3">Crée le</th>
                     </tr>
                 </thead>
                 @if(Empty($nbMissionEnCours))
