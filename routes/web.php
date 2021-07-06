@@ -9,6 +9,7 @@ use App\Http\Controllers\FactureController;
 use App\Http\Controllers\GithubController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrganisationController;
+use App\Http\Controllers\PDFController;
 use Laravel\Socialite\Facades\Socialite;
 /*
 |--------------------------------------------------------------------------
@@ -55,7 +56,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/missions', [MissionController::class, 'create'])->name('missions.create');
 
         Route::get('/factures', [FactureController::class, 'show'])->name('factures.show');
-        Route::get('/devis/generate/{id}', [PDFController::class, 'show'])->name('pdf.show');
-        Route::get('/devis/generate/{id}/download', [PDFController::class, 'store'])->name('pdf.store');
+        Route::get('/factures/generate/{id}', [PDFController::class, 'show'])->name('factures.pdf.show');
+        Route::get('/factures/generate/{id}/download', [PDFController::class, 'store'])->name('factures.pdf.store');
     });
 });

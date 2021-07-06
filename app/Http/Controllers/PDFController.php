@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mission;
+use App\Models\MissionLine;
 use App\Models\Organisation;
 use Illuminate\Http\Request;
+use PDF;
 
 class PDFController extends Controller
 {
@@ -34,9 +36,18 @@ class PDFController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($id)
     {
-        //
+        $mission = Mission::find($id);
+        $organisation = Organisation::find($mission->organisation_id);
+        $missionLines = MissionLine::where('mission_id', $mission->id)->get();
+
+        view()->share([
+            'mission' => $mission, 'organisation' => $organisation, 'missionLines' => $missionLines,
+        ]);
+
+        $pdf = PDF::loadView('auth.pdf.generate-facture')->setPaper('a4', 'landscape');
+        return $pdf->download($mission->reference . '.pdf');
     }
 
     /**
@@ -45,26 +56,14 @@ class PDFController extends Controller
      * @param  \App\Models\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($id)
     {
-        // $societe = Organisation::all();
-        // $mission = Mission::find($id);
-        // $client = Client::find($mission->client_id);
-        // $banque = Banque::where('societe_id', $societe->id)->first();
-        // $cobanque = CoordonneeBanquaire::where('banque_id', $banque->id)->first();
-        // $sbanque = SystemBanque::find($banque->system_banque_id);
-        // $tvas = Tva::all();
-        // $client_addresse =  Http::get('https://api-adresse.data.gouv.fr/search/?q=' . $client->ville_id . '&type=municipality&autocomplete=0')->json()['features'][0]['properties'];
-        // $societe_addresse =  Http::get('https://api-adresse.data.gouv.fr/search/?q=' . $societe->ville_id . '&type=municipality&autocomplete=0')->json()['features'][0]['properties'];
-        // $tacheMissions = TacheMission::where('societe_id', $societe->id)->where('mission_id', $id)->get();
-        // $taches = Tache::where('societe_id', $societe->id)->get();
-
-
-        // return view('pdf.generate-devis', [
-        //     'mission' => $mission, 'tacheMissions' => $tacheMissions, 'taches' => $taches, 'client' => $client,
-        //     'client_addresse' => $client_addresse, 'societe' => $societe, 'societe_addresse' => $societe_addresse,
-        //     'tvas' => $tvas, 'banque' => $banque, 'cobanque' => $cobanque, 'sbanque' => $sbanque
-        // ]);
+        $mission = Mission::find($id);
+        $organisation = Organisation::find($mission->organisation_id);
+        $missionLines = MissionLine::where('mission_id', $mission->id)->get();
+        return view('auth.pdf.generate-facture', [
+            'mission' => $mission, 'organisation' => $organisation, 'missionLines' => $missionLines,
+        ]);
     }
 
     /**
