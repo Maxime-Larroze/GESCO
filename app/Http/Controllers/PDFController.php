@@ -43,7 +43,7 @@ class PDFController extends Controller
     {
         $mission = Mission::find($id);
         $organisation = Organisation::find($mission->organisation_id);
-        $missionLines = MissionLine::where('mission_id', $mission->id)->where('user_id', Auth::user())->get();
+        $missionLines = MissionLine::where('mission_id', $mission->id)->where('user_id', Auth::user()->id)->get();
         $parametre = Parametre::where('user_id', Auth::user()->id)->first();
         view()->share([
             'mission' => $mission, 'organisation' => $organisation, 'missionLines' => $missionLines, 'parametre'=>$parametre,
@@ -64,7 +64,7 @@ class PDFController extends Controller
     {
         $mission = Mission::find($id);
         $organisation = Organisation::find($mission->organisation_id);
-        $missionLines = MissionLine::where('mission_id', $mission->id)->where('user_id', Auth::user())->get();
+        $missionLines = MissionLine::where('mission_id', $mission->id)->where('user_id', Auth::user()->id)->get();
         $parametre = Parametre::where('user_id', Auth::user()->id)->first();
         Log::notice("Consultation de la facture ".$id." par l'utilisateur ".Auth::user()->id);
         return view('auth.pdf.generate-facture', [

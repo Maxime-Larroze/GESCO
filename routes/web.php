@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FacebookController;
 use App\Http\Controllers\FactureController;
 use App\Http\Controllers\GithubController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrganisationController;
 use App\Http\Controllers\ParametreController;
@@ -61,7 +62,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/parametres', [ParametreController::class, 'store'])->name('parametres.store');
         Route::put('/parametres', [ParametreController::class, 'update'])->name('parametres.update');
 
-        // Route::put('/error/parametre', [DashboardController::class, 'errorParametre'])->name('error.parametre');
+        Route::post('/email/facture/envoie', [MailController::class, 'sendToClient'])->name('email.facture.send');
 
     });
 });

@@ -39,10 +39,12 @@
                                     <div class="col-lg-6"><a href="{{route('factures.pdf.show', $mission->id)}}"><button class="btn btn-info form-check-inline" type="button">
                                         <i class="fas fa-file-invoice"></i> Voir</button></a></div>
                                     <div class="col-lg-6">
-                                        <form class="form-check-inline" action="{{ route('missions.destroy') }}"
-                                            method="POST">@csrf @method('DELETE') <input type="hidden" name="mission_id"
-                                                value="{{ $mission->id }}"> <button class="btn btn-primary"
-                                                type="submit"><i class="fas fa-at"></i> Envoyer</button></form>
+                                        <form class="form-check-inline" action="{{ route('email.facture.send') }}"method="POST">
+                                            @csrf 
+                                            <input type="hidden" name="mission_id"value="{{ $mission->id }}">
+                                            <input type="hidden" name="client_id"value="{{ $mission->organisation_id }}">
+                                            <button class="btn btn-primary" type="submit"><i class="fas fa-at"></i> Envoyer</button>
+                                        </form>
                                     </div>
                                 </div>
                             </td>

@@ -133,14 +133,14 @@ class MissionController extends Controller
         }
         if(empty($request->ended_at))
         {
-            Mission::find($request->mission_id)->update(['ended_at'=>null]);
+            $mission_tmp = Mission::find($request->mission_id)->update(['ended_at'=>null]);
             Log::notice("Suppression d'une date fin de mission pour la mission ".$request->mission_id);
         }
         else
         {
-            Mission::find($request->mission_id)->update(['ended_at'=>Carbon::now()]);
-            Log::notice("Ajout d'une date fin de mission pour la mission ".$request->mission_id);
+            $mission_tmp = Mission::find($request->mission_id)->update(['ended_at'=>Carbon::now()]);
         }
+        // dd(Mission::find($request->mission_id)->ended_at);
 
         Mission::find($request->mission_id)->update([
             'title'=>$request->title,
