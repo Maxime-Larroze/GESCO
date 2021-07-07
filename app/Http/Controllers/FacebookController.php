@@ -6,6 +6,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
 
 class FacebookController extends Controller
@@ -17,6 +18,7 @@ class FacebookController extends Controller
      */
     public function redirectToFacebook()
     {
+        Log::info("Tentative de connexion via facebook");
         return Socialite::driver('facebook')->redirect();
     }
 
@@ -39,8 +41,10 @@ class FacebookController extends Controller
                 ]
             );
             Auth::login($userFounded, true);
+            Log::info("Connexion via facebook ".Auth::user()->id);
             return redirect()->route('dashboard');
         } catch (Exception $e) {
+            Log::critical("Erreur de connexion Facebook: ".$e);
             return redirect()->route('home');
         }
     }

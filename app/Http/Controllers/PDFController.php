@@ -8,6 +8,7 @@ use App\Models\Organisation;
 use App\Models\Parametre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use PDF;
 
 class PDFController extends Controller
@@ -48,8 +49,8 @@ class PDFController extends Controller
             'mission' => $mission, 'organisation' => $organisation, 'missionLines' => $missionLines, 'parametre'=>$parametre,
             'user'=>Auth::user(),
         ]);
-
         $pdf = PDF::loadView('auth.pdf.generate-facture')->setPaper('a4', 'landscape');
+        Log::notice("Génération du PDF ".$id." pour l'utilisateur ".Auth::user()->id);
         return $pdf->download($mission->reference . '.pdf')->withErrors(['validate'=>'Génération de votre facture avec succès']);
     }
 
@@ -65,6 +66,7 @@ class PDFController extends Controller
         $organisation = Organisation::find($mission->organisation_id);
         $missionLines = MissionLine::where('mission_id', $mission->id)->where('user_id', Auth::user())->get();
         $parametre = Parametre::where('user_id', Auth::user()->id)->first();
+        Log::notice("Consultation de la facture ".$id." par l'utilisateur ".Auth::user()->id);
         return view('auth.pdf.generate-facture', [
             'mission' => $mission, 'organisation' => $organisation, 'missionLines' => $missionLines, 'parametre'=>$parametre,
             'user'=>Auth::user(),

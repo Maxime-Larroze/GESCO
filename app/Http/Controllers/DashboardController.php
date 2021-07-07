@@ -19,6 +19,7 @@ class DashboardController extends Controller
     public function DashboardView()
     {
         $user = Auth::user();
+        Log::notice("consultation dashboard - utilisateur id: ".$user->id);
         $endMissions = Mission::where('ended_at', '!=', null)->where('user_id', $user->id)->get();
         $MissionEnCours = Mission::where('ended_at', null)->where('user_id', $user->id)->get();
         $nbMissionTermine = count($endMissions);
@@ -31,6 +32,7 @@ class DashboardController extends Controller
 
     public function Logout(Request $request)
     {
+        Log::info("déconnexion de l'utilisateur id: ".Auth::user()->id);
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

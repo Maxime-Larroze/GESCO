@@ -6,6 +6,7 @@ use App\Models\Organisation;
 use App\Models\Parametre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class OrganisationController extends Controller
@@ -37,6 +38,7 @@ class OrganisationController extends Controller
                 'user_id'=>Auth::user()->id,
             ]
         );
+        Log::notice("Création d'une organisation");
         return redirect()->route('organisations.show')->withErrors(['validate'=>'Enregistrement de votre client avec succès']);
     }
 
@@ -91,6 +93,7 @@ class OrganisationController extends Controller
                 'type' => $request->type,
             ]
         );
+        Log::notice("Update de l'organisation ".$request->organisation_id);
         return redirect()->route('organisations.show')->withErrors(['validate'=>'Modification du client avec succès']);
     }
 
@@ -103,6 +106,7 @@ class OrganisationController extends Controller
     public function destroy(Request $request)
     {
         $organisation = Organisation::find($request->organisation_id)->delete();
+        Log::notice("Delete de l'organisation ".$request->organisation_id);
         return redirect()->route('organisations.show')->withErrors(['validate'=>'Suppression de votre client avec succès']);
     }
 }

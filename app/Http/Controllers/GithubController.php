@@ -8,6 +8,7 @@ use Exception;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class GithubController extends Controller
 {
@@ -18,6 +19,7 @@ class GithubController extends Controller
      */
     public function redirectToGithub()
     {
+        Log::info("Tentative de connexion via Github");
         return Socialite::driver('github')->redirect();
     }
 
@@ -40,9 +42,10 @@ class GithubController extends Controller
                 ]
             );
             Auth::login($userFounded, true);
+            Log::info("Connexion via Github ".Auth::user()->id);
             return redirect()->route('dashboard');
         } catch (Exception $e) {
-            dd($e);
+            Log::critical("Erreur de connexion Github: ".$e);
             return redirect()->route('home');
         }
     }

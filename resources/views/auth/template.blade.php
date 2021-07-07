@@ -95,8 +95,7 @@
                         <p>{{$message}}</p>
                       </div>
                     @enderror
-                    @if(empty($parametre))
-                      @if(!Route::is('factures.pdf.show'))
+                    @if(empty($parametre) && !Route::is('parametres.show'))
                         <div class="row">
                           <div class="col-lg-2"></div>
                           <div class="col-lg-8">
@@ -105,15 +104,14 @@
                           </div>
                           <div class="col-lg-2"></div>
                         </div>
-                      @endif
                     @else
-                      @yield('auth.profil.interface.update')
                       @yield('auth.organisation.interface.show')
                       @yield('auth.mission.interface.show')
                       @yield('auth.dashboard.interface.show')
                       @yield('auth.facture.interface.show')
                     @endif
                     @yield('auth.parametre.interface.show')
+                    @yield('auth.profil.interface.update')
                 </div>
             </div>
         </div>

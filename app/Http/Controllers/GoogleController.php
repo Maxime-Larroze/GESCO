@@ -6,6 +6,7 @@ use Laravel\Socialite\Facades\Socialite;
 use Exception;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class GoogleController extends Controller
 {
@@ -16,6 +17,7 @@ class GoogleController extends Controller
      */
     public function redirectToGoogle()
     {
+        Log::info("Connexion via Google");
         return Socialite::driver('google')->redirect();
     }
 
@@ -38,8 +40,10 @@ class GoogleController extends Controller
                 ]
             );
             Auth::login($userFounded, true);
+            Log::info("Connexion via Google ".Auth::user()->id);
             return redirect()->route('dashboard');
         } catch (Exception $e) {
+            Log::critical("Erreur de connexion Github: ".$e);
             return redirect()->route('home');
         }
     }

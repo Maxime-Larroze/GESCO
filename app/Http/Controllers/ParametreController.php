@@ -6,6 +6,7 @@ use App\Models\Parametre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
 
 class ParametreController extends Controller
 {
@@ -52,6 +53,7 @@ class ParametreController extends Controller
             'adresse'=>Crypt::encryptString($request->adresse),
 
         ]);
+        Log::notice("Création des paramètres de l'utilisateur ".Auth::user()->id);
         return redirect()->route('parametres.show')->withErrors(['validate'=>'Enregistrement des paramètres avec succès']);
     }
 
@@ -100,6 +102,7 @@ class ParametreController extends Controller
             'bic'=>Crypt::encryptString($request->bic),
             'adresse'=>Crypt::encryptString($request->adresse),
         ]);
+        Log::notice("Update des paramètres ".$request->parametre_id." de l'utilisateur ".Auth::user()->id);
         return redirect()->route('parametres.show')->withErrors(['validate','Enregistrement des paramètres avec succès']);
     }
 

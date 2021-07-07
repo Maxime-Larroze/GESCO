@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
 
 class MissionController extends Controller
 {
@@ -43,6 +44,7 @@ class MissionController extends Controller
                 'user_id'=>Auth::user()->id,
             ]
         );
+        Log::notice("Création d'une mission pour l'organisation ".$organisation->id);
         return redirect()->route('missions.show')->withErrors(['validate'=>'Créationde la mission avec succès']);
     }
 
@@ -107,6 +109,7 @@ class MissionController extends Controller
                         'user_id'=>Auth::user()->id,
                     ]);
                     $depot += $request->quantity_missionline_A[$i] * $request->price_missionline_A[$i];
+                    Log::notice("Création d'une missionLine pour la mission ".$request->mission_id);
                 }
             }
         }
@@ -124,18 +127,21 @@ class MissionController extends Controller
                         'user_id'=>Auth::user()->id,
                     ]);
                     $depot += $request->price_missionline_B[array_keys($request->title_missionline_B)[$j]] * $request->quantity_missionline_B[array_keys($request->title_missionline_B)[$j]];
+                    Log::notice("Création/Modification d'une missionLine pour la mission ".$request->mission_id);
                 }
             }
         }
         if(empty($request->ended_at))
         {
             Mission::find($request->mission_id)->update(['ended_at'=>null]);
+            Log::notice("Suppression d'une date fin de mission pour la mission ".$request->mission_id);
         }
-        elseif($request->ended_at === "0")
+        else
         {
-            Mission::find($request->mission_id)->update(['ended_at'=>Carbon::now()->format('Y-m-d H:i:s')]);
+            Mission::find($request->mission_id)->update(['ended_at'=>Carbon::now()]);
+            Log::notice("Ajout d'une date fin de mission pour la mission ".$request->mission_id);
         }
-        dd(Mission::find($request->mission_id));
+        dd(Mission::find($request->mission_id)->update(['ended_at'=>null]));
 
         Mission::find($request->mission_id)->update([
             'title'=>$request->title,
@@ -143,6 +149,7 @@ class MissionController extends Controller
             'organisation_id'=>$request->organisation_id,
             'comment'=>$request->comment,
         ]);
+        Log::notice("Update de la mission ".$request->mission_id);
         return redirect()->route('missions.show')->withErrors(['validate'=>'Modification de la mission avec succès']);
     }
 
@@ -155,6 +162,7 @@ class MissionController extends Controller
     public function destroy(Request $request)
     {
         $mission = Mission::find($request->mission_id)->delete();
+        Log::notice("Suppression de la mission ".$request->mission_id);
         return redirect()->route('missions.show')->withErrors(['validate'=>'Suppression de la mission avec succès']);
     }
 }
