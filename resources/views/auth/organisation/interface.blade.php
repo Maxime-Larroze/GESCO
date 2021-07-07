@@ -17,6 +17,11 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @if($organisations->isEmpty())
+                        </tbody>
+                    </table>
+                    <h3 class="text-center">Aucun client enregistré</h3>
+                @else
                     @foreach ($organisations as $organisation)
                         <tr>
                             <td>{{ $organisation->name }}</td>
@@ -120,9 +125,9 @@
                             </div>
                         </div>
                     @endforeach
-
                 </tbody>
             </table>
+            @endif
         </div>
     </div>
 

@@ -49,8 +49,8 @@ class FactureController extends Controller
     public function show()
     {
         $user = Auth::user();
-        $missions = Mission::all();
-        $organisations = Organisation::all();
+        $missions = Mission::where('user_id', $user->id)->get();
+        $organisations = Organisation::where('user_id', $user->id)->get();
         return view('auth.facture.interface', ['user' => $user, 'missions'=>$missions, 'organisations'=>$organisations]);
 
 

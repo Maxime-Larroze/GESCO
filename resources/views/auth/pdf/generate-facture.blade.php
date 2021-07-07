@@ -87,20 +87,17 @@
                                 </div>
                                 <div class="col-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6 text-md-end">
                                     <div class="text-muted"> Prestataire</div>
-                                    {{-- <strong>
-                                        {{ $societe->denomination }}
+                                    <strong>
+                                        {{ Crypt::decryptString($parametre->societe_name) }}
                                     </strong>
-                                    <p><strong>{{ $societe->prenom }} {{ $societe->nom }}</strong>
+                                    <p><strong>{{ $user->firstname }} {{ $user->lastname }}</strong>
                                         <br>
-                                        {{ $societe->adresse }} <br> {{ $societe_addresse['postcode'] }},
-                                        {{ $societe_addresse['name'] }}
+                                        {{ Crypt::decryptString($parametre->adresse) }}, {{ Crypt::decryptString($parametre->domiciliation) }}
                                         <br>
-                                        N° SIRET: {{ $societe->siret ?? 'N/A' }}
+                                        N° SIRET: {{ Crypt::decryptString($parametre->siret) ?? 'N/A' }}
                                         <br>
-                                        <a href="mailto:{{ $societe->email }}">
-                                            {{ $societe->email }}
-                                        </a>
-                                    </p> --}}
+                                        <a href="mailto:{{ $user->email }}">{{ $user->email }}</a>
+                                    </p>
                                 </div>
 
                                 <table class="table table-sm">
@@ -151,26 +148,38 @@
                                         <tr>
                                             <th>&nbsp;</th>
                                             <th>&nbsp;</th>
-                                            <th>Reste à payer</th>
-                                            <th>{{$total_ttc-$total_ttc*0.45}} €</th>
+                                            <th>Date encaissement</th>
+                                            <th>
+                                                @if(!empty($mission->ended_at) && $mission->ended_at != null)
+                                                {{date('d-m-Y H:i', strtotime($mission->ended_at))}}
+                                                @else
+                                                Non encaissé
+                                                @endif
+                                            </th>
                                         </tr>
                                     </tbody>
                                 </table>
-                                {{-- <div class="col-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                                <div class="col-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                                    @if(!empty($parametre) && $parametre != null)
                                     <p>
-                                        {{ $sbanque->libelle }} [{{ $banque->libelle }}]
+                                        Domiciliation: {{Crypt::decryptString($parametre->adresse)}} - {{Crypt::decryptString($parametre->domiciliation)}}
                                         <br>
-                                        Titulaire: {{ $cobanque->titulaire }}
+                                        Titulaire: {{ $user->firsname }} {{ $user->lastname }}
                                         <br>
-                                        IBAN: {{ $cobanque->iban }} / BIC: {{ $cobanque->bic }}
+                                        RIB: {{Crypt::decryptString($parametre->rib)}}
+                                        <br>
+                                        IBAN: {{ Crypt::decryptString($parametre->iban) }} / BIC: {{ Crypt::decryptString($parametre->bic) }}
+                                        <br>
                                     </p>
+                                    @endif
                                 </div>
                                 <div class="col-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
                                     <p class="text-sm">
-                                        <strong>Note:</strong> Délais de paiement élevé à 15 jours après fin de la
-                                        transaction / des travaux
+                                        <strong>Note:</strong> {{Crypt::decryptString($parametre->mention_a)}}
+                                        <hr>
+                                        {{Crypt::decryptString($parametre->mention_b)}}
                                     </p>
-                                </div> --}}
+                                </div>
                             </div>
 
                         </div>
@@ -180,7 +189,7 @@
             @if (Route::is('factures.pdf.show'))
                 <div class="col-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 text-center mt-5">
                     <a href="{{ route('factures.pdf.store', $mission->id) }}">
-                        <button class="btn btn-primary">Télécharger cette facture</button></a>
+                        <button class="btn btn-primary mb-5">Télécharger cette facture</button></a>
                 </div>
             @endif
         </div>

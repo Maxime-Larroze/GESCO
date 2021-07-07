@@ -19,8 +19,10 @@ class CreateContributionsTable extends Migration
             $table->string('title');
             $table->string('comment')->nullable();
             $table->uuid('organisation_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
             $table->foreign('organisation_id')->references('id')->on('organisations');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

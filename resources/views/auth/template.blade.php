@@ -38,6 +38,7 @@
         </button>
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav mr-auto">
+              @if(!empty($parametre))
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('dashboard') }}"><i class="fas fa-chart-line"></i>
                         Tableau de bord</a>
@@ -57,6 +58,7 @@
                         <a class="dropdown-item" href="{{ route('factures.show') }}"><i class="fas fa-file-invoice-dollar"></i> Mes factures</a>
                     </div>
                 </li>
+                @endif
 
 
             </ul>
@@ -71,10 +73,9 @@
                             {{ $user->lastname }}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item text-dark" href="{{ route('profil') }}"><i class="fas fa-user"></i> Mon
-                                profil</a>
-                            <a class="dropdown-item text-danger" href="{{ route('logout') }}"><i
-                                    class="fas fa-power-off"></i> Déconnexion</a>
+                            <a class="dropdown-item text-dark" href="{{ route('profil') }}"><i class="fas fa-user"></i> Mon profil</a>
+                            <a class="dropdown-item text-primary" href="{{ route('parametres.show') }}"><i class="fas fa-user-cog"></i> Mes paramètres</a>
+                            <a class="dropdown-item text-danger" href="{{ route('logout') }}"><i class="fas fa-power-off"></i> Déconnexion</a>
                         </div>
                     </li>
                 </ul>
@@ -88,12 +89,31 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="mt-3">
-                    @yield('auth.profil.interface.update')
-                    @yield('auth.organisation.interface.show')
-                    @yield('auth.mission.interface.show')
-                    @yield('auth.dashboard.interface.show')
-                    @yield('auth.facture.interface.show')
-
+                    @error('validate')
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <p>{{$message}}</p>
+                      </div>
+                    @enderror
+                    @if(empty($parametre))
+                    @if(!!Route::is('factures.pdf.show'))
+                      <div class="row">
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-8">
+                        <h2 class="text-danger text-center">Veuillez paramètrer vos paramètres avant d'utiliser cette application</h2>
+                        <p class="mt-5 text-center"><a class="text-primary" href="{{route('parametres.show')}}">Lien de la page de paramètres</a></p>
+                        </div>
+                        <div class="col-lg-2"></div>
+                      </div>
+                    @endif
+                    @else
+                      @yield('auth.profil.interface.update')
+                      @yield('auth.organisation.interface.show')
+                      @yield('auth.mission.interface.show')
+                      @yield('auth.dashboard.interface.show')
+                      @yield('auth.facture.interface.show')
+                    @endif
+                    @yield('auth.parametre.interface.show')
                 </div>
             </div>
         </div>

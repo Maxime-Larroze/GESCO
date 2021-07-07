@@ -18,10 +18,10 @@ class DashboardController extends Controller
     public function DashboardView()
     {
         $user = Auth::user();
-        $nbMissionTermine = count(Mission::where('ended_at', '!=', null)->get());
-        $nbMissionEnCours = count(Mission::where('ended_at', null)->get());
-        $endMissions = Mission::where('ended_at', '!=', null)->get();
-        $MissionEnCours = Mission::where('ended_at', '!=', null)->get();
+        $nbMissionTermine = count(Mission::where('ended_at', '!=', null)->where('user_id', $user->id)->get());
+        $nbMissionEnCours = count(Mission::where('ended_at', null)->where('user_id', $user->id)->get());
+        $endMissions = Mission::where('ended_at', '!=', null)->where('user_id', $user->id)->get();
+        $MissionEnCours = Mission::where('ended_at', null)->where('user_id', $user->id)->get();
         $organisations = Organisation::all();
         return view('auth.dashboard.interface', ['user' => $user, 'nbMissionEnCours'=>$nbMissionEnCours, 'nbMissionTermine'=>$nbMissionTermine, 
         'endMissions'=>$endMissions, 'MissionEnCours'=>$MissionEnCours, 'organisations'=>$organisations]);

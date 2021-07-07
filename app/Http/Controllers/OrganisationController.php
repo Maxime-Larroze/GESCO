@@ -33,6 +33,7 @@ class OrganisationController extends Controller
                 'tel' => $request->tel,
                 'address' => $request->address,
                 'type' => $request->type,
+                'user_id'=>Auth::user()->id
             ]
         );
         return redirect()->route('organisations.show');
@@ -57,7 +58,7 @@ class OrganisationController extends Controller
      */
     public function show(Organisation $organisation)
     {
-        return view('auth.organisation.interface', ['organisations' => Organisation::all(), 'user' => Auth::user()]);
+        return view('auth.organisation.interface', ['organisations' => Organisation::where('user_id', Auth::user()->id)->get(), 'user' => Auth::user()]);
     }
 
     /**

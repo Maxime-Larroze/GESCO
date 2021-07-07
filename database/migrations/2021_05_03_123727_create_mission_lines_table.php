@@ -15,6 +15,7 @@ class CreateMissionLinesTable extends Migration
     {
         Schema::create('mission_lines', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
+            $table->unsignedBigInteger('user_id');
             $table->uuid('mission_id');
             $table->string('title');
             $table->integer('quantity');
@@ -22,6 +23,7 @@ class CreateMissionLinesTable extends Migration
             $table->string('unity');
             $table->timestamps();
             $table->foreign('mission_id')->references('id')->on('missions');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

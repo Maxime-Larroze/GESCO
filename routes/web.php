@@ -9,6 +9,7 @@ use App\Http\Controllers\FactureController;
 use App\Http\Controllers\GithubController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrganisationController;
+use App\Http\Controllers\ParametreController;
 use App\Http\Controllers\PDFController;
 use Laravel\Socialite\Facades\Socialite;
 /*
@@ -23,9 +24,6 @@ use Laravel\Socialite\Facades\Socialite;
 */
 
 Route::middleware('guest')->group(function () {
-    // Route::get('/', function () {
-    //     return view('public.login');
-    // })->name('home');
     Route::get('/', [GoogleController::class, 'autoLogin'])->name('home');
     Route::post('public/login', [DashboardController::class, 'Login'])->name('login');
 });
@@ -58,5 +56,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/factures', [FactureController::class, 'show'])->name('factures.show');
         Route::get('/factures/generate/{id}', [PDFController::class, 'show'])->name('factures.pdf.show');
         Route::get('/factures/generate/{id}/download', [PDFController::class, 'store'])->name('factures.pdf.store');
+
+        Route::get('/parametres', [ParametreController::class, 'show'])->name('parametres.show');
+        Route::post('/parametres', [ParametreController::class, 'store'])->name('parametres.store');
+        Route::put('/parametres', [ParametreController::class, 'update'])->name('parametres.update');
+
+        // Route::put('/error/parametre', [DashboardController::class, 'errorParametre'])->name('error.parametre');
+
     });
 });

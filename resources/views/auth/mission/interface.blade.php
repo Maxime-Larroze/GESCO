@@ -26,6 +26,11 @@
                         <th>Options</th>
                     </tr>
                 </thead>
+                @if($missions->isEmpty())
+                </tbody>
+            </table>
+            <h3 class="text-center">Aucune mission enregistrée</h3>
+                @else
                 <tbody>
                     @foreach ($missions as $mission)
                         <tr>
@@ -225,6 +230,7 @@
                     @endforeach
                 </tbody>
             </table>
+                @endif
         </div>
     </div>
 

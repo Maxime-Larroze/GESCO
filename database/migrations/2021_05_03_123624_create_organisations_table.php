@@ -21,6 +21,8 @@ class CreateOrganisationsTable extends Migration
             $table->string('tel')->nullable();
             $table->text('address')->nullable();
             $table->enum("type", ["school", "organisation", "government"]);
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

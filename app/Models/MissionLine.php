@@ -12,6 +12,7 @@ class MissionLine extends Model
 
     protected $fillable = [
         'id',
+        'user_id',
         'mission_id',
         'title',
         'quantity',

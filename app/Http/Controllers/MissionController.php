@@ -6,9 +6,11 @@ use App\Models\Mission;
 use App\Models\MissionLine;
 use Illuminate\Http\Request;
 use App\Models\Organisation;
+use App\Models\Parametre;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Facades\Crypt;
 
 class MissionController extends Controller
 {
@@ -37,6 +39,7 @@ class MissionController extends Controller
                 'title' => $request->title,
                 'comment' => $request->comment,
                 'deposit' => 0,
+                'user_id'=>Auth::user()->id,
             ]
         );
         return redirect()->route('missions.show');
@@ -61,7 +64,7 @@ class MissionController extends Controller
      */
     public function show(Mission $mission)
     {
-        return view('auth.mission.interface', ['organisations' => Organisation::all(), 'user' => Auth::user(), 'missions' => Mission::all(), "missionLines" => MissionLine::all()]);
+        return view('auth.mission.interface', ['organisations' => Organisation::where('user_id', Auth::user()->id)->get(), 'user' => Auth::user(), 'missions' => Mission::where('user_id', Auth::user()->id)->get(), "missionLines" => MissionLine::where('user_id', Auth::user())->get()]);
     }
 
     /**
@@ -84,8 +87,9 @@ class MissionController extends Controller
      */
     public function update(Request $request)
     {
+        $taux = Crypt::decryptString(Parametre::where('user_id', Auth::user()->id)->first()->taux_accompte);
         $depot = 0;
-        $missionlines = MissionLine::where("mission_id", $request->mission_id)->delete();
+        $missionlines = MissionLine::where("mission_id", $request->mission_id)->where('user_id', Auth::user())->delete();
         if(!empty($request->title_missionline_A))
         {
             for ($i=0; $i < count($request->title_missionline_A); $i++) { 
@@ -120,7 +124,7 @@ class MissionController extends Controller
         }
         Mission::find($request->mission_id)->update([
             'title'=>$request->title,
-            'deposit'=>$depot*0.45,
+            'deposit'=>$depot*$taux??45/100,
             'organisation_id'=>$request->organisation_id,
             'comment'=>$request->comment,
         ]);

@@ -17,9 +17,10 @@ class CreateTransactionsTable extends Migration
             $table->uuid('id')->primary()->unique();
             $table->integer('source_type');
             $table->uuid('source_id');
+            $table->unsignedBigInteger('user_id');
             $table->integer('price');
             $table->timestamps();
-            $table->foreign('source_id')->references('id')->on('organisations');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

@@ -12,6 +12,7 @@ class Mission extends Model
 
     protected $fillable = [
         'id',
+        'user_id',
         'reference',
         'organisation_id',
         'title',

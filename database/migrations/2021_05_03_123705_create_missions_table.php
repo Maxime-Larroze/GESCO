@@ -17,12 +17,13 @@ class CreateMissionsTable extends Migration
             $table->uuid('id')->primary()->unique();
             $table->string('reference');
             $table->uuid('organisation_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('title');
             $table->string('comment')->nullable();
             $table->integer('deposit');
             $table->timestamp('ended_at')->nullable();
             $table->timestamps();
-            $table->foreign('organisation_id')->references('id')->on('organisations');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
