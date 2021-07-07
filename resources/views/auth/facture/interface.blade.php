@@ -3,7 +3,7 @@
     <div class="row mt-2">
         <h3 class="text-center">Factures</h3>
         <hr>
-        <table class="table table-hover table-striped mb-5 text-center mt-2" id="facture_table">
+        <table class="table table-responsive table-hover table-striped mb-5 text-center mt-2" id="facture_table">
             <thead class="thead-light">
                 <tr>
                     <th onclick="sortTable('facture_table', 0)">Référence</th>

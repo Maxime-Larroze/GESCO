@@ -16,7 +16,7 @@
             <hr>
             <a data-toggle="modal" data-target="#NewModalMission"><button class="btn btn-success"><i
                         class="far fa-plus-square"></i> Créer une nouvelle mission</button></a>
-            <table class="table table-hover table-striped mb-5 text-center mt-2" id="mission_Table">
+            <table class="table table-responsive table-hover table-striped mb-5 text-center mt-2" id="mission_Table">
                 <thead class="thead-light">
                     <tr>
                         <th><span onclick="sortTable('mission_Table', 0)">Référence</span></th>
