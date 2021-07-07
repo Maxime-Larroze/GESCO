@@ -53,8 +53,8 @@
                                 class="far fa-registered"></i> Mes clients</a>
                         <a class="dropdown-item" href="{{ route('missions.show') }}"><i
                                 class="fas fa-thumbtack"></i> Mes missions</a>
-                        <a class="dropdown-item" href="{{ route('factures.show') }}"><i class="fas fa-file-invoice-dollar"></i> Mes devis</a>
-                        <a class="dropdown-item" href="{{ route('factures.show') }}"><i class="fas fa-file-invoice-dollar"></i> Mes factures d'accompte</a>
+                        <a class="dropdown-item" href="{{ route('factures.show') }}"><i class="fas fa-briefcase"></i> Mes devis</a>
+                        <a class="dropdown-item" href="{{ route('factures.show') }}"><i class="fas fa-money-check-alt"></i> Mes factures d'accompte</a>
                         <a class="dropdown-item" href="{{ route('factures.show') }}"><i class="fas fa-file-invoice-dollar"></i> Mes factures</a>
                     </div>
                 </li>

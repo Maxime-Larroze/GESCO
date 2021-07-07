@@ -141,7 +141,6 @@ class MissionController extends Controller
             Mission::find($request->mission_id)->update(['ended_at'=>Carbon::now()]);
             Log::notice("Ajout d'une date fin de mission pour la mission ".$request->mission_id);
         }
-        dd(Mission::find($request->mission_id)->update(['ended_at'=>null]));
 
         Mission::find($request->mission_id)->update([
             'title'=>$request->title,
