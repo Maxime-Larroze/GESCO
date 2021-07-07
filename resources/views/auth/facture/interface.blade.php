@@ -14,37 +14,43 @@
                 </tr>
             </thead>
             <tbody>
-            @foreach ($missions as $mission)
-                @if(!empty($mission->ended_at) && $mission->ended_at != null)
-                    <tr>
-                        <td>{{ $mission->reference }}</td>
-                        <td>{{ $mission->title }}</td>
-                        @foreach ($organisations as $organisation)
-                            @if ($mission->organisation_id === $organisation->id)
-                                <td>{{ $organisation->name }}</td>
+            @if($missions->isEmpty())
+                    </tbody>
+                </table>
+                <h2 class="text-center">Aucune facture disponible</h2>
+            @else
+                @foreach ($missions as $mission)
+                    @if(!empty($mission->ended_at) && $mission->ended_at != null)
+                        <tr>
+                            <td>{{ $mission->reference }}</td>
+                            <td>{{ $mission->title }}</td>
+                            @foreach ($organisations as $organisation)
+                                @if ($mission->organisation_id === $organisation->id)
+                                    <td>{{ $organisation->name }}</td>
+                                @endif
+                            @endforeach
+                            @if (!empty($mission->ended_at))
+                                <td>{{ date('d-m-Y H:i', strtotime($mission->ended_at)) }}</td>
+                            @else
+                                <td class="text-danger">Non terminé</td>
                             @endif
-                        @endforeach
-                        @if (!empty($mission->ended_at))
-                            <td>{{ date('d-m-Y H:i', strtotime($mission->ended_at)) }}</td>
-                        @else
-                            <td class="text-danger">Non terminé</td>
-                        @endif
-                        <td>
-                            <div class="row">
-                                <div class="col-lg-6"><a href="{{route('factures.pdf.show', $mission->id)}}"><button class="btn btn-info form-check-inline" type="button">
-                                    <i class="fas fa-file-invoice"></i> Voir</button></a></div>
-                                <div class="col-lg-6">
-                                    <form class="form-check-inline" action="{{ route('missions.destroy') }}"
-                                        method="POST">@csrf @method('DELETE') <input type="hidden" name="mission_id"
-                                            value="{{ $mission->id }}"> <button class="btn btn-primary"
-                                            type="submit"><i class="fas fa-at"></i> Envoyer</button></form>
+                            <td>
+                                <div class="row">
+                                    <div class="col-lg-6"><a href="{{route('factures.pdf.show', $mission->id)}}"><button class="btn btn-info form-check-inline" type="button">
+                                        <i class="fas fa-file-invoice"></i> Voir</button></a></div>
+                                    <div class="col-lg-6">
+                                        <form class="form-check-inline" action="{{ route('missions.destroy') }}"
+                                            method="POST">@csrf @method('DELETE') <input type="hidden" name="mission_id"
+                                                value="{{ $mission->id }}"> <button class="btn btn-primary"
+                                                type="submit"><i class="fas fa-at"></i> Envoyer</button></form>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                @endif
-            @endforeach
-            </tbody>
-        </table>
+                            </td>
+                        </tr>
+                    @endif
+                @endforeach
+                </tbody>
+                </table>
+            @endif
     </div>
 @endsection

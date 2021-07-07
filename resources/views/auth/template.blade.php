@@ -96,16 +96,16 @@
                       </div>
                     @enderror
                     @if(empty($parametre))
-                    @if(!!Route::is('factures.pdf.show'))
-                      <div class="row">
-                        <div class="col-lg-2"></div>
-                        <div class="col-lg-8">
-                        <h2 class="text-danger text-center">Veuillez paramètrer vos paramètres avant d'utiliser cette application</h2>
-                        <p class="mt-5 text-center"><a class="text-primary" href="{{route('parametres.show')}}">Lien de la page de paramètres</a></p>
+                      @if(!Route::is('factures.pdf.show'))
+                        <div class="row">
+                          <div class="col-lg-2"></div>
+                          <div class="col-lg-8">
+                          <h2 class="text-danger text-center">Veuillez paramètrer vos paramètres avant d'utiliser cette application</h2>
+                          <p class="mt-5 text-center"><a class="text-primary" href="{{route('parametres.show')}}">Lien de la page de paramètres</a></p>
+                          </div>
+                          <div class="col-lg-2"></div>
                         </div>
-                        <div class="col-lg-2"></div>
-                      </div>
-                    @endif
+                      @endif
                     @else
                       @yield('auth.profil.interface.update')
                       @yield('auth.organisation.interface.show')

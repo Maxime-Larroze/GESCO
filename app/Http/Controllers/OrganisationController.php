@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Organisation;
+use App\Models\Parametre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -27,16 +28,16 @@ class OrganisationController extends Controller
     {
         $organisation = Organisation::create(
             [
-                'slug' => Str::slug($request->name),
+                'slug' => Str::slug($request->name).'-'.rand(1,99999),
                 'name' => $request->name,
                 'email' => $request->email,
                 'tel' => $request->tel,
                 'address' => $request->address,
                 'type' => $request->type,
-                'user_id'=>Auth::user()->id
+                'user_id'=>Auth::user()->id,
             ]
         );
-        return redirect()->route('organisations.show');
+        return redirect()->route('organisations.show')->withErrors(['validate'=>'Enregistrement de votre client avec succès']);
     }
 
     /**
@@ -58,7 +59,7 @@ class OrganisationController extends Controller
      */
     public function show(Organisation $organisation)
     {
-        return view('auth.organisation.interface', ['organisations' => Organisation::where('user_id', Auth::user()->id)->get(), 'user' => Auth::user()]);
+        return view('auth.organisation.interface', ['organisations' => Organisation::where('user_id', Auth::user()->id)->get(), 'user' => Auth::user(), 'parametre'=> Parametre::where('user_id', Auth::user()->id)]);
     }
 
     /**
@@ -90,7 +91,7 @@ class OrganisationController extends Controller
                 'type' => $request->type,
             ]
         );
-        return redirect()->route('organisations.show');
+        return redirect()->route('organisations.show')->withErrors(['validate'=>'Modification du client avec succès']);
     }
 
     /**
@@ -102,6 +103,6 @@ class OrganisationController extends Controller
     public function destroy(Request $request)
     {
         $organisation = Organisation::find($request->organisation_id)->delete();
-        return redirect()->route('organisations.show');
+        return redirect()->route('organisations.show')->withErrors(['validate'=>'Suppression de votre client avec succès']);
     }
 }

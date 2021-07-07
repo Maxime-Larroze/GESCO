@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Mission;
 use App\Models\Organisation;
+use App\Models\Parametre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -18,13 +19,14 @@ class DashboardController extends Controller
     public function DashboardView()
     {
         $user = Auth::user();
-        $nbMissionTermine = count(Mission::where('ended_at', '!=', null)->where('user_id', $user->id)->get());
-        $nbMissionEnCours = count(Mission::where('ended_at', null)->where('user_id', $user->id)->get());
         $endMissions = Mission::where('ended_at', '!=', null)->where('user_id', $user->id)->get();
         $MissionEnCours = Mission::where('ended_at', null)->where('user_id', $user->id)->get();
-        $organisations = Organisation::all();
+        $nbMissionTermine = count($endMissions);
+        $nbMissionEnCours = count($MissionEnCours);
+        $organisations = Organisation::where('user_id', $user->id)->get();
+        $parametre = Parametre::where('user_id', $user->id)->first();
         return view('auth.dashboard.interface', ['user' => $user, 'nbMissionEnCours'=>$nbMissionEnCours, 'nbMissionTermine'=>$nbMissionTermine, 
-        'endMissions'=>$endMissions, 'MissionEnCours'=>$MissionEnCours, 'organisations'=>$organisations]);
+        'endMissions'=>$endMissions, 'MissionEnCours'=>$MissionEnCours, 'organisations'=>$organisations, 'parametre'=>$parametre]);
     }
 
     public function Logout(Request $request)

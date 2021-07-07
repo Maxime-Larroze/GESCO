@@ -164,7 +164,7 @@
                                     <p>
                                         Domiciliation: {{Crypt::decryptString($parametre->adresse)}} - {{Crypt::decryptString($parametre->domiciliation)}}
                                         <br>
-                                        Titulaire: {{ $user->firsname }} {{ $user->lastname }}
+                                        Titulaire: {{ $user->firstname }} {{ $user->lastname }}
                                         <br>
                                         RIB: {{Crypt::decryptString($parametre->rib)}}
                                         <br>

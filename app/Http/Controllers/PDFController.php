@@ -46,11 +46,11 @@ class PDFController extends Controller
         $parametre = Parametre::where('user_id', Auth::user()->id)->first();
         view()->share([
             'mission' => $mission, 'organisation' => $organisation, 'missionLines' => $missionLines, 'parametre'=>$parametre,
-            'user'=>Auth::user()
+            'user'=>Auth::user(),
         ]);
 
         $pdf = PDF::loadView('auth.pdf.generate-facture')->setPaper('a4', 'landscape');
-        return $pdf->download($mission->reference . '.pdf');
+        return $pdf->download($mission->reference . '.pdf')->withErrors(['validate'=>'Génération de votre facture avec succès']);
     }
 
     /**
@@ -67,7 +67,7 @@ class PDFController extends Controller
         $parametre = Parametre::where('user_id', Auth::user()->id)->first();
         return view('auth.pdf.generate-facture', [
             'mission' => $mission, 'organisation' => $organisation, 'missionLines' => $missionLines, 'parametre'=>$parametre,
-            'user'=>Auth::user()
+            'user'=>Auth::user(),
         ]);
     }
 

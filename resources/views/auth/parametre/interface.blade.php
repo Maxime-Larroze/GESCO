@@ -87,7 +87,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text text-primary"><i class="fas fa-signature"></i></span>
                 </div>
-                <input type="text" name="taux_accompte" placeholder="Taux des accomptes" @if(!empty($parametre->taux_accompte)) value="{{Crypt::decryptString($parametre->taux_accompte)}}" @endif class="@error('taux_accompte') is-invalid @enderror input-group form-control" required>
+                <input type="text" name="taux_accompte" placeholder="Taux des accomptes" @if(!empty($parametre->taux_accompte)) value="{{Crypt::decryptString($parametre->taux_accompte) ?? 45}}" @endif class="@error('taux_accompte') is-invalid @enderror input-group form-control" required>
                 @error('taux_accompte')
                     <div class="alert alert-danger alert-dismissible fade show">{{ $message }}</div>
                 @enderror

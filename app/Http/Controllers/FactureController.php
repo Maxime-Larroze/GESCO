@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Mission;
 use App\Models\Organisation;
+use App\Models\Parametre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -51,7 +52,9 @@ class FactureController extends Controller
         $user = Auth::user();
         $missions = Mission::where('user_id', $user->id)->get();
         $organisations = Organisation::where('user_id', $user->id)->get();
-        return view('auth.facture.interface', ['user' => $user, 'missions'=>$missions, 'organisations'=>$organisations]);
+        $parametre = Parametre::where('user_id', $user->id);
+        return view('auth.facture.interface', ['user' => $user, 'missions'=>$missions, 'organisations'=>$organisations,
+            'parametre'=>$parametre]);
 
 
         // return view('pdf.generate-devis', [
