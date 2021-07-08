@@ -16,7 +16,7 @@ use App\Models\User;
 
 class DashboardController extends Controller
 {
-    public function DashboardView()
+    public function dashboardView()
     {
         $user = Auth::user();
         Log::notice("consultation dashboard - utilisateur id: ".$user->id);
@@ -30,7 +30,7 @@ class DashboardController extends Controller
         'endMissions'=>$endMissions, 'MissionEnCours'=>$MissionEnCours, 'organisations'=>$organisations, 'parametre'=>$parametre]);
     }
 
-    public function Logout(Request $request)
+    public function logout(Request $request)
     {
         Log::info("déconnexion de l'utilisateur id: ".Auth::user()->id);
         Auth::logout();

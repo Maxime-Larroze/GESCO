@@ -26,7 +26,7 @@ use Laravel\Socialite\Facades\Socialite;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [GoogleController::class, 'autoLogin'])->name('home');
-    Route::post('public/login', [DashboardController::class, 'Login'])->name('login');
+    Route::post('public/login', [DashboardController::class, 'login'])->name('login');
 });
 Route::get('public/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('callback.google');
 Route::get('public/google', [GoogleController::class, 'redirectToGoogle'])->name('register.google');
@@ -39,9 +39,9 @@ Route::get('public/facebook', [FacebookController::class, 'redirectToFacebook'])
 
 Route::middleware('auth')->group(function () {
     Route::prefix('/auth')->group(function () {
-        Route::get('/logout', [DashboardController::class, 'Logout'])->name('logout');
-        Route::get('/dashboard', [DashboardController::class, 'DashboardView'])->name('dashboard');
-        Route::get('/logout', [DashboardController::class, 'Logout'])->name('logout');
+        Route::get('/logout', [DashboardController::class, 'logout'])->name('logout');
+        Route::get('/dashboard', [DashboardController::class, 'dashboardView'])->name('dashboard');
+        Route::get('/logout', [DashboardController::class, 'logout'])->name('logout');
         Route::get('/profil', [UserController::class, 'showProfil'])->name('profil');
 
         Route::get('/organisations', [OrganisationController::class, 'show'])->name('organisations.show');

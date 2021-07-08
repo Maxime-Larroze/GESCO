@@ -49,18 +49,4 @@ class GithubController extends Controller
             return redirect()->route('home');
         }
     }
-
-    /**
-     * function to Auto Login.
-     *
-     * @return void
-     */
-    public function autoLogin()
-    {
-        if (Auth::viaRemember()) {
-            return redirect()->route('dashboard');
-        } else {
-            return view('public.login');
-        }
-    }
 }
