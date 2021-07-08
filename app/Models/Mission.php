@@ -18,7 +18,7 @@ class Mission extends Model
         'title',
         'comment',
         'deposit',
-        'endred_at',
+        'ended_at',
         'created_at',
         'updated_at',
     ];

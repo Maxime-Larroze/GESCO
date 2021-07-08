@@ -164,7 +164,7 @@ class MissionController extends Controller
                     }
                 }
             }
-            if(empty($request->ended_at))
+            if(empty($request->ended_at) && !isset($request->ended_at))
             {
                 try{
                     Mission::find($request->mission_id)->update(['ended_at'=>null]);
