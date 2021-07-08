@@ -33,6 +33,11 @@ class MissionController extends Controller
      */
     public function create(Request $request)
     {
+        $this->validate($request, [
+            'organisation_id' => 'required',
+            'title' => 'mission_id',
+            'title' => 'comment',
+        ]);
         $organisation = Organisation::find($request->organisation_id);
         $mission = Mission::create(
             [
@@ -97,6 +102,15 @@ class MissionController extends Controller
         $missionlines = MissionLine::where("mission_id", $request->mission_id)->where('user_id', Auth::user()->id)->delete();
         if(!empty($request->title_missionline_A))
         {
+            $this->validate($request, [
+                'title_missionline_A' => 'required',
+                'mission_id' => 'required',
+                'quantity_missionline_A' => 'required',
+                'price_missionline_A' => 'required',
+                'unity_missionline_A' => 'required',
+                'title' => 'required',
+                'comment' => 'required',
+            ]);
             for ($i=0; $i < count($request->title_missionline_A); $i++) { 
                 if(!empty($request->title_missionline_A[$i]))
                 {
@@ -115,6 +129,13 @@ class MissionController extends Controller
         }
         if(!empty($request->title_missionline_B))
         {
+            $this->validate($request, [
+                'title_missionline_B' => 'required',
+                'mission_id' => 'required',
+                'quantity_missionline_B' => 'required',
+                'price_missionline_B' => 'required',
+                'unity_missionline_B' => 'required',
+            ]);
             for ($j=0; $j < count($request->title_missionline_B); $j++) { 
                 if(!empty($request->title_missionline_B[array_keys($request->title_missionline_B)[$j]]))
                 {
@@ -160,6 +181,9 @@ class MissionController extends Controller
      */
     public function destroy(Request $request)
     {
+        $this->validate($request, [
+            'mission_id' => 'required',
+        ]);
         MissionLine::where('mission_id', $request->mission_id)->delete();
         Mission::find($request->mission_id)->delete();
         Log::notice("Suppression de la mission ".$request->mission_id);

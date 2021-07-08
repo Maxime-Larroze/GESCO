@@ -24,6 +24,10 @@ class MailController extends Controller
      */
     public function sendToClient(Request $request)
     {
+        $this->validate($request, [
+            'client_id' => 'required',
+            'email' => 'mission_id',
+        ]);
         $client = Organisation::find($request->client_id);
         $user = Auth::user();
         $parametre = Parametre::where('user_id', $user->id)->first();

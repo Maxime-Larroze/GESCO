@@ -27,6 +27,13 @@ class OrganisationController extends Controller
      */
     public function create(Request $request)
     {
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required',
+            'tel' => 'required',
+            'address' => 'required',
+            'type' => 'required',
+        ]);
         $organisation = Organisation::create(
             [
                 'slug' => Str::slug($request->name).'-'.rand(1,99999),
@@ -84,6 +91,13 @@ class OrganisationController extends Controller
      */
     public function update(Request $request)
     {
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required',
+            'tel' => 'required',
+            'address' => 'required',
+            'type' => 'required',
+        ]);
         $organisation = Organisation::find($request->organisation_id)->update(
             [
                 'name' => $request->name,
@@ -105,6 +119,9 @@ class OrganisationController extends Controller
      */
     public function destroy(Request $request)
     {
+        $this->validate($request, [
+            'organisation_id' => 'required',
+        ]);
         $organisation = Organisation::find($request->organisation_id)->delete();
         Log::notice("Delete de l'organisation ".$request->organisation_id);
         return redirect()->route('organisations.show')->withErrors(['validate'=>'Suppression de votre client avec succès']);

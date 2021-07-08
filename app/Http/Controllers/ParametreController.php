@@ -38,6 +38,19 @@ class ParametreController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'societe_name' => 'required',
+            'siret' => 'required',
+            'ape' => 'required',
+            'taux_accompte' => 'required',
+            'mention_a' => 'required',
+            'mention_b' => 'required',
+            'domiciliation' => 'required',
+            'rib' => 'required',
+            'iban' => 'required',
+            'bic' => 'required',
+            'adresse' => 'required',
+        ]);
         Parametre::create([
             'user_id'=>Auth::user()->id,
             'societe_name'=>Crypt::encryptString($request->societe_name),
@@ -63,7 +76,7 @@ class ParametreController extends Controller
      * @param  \App\Models\Parametre  $parametre
      * @return \Illuminate\Http\Response
      */
-    public function show(Parametre $parametre)
+    public function show()
     {
         $parametre = Parametre::where('user_id', Auth::user()->id)->first();
         return view('auth.parametre.interface', ['user' => Auth::user(), 'parametre'=>$parametre]);
@@ -89,6 +102,19 @@ class ParametreController extends Controller
      */
     public function update(Request $request)
     {
+        $this->validate($request, [
+            'societe_name' => 'required',
+            'siret' => 'required',
+            'ape' => 'required',
+            'taux_accompte' => 'required',
+            'mention_a' => 'required',
+            'mention_b' => 'required',
+            'domiciliation' => 'required',
+            'rib' => 'required',
+            'iban' => 'required',
+            'bic' => 'required',
+            'adresse' => 'required',
+        ]);
         Parametre::find($request->parametre_id)->update([
             'societe_name'=>Crypt::encryptString($request->societe_name),
             'siret'=>Crypt::encryptString($request->siret),
