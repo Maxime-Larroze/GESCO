@@ -6,6 +6,7 @@ use App\Models\Mission;
 use App\Models\MissionLine;
 use App\Models\Organisation;
 use App\Models\Parametre;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -77,7 +78,7 @@ class PDFController extends Controller
         ]);
     }
 
-    public function externalDownloadSigned(Request $request, $id)
+    public function externalDownloadSigned(Request $request, $user_id, $id)
     {
         if (!$request->hasValidSignature()) {
             return redirect()->route('home');
@@ -86,12 +87,13 @@ class PDFController extends Controller
         {
             $mission = Mission::find($id);
             $organisation = Organisation::find($mission->organisation_id);
-            $missionLines = MissionLine::where('mission_id', $mission->id)->where('user_id', Auth::user()->id)->get();
-            $parametre = Parametre::where('user_id', Auth::user()->id)->first();
-            Log::notice("Consultation de la facture ".$id." par l'utilisateur ".Auth::user()->id);
+            $missionLines = MissionLine::where('mission_id', $mission->id)->where('user_id', $user_id)->get();
+            $parametre = Parametre::where('user_id', $user_id)->first();
+            $user = User::find($user_id);
+            Log::notice("Consultation externe de la facture ".$id);
             return view('auth.pdf.generate-facture', [
                 'mission' => $mission, 'organisation' => $organisation, 'missionLines' => $missionLines, 'parametre'=>$parametre,
-                'user'=>Auth::user(),
+                'user'=>$user,
             ]);
         }
     }

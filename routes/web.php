@@ -69,5 +69,5 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware('signed')->group(function(){
-    Route::get('public/telechargement/facture/{id}', [PDFController::class, 'externalDownloadSigned'])->name('signed.exeternal.facture');
+    Route::get('public/telechargement/facture/{user_id}/{id}', [PDFController::class, 'externalDownloadSigned'])->name('signed.exeternal.facture');
 });

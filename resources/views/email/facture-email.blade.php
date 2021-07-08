@@ -49,7 +49,7 @@
                         <br>
                         Vous trouverez en pièce-jointe le document PDF attendu.
                         <br>
-                        Si le document en pièce-jointe est illisible, vous pouvez le consulter à <a href="{{URL::signedRoute('signed.exeternal.facture', ['id' => $facture->id])}}">cette adresse</a>
+                        Si le document en pièce-jointe est illisible, vous pouvez le consulter à <a href="{{URL::signedRoute('signed.exeternal.facture', ['id' => $facture->id, 'user_id'=>$user->id])}}">cette adresse</a>
                         <br>
                     </p>
                     <p class="mb-5">
@@ -61,7 +61,7 @@
                         <br>
                         {{Crypt::decryptString($parametre->adresse)}} - {{Crypt::decryptString($parametre->domiciliation)}}
                     </p>
-                    <p>Lien de consultation de votre devis/facture: {{URL::signedRoute('signed.exeternal.facture', ['id' => $facture->id])}}</p>
+                    <p>Lien de consultation de votre devis/facture: {{URL::signedRoute('signed.exeternal.facture', ['id' => $facture->id, 'user_id'=>$user->id])}}</p>
                     <br><br><br>
                     <p class="mt-5 font-weight-light font-italic">Message envoyé automatiquement par le système de gestion commerciale <a href="https://hackenathon-system.ddns.net:35003">Hackenathon-System</a></p>
                 </div>
