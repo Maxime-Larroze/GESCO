@@ -76,6 +76,13 @@
                             <a class="dropdown-item text-dark" href="{{ route('profil') }}"><i class="fas fa-user"></i> Mon profil</a>
                             <a class="dropdown-item text-primary" href="{{ route('parametres.show') }}"><i class="fas fa-user-cog"></i> Mes paramètres</a>
                             <a class="dropdown-item text-danger" href="{{ route('logout') }}"><i class="fas fa-power-off"></i> Déconnexion</a>
+
+                            {{-- <a class="dropdown-item text-danger">
+                              <form action="{{ route('logout') }}" method="post">
+                                @csrf
+                                <button class="btn btn-light dropdown-item text-danger" type="submit"><i class="fas fa-power-off"></i> Déconnexion</button>
+                              </form>
+                            </a> --}}
                         </div>
                     </li>
                 </ul>
@@ -90,7 +97,13 @@
             <div class="col-lg-12">
                 <div class="mt-3">
                     @error('validate')
-                    <div class="alert alert-success alert-dismissible">
+                    <div class="alert alert-success alert-dismissible text-center">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <p>{{$message}}</p>
+                      </div>
+                    @enderror
+                    @error('error')
+                    <div class="alert alert-danger alert-dismissible text-center">
                         <button type="button" class="close" data-dismiss="alert">&times;</button>
                         <p>{{$message}}</p>
                       </div>

@@ -12,7 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrganisationController;
 use App\Http\Controllers\ParametreController;
 use App\Http\Controllers\PDFController;
-use Laravel\Socialite\Facades\Socialite;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,10 +25,10 @@ use Laravel\Socialite\Facades\Socialite;
 */
 
 Route::middleware('guest')->group(function () {
-    Route::get('/', [GoogleController::class, 'autoLogin'])->name('home');
+    Route::get('/', [DashboardController::class, 'autoLogin'])->name('home');
     Route::post('public/login', [DashboardController::class, 'login'])->name('login');
-});
-Route::get('public/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('callback.google');
+
+    Route::get('public/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('callback.google');
 Route::get('public/google', [GoogleController::class, 'redirectToGoogle'])->name('register.google');
 
 Route::get('public/github/callback', [GithubController::class, 'handleGithubCallback'])->name('callback.github');
@@ -36,10 +36,12 @@ Route::get('public/github', [GithubController::class, 'redirectToGithub'])->name
 
 Route::get('public/facebook/callback', [FacebookController::class, 'handleFacebookCallback'])->name('callback.facebook');
 Route::get('public/facebook', [FacebookController::class, 'redirectToFacebook'])->name('register.facebook');
+});
 
-Route::middleware('auth')->group(function () {
+
+Route::middleware(['auth','isuser'])->group(function () {
     Route::prefix('/auth')->group(function () {
-        Route::get('/logout', [DashboardController::class, 'logout'])->name('logout');
+        Route::post('/logout', [DashboardController::class, 'logout'])->name('logout');
         Route::get('/dashboard', [DashboardController::class, 'dashboardView'])->name('dashboard');
         Route::get('/logout', [DashboardController::class, 'logout'])->name('logout');
         Route::get('/profil', [UserController::class, 'showProfil'])->name('profil');

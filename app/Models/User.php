@@ -41,4 +41,12 @@ class User extends Authenticatable
     protected $hidden = [
         'remember_token',
     ];
+
+    public function Droit($id)
+    {
+        if ($this->droit_id == $id) {
+            return true;
+        }
+        return false;
+    }
 }

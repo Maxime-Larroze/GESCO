@@ -51,23 +51,27 @@ class ParametreController extends Controller
             'bic' => 'required',
             'adresse' => 'required',
         ]);
-        Parametre::create([
-            'user_id'=>Auth::user()->id,
-            'societe_name'=>Crypt::encryptString($request->societe_name),
-            'siret'=>Crypt::encryptString($request->siret),
-            'ape'=>Crypt::encryptString($request->ape),
-            'taux_accompte'=>Crypt::encryptString($request->taux_accompte),
-            'mention_a'=>Crypt::encryptString($request->mention_a),
-            'mention_b'=>Crypt::encryptString($request->mention_b),
-            'domiciliation'=>Crypt::encryptString($request->domiciliation),
-            'rib'=>Crypt::encryptString($request->rib),
-            'iban'=>Crypt::encryptString($request->iban),
-            'bic'=>Crypt::encryptString($request->bic),
-            'adresse'=>Crypt::encryptString($request->adresse),
+        try{
+            Parametre::create([
+                'user_id'=>Auth::user()->id,
+                'societe_name'=>Crypt::encryptString($request->societe_name),
+                'siret'=>Crypt::encryptString($request->siret),
+                'ape'=>Crypt::encryptString($request->ape),
+                'taux_accompte'=>Crypt::encryptString($request->taux_accompte),
+                'mention_a'=>Crypt::encryptString($request->mention_a),
+                'mention_b'=>Crypt::encryptString($request->mention_b),
+                'domiciliation'=>Crypt::encryptString($request->domiciliation),
+                'rib'=>Crypt::encryptString($request->rib),
+                'iban'=>Crypt::encryptString($request->iban),
+                'bic'=>Crypt::encryptString($request->bic),
+                'adresse'=>Crypt::encryptString($request->adresse),
 
-        ]);
-        Log::notice("Création des paramètres de l'utilisateur ".Auth::user()->id);
-        return redirect()->route('parametres.show')->withErrors(['validate'=>'Enregistrement des paramètres avec succès']);
+            ]);
+            Log::notice("Création des paramètres de l'utilisateur ".Auth::user()->id);
+            return redirect()->route('parametres.show')->withErrors(['validate'=>'Enregistrement des paramètres avec succès']);
+        } catch (\Throwable $th) {
+            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: "+$th]);
+        }
     }
 
     /**
@@ -115,21 +119,25 @@ class ParametreController extends Controller
             'bic' => 'required',
             'adresse' => 'required',
         ]);
-        Parametre::find($request->parametre_id)->update([
-            'societe_name'=>Crypt::encryptString($request->societe_name),
-            'siret'=>Crypt::encryptString($request->siret),
-            'ape'=>Crypt::encryptString($request->ape),
-            'taux_accompte'=>Crypt::encryptString($request->taux_accompte),
-            'mention_a'=>Crypt::encryptString($request->mention_a),
-            'mention_b'=>Crypt::encryptString($request->mention_b),
-            'domiciliation'=>Crypt::encryptString($request->domiciliation),
-            'rib'=>Crypt::encryptString($request->rib),
-            'iban'=>Crypt::encryptString($request->iban),
-            'bic'=>Crypt::encryptString($request->bic),
-            'adresse'=>Crypt::encryptString($request->adresse),
-        ]);
-        Log::notice("Update des paramètres ".$request->parametre_id." de l'utilisateur ".Auth::user()->id);
-        return redirect()->route('parametres.show')->withErrors(['validate','Enregistrement des paramètres avec succès']);
+        try{
+            Parametre::find($request->parametre_id)->update([
+                'societe_name'=>Crypt::encryptString($request->societe_name),
+                'siret'=>Crypt::encryptString($request->siret),
+                'ape'=>Crypt::encryptString($request->ape),
+                'taux_accompte'=>Crypt::encryptString($request->taux_accompte),
+                'mention_a'=>Crypt::encryptString($request->mention_a),
+                'mention_b'=>Crypt::encryptString($request->mention_b),
+                'domiciliation'=>Crypt::encryptString($request->domiciliation),
+                'rib'=>Crypt::encryptString($request->rib),
+                'iban'=>Crypt::encryptString($request->iban),
+                'bic'=>Crypt::encryptString($request->bic),
+                'adresse'=>Crypt::encryptString($request->adresse),
+            ]);
+            Log::notice("Update des paramètres ".$request->parametre_id." de l'utilisateur ".Auth::user()->id);
+            return redirect()->route('parametres.show')->withErrors(['validate','Enregistrement des paramètres avec succès']);
+        } catch (\Throwable $th) {
+            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: "+$th]);
+        }
     }
 
     /**

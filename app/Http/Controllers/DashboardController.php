@@ -18,24 +18,51 @@ class DashboardController extends Controller
 {
     public function dashboardView()
     {
-        $user = Auth::user();
-        Log::notice("consultation dashboard - utilisateur id: ".$user->id);
-        $endMissions = Mission::where('ended_at', '!=', null)->where('user_id', $user->id)->get();
-        $MissionEnCours = Mission::where('ended_at', null)->where('user_id', $user->id)->get();
-        $nbMissionTermine = count($endMissions);
-        $nbMissionEnCours = count($MissionEnCours);
-        $organisations = Organisation::where('user_id', $user->id)->get();
-        $parametre = Parametre::where('user_id', $user->id)->first();
-        return view('auth.dashboard.interface', ['user' => $user, 'nbMissionEnCours'=>$nbMissionEnCours, 'nbMissionTermine'=>$nbMissionTermine, 
-        'endMissions'=>$endMissions, 'MissionEnCours'=>$MissionEnCours, 'organisations'=>$organisations, 'parametre'=>$parametre]);
+        try {
+            $user = Auth::user();
+            if(!$user){redirect()->route('home');}
+
+            Log::notice("consultation dashboard - utilisateur id: ".$user->id);
+            $endMissions = Mission::where('ended_at', '!=', null)->where('user_id', $user->id)->get();
+            $MissionEnCours = Mission::where('ended_at', null)->where('user_id', $user->id)->get();
+            $nbMissionTermine = count($endMissions);
+            $nbMissionEnCours = count($MissionEnCours);
+            $organisations = Organisation::where('user_id', $user->id)->get();
+            $parametre = Parametre::where('user_id', $user->id)->first();
+            return view('auth.dashboard.interface', ['user' => $user, 'nbMissionEnCours'=>$nbMissionEnCours, 'nbMissionTermine'=>$nbMissionTermine, 
+            'endMissions'=>$endMissions, 'MissionEnCours'=>$MissionEnCours, 'organisations'=>$organisations, 'parametre'=>$parametre]);
+        } catch (\Throwable $th) {
+            return back()->withErrors(['error'=>"une erreur est survenue: "+$th]);
+        }
     }
 
     public function logout(Request $request)
     {
-        Log::info("déconnexion de l'utilisateur id: ".Auth::user()->id);
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect()->route('home');
+        try {
+            Log::info("déconnexion de l'utilisateur id: ".Auth::user()->id);
+            Auth::logout();
+            Session()->flush();
+            return redirect()->route('home')->withErrors(['validate'=>"Vous avez bien été déconnecté de l'application"]);
+        } catch (\Throwable $th) {
+            return redirect()->route('home')->withErrors(['error'=>"une erreur est survenue: ".$th]);
+        }
+    }
+
+    /**
+     * function to Auto Login.
+     *
+     * @return void
+     */
+    public function autoLogin()
+    {
+        try{
+            if (!empty(Auth::viaRemember()) && Auth::viaRemember()) {
+                return redirect()->route('dashboard');
+            } else {
+                return view('public.login');
+            }
+        } catch (\Throwable $th) {
+            return view('public.login');
+        }
     }
 }

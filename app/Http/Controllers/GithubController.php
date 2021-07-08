@@ -46,7 +46,7 @@ class GithubController extends Controller
             return redirect()->route('dashboard');
         } catch (Exception $e) {
             Log::critical("Erreur de connexion Github: ".$e);
-            return redirect()->route('home');
+            return redirect()->route('home')->withErrors(['error'=>"Impossible de vous connecter. Veuillez vérifier votre identifiant / mot de passe"]);
         }
     }
 }

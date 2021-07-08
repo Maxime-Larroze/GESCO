@@ -33,24 +33,28 @@ class MissionController extends Controller
      */
     public function create(Request $request)
     {
-        $this->validate($request, [
-            'organisation_id' => 'required',
-            'title' => 'mission_id',
-            'title' => 'comment',
-        ]);
-        $organisation = Organisation::find($request->organisation_id);
-        $mission = Mission::create(
-            [
-                'reference' => Uuid::uuid4(),
-                'organisation_id' => $request->organisation_id,
-                'title' => $request->title,
-                'comment' => $request->comment,
-                'deposit' => 0,
-                'user_id'=>Auth::user()->id,
-            ]
-        );
-        Log::notice("Création d'une mission pour l'organisation ".$organisation->id);
-        return redirect()->route('missions.show')->withErrors(['validate'=>'Créationde la mission avec succès']);
+        try{
+            $this->validate($request, [
+                'organisation_id' => 'required',
+                'title' => 'required',
+                'comment' => 'required',
+            ]);
+            $organisation = Organisation::find($request->organisation_id);
+            $mission = Mission::create(
+                [
+                    'reference' => Uuid::uuid4(),
+                    'organisation_id' => $request->organisation_id,
+                    'title' => $request->title,
+                    'comment' => $request->comment,
+                    'deposit' => 0,
+                    'user_id'=>Auth::user()->id,
+                ]
+            );
+            Log::notice("Création d'une mission pour l'organisation ".$organisation->id);
+            return redirect()->route('missions.show')->withErrors(['validate'=>'Créationde la mission avec succès']);
+        } catch (\Throwable $th) {
+            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: "+$th]);
+        }
     }
 
     /**
@@ -97,80 +101,104 @@ class MissionController extends Controller
      */
     public function update(Request $request)
     {
-        $taux = Crypt::decryptString(Parametre::where('user_id', Auth::user()->id)->first()->taux_accompte);
-        $depot = 0;
-        $missionlines = MissionLine::where("mission_id", $request->mission_id)->where('user_id', Auth::user()->id)->delete();
-        if(!empty($request->title_missionline_A))
-        {
-            $this->validate($request, [
-                'title_missionline_A' => 'required',
-                'mission_id' => 'required',
-                'quantity_missionline_A' => 'required',
-                'price_missionline_A' => 'required',
-                'unity_missionline_A' => 'required',
-                'title' => 'required',
-                'comment' => 'required',
-            ]);
-            for ($i=0; $i < count($request->title_missionline_A); $i++) { 
-                if(!empty($request->title_missionline_A[$i]))
-                {
-                    MissionLine::create([
-                        'mission_id'=>$request->mission_id,
-                        'title'=>$request->title_missionline_A[$i],
-                        'quantity'=>$request->quantity_missionline_A[$i],
-                        'price'=>$request->price_missionline_A[$i],
-                        'unity'=>$request->unity_missionline_A[$i],
-                        'user_id'=>Auth::user()->id,
-                    ]);
-                    $depot += $request->quantity_missionline_A[$i] * $request->price_missionline_A[$i];
-                    Log::notice("Création d'une missionLine pour la mission ".$request->mission_id);
+        try{
+            $taux = Crypt::decryptString(Parametre::where('user_id', Auth::user()->id)->first()->taux_accompte);
+            $depot = 0;
+            $missionlines = MissionLine::where("mission_id", $request->mission_id)->where('user_id', Auth::user()->id)->delete();
+            if(!empty($request->title_missionline_A))
+            {
+                $this->validate($request, [
+                    'title_missionline_A' => 'required',
+                    'mission_id' => 'required',
+                    'quantity_missionline_A' => 'required',
+                    'price_missionline_A' => 'required',
+                    'unity_missionline_A' => 'required',
+                    'title' => 'required',
+                    'comment' => 'required',
+                ]);
+                for ($i=0; $i < count($request->title_missionline_A); $i++) { 
+                    if(!empty($request->title_missionline_A[$i]))
+                    {
+                        try{
+                            MissionLine::create([
+                                'mission_id'=>$request->mission_id,
+                                'title'=>$request->title_missionline_A[$i],
+                                'quantity'=>$request->quantity_missionline_A[$i],
+                                'price'=>$request->price_missionline_A[$i],
+                                'unity'=>$request->unity_missionline_A[$i],
+                                'user_id'=>Auth::user()->id,
+                            ]);
+                            $depot += $request->quantity_missionline_A[$i] * $request->price_missionline_A[$i];
+                            Log::notice("Création d'une missionLine pour la mission ".$request->mission_id);
+                        } catch (\Throwable $th) {
+                            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: "+$th]);
+                        }
+                    }
                 }
             }
-        }
-        if(!empty($request->title_missionline_B))
-        {
-            $this->validate($request, [
-                'title_missionline_B' => 'required',
-                'mission_id' => 'required',
-                'quantity_missionline_B' => 'required',
-                'price_missionline_B' => 'required',
-                'unity_missionline_B' => 'required',
-            ]);
-            for ($j=0; $j < count($request->title_missionline_B); $j++) { 
-                if(!empty($request->title_missionline_B[array_keys($request->title_missionline_B)[$j]]))
-                {
-                    MissionLine::create([
-                        'mission_id'=>$request->mission_id,
-                        'title'=>$request->title_missionline_B[array_keys($request->title_missionline_B)[$j]],
-                        'quantity'=>$request->quantity_missionline_B[array_keys($request->title_missionline_B)[$j]],
-                        'price'=>$request->price_missionline_B[array_keys($request->title_missionline_B)[$j]],
-                        'unity'=>$request->unity_missionline_B[array_keys($request->title_missionline_B)[$j]],
-                        'user_id'=>Auth::user()->id,
-                    ]);
-                    $depot += $request->price_missionline_B[array_keys($request->title_missionline_B)[$j]] * $request->quantity_missionline_B[array_keys($request->title_missionline_B)[$j]];
-                    Log::notice("Création/Modification d'une missionLine pour la mission ".$request->mission_id);
+            if(!empty($request->title_missionline_B))
+            {
+                $this->validate($request, [
+                    'title_missionline_B' => 'required',
+                    'mission_id' => 'required',
+                    'quantity_missionline_B' => 'required',
+                    'price_missionline_B' => 'required',
+                    'unity_missionline_B' => 'required',
+                ]);
+                for ($j=0; $j < count($request->title_missionline_B); $j++) { 
+                    if(!empty($request->title_missionline_B[array_keys($request->title_missionline_B)[$j]]))
+                    {
+                        try{
+                            MissionLine::create([
+                                'mission_id'=>$request->mission_id,
+                                'title'=>$request->title_missionline_B[array_keys($request->title_missionline_B)[$j]],
+                                'quantity'=>$request->quantity_missionline_B[array_keys($request->title_missionline_B)[$j]],
+                                'price'=>$request->price_missionline_B[array_keys($request->title_missionline_B)[$j]],
+                                'unity'=>$request->unity_missionline_B[array_keys($request->title_missionline_B)[$j]],
+                                'user_id'=>Auth::user()->id,
+                            ]);
+                            $depot += $request->price_missionline_B[array_keys($request->title_missionline_B)[$j]] * $request->quantity_missionline_B[array_keys($request->title_missionline_B)[$j]];
+                            Log::notice("Création/Modification d'une missionLine pour la mission ".$request->mission_id);
+                        } catch (\Throwable $th) {
+                            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: "+$th]);
+                        }
+                    }
                 }
             }
-        }
-        if(empty($request->ended_at))
-        {
-            $mission_tmp = Mission::find($request->mission_id)->update(['ended_at'=>null]);
-            Log::notice("Suppression d'une date fin de mission pour la mission ".$request->mission_id);
-        }
-        else
-        {
-            $mission_tmp = Mission::find($request->mission_id)->update(['ended_at'=>Carbon::now()]);
-        }
-        // dd(Mission::find($request->mission_id)->ended_at);
+            if(empty($request->ended_at))
+            {
+                try{
+                    Mission::find($request->mission_id)->update(['ended_at'=>null]);
+                    Log::notice("Suppression d'une date fin de mission pour la mission ".$request->mission_id);
+                } catch (\Throwable $th) {
+                    return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: "+$th]);
+                }
+            }
+            else
+            {
+                try{
+                    Mission::find($request->mission_id)->update(['ended_at'=>Carbon::now()]);
+                } catch (\Throwable $th) {
+                    return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: "+$th]);
+                }
+            }
+            // dd(Mission::find($request->mission_id)->ended_at);
 
-        Mission::find($request->mission_id)->update([
-            'title'=>$request->title,
-            'deposit'=>$depot*$taux??45/100,
-            'organisation_id'=>$request->organisation_id,
-            'comment'=>$request->comment,
-        ]);
-        Log::notice("Update de la mission ".$request->mission_id);
-        return redirect()->route('missions.show')->withErrors(['validate'=>'Modification de la mission avec succès']);
+            try{
+                Mission::find($request->mission_id)->update([
+                    'title'=>$request->title,
+                    'deposit'=>$depot*$taux??45/100,
+                    'organisation_id'=>$request->organisation_id,
+                    'comment'=>$request->comment,
+                ]);
+                Log::notice("Update de la mission ".$request->mission_id);
+            } catch (\Throwable $th) {
+                return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: "+$th]);
+            }
+            return redirect()->route('missions.show')->withErrors(['validate'=>'Modification de la mission avec succès']);
+        } catch (\Throwable $th) {
+            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: "+$th]);
+        }
     }
 
     /**
@@ -184,9 +212,13 @@ class MissionController extends Controller
         $this->validate($request, [
             'mission_id' => 'required',
         ]);
-        MissionLine::where('mission_id', $request->mission_id)->delete();
-        Mission::find($request->mission_id)->delete();
-        Log::notice("Suppression de la mission ".$request->mission_id);
-        return redirect()->route('missions.show')->withErrors(['validate'=>'Suppression de la mission avec succès']);
+        try{
+            MissionLine::where('mission_id', $request->mission_id)->delete();
+            Mission::find($request->mission_id)->delete();
+            Log::notice("Suppression de la mission ".$request->mission_id);
+            return redirect()->route('missions.show')->withErrors(['validate'=>'Suppression de la mission avec succès']);
+        } catch (\Throwable $th) {
+            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: "+$th]);
+        }
     }
 }

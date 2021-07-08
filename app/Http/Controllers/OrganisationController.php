@@ -34,19 +34,23 @@ class OrganisationController extends Controller
             'address' => 'required',
             'type' => 'required',
         ]);
-        $organisation = Organisation::create(
-            [
-                'slug' => Str::slug($request->name).'-'.rand(1,99999),
-                'name' => $request->name,
-                'email' => $request->email,
-                'tel' => $request->tel,
-                'address' => $request->address,
-                'type' => $request->type,
-                'user_id'=>Auth::user()->id,
-            ]
-        );
-        Log::notice("Création d'une organisation");
-        return redirect()->route('organisations.show')->withErrors(['validate'=>'Enregistrement de votre client avec succès']);
+        try{
+            Organisation::create(
+                [
+                    'slug' => Str::slug($request->name).'-'.rand(1,99999),
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'tel' => $request->tel,
+                    'address' => $request->address,
+                    'type' => $request->type,
+                    'user_id'=>Auth::user()->id,
+                ]
+            );
+            Log::notice("Création d'une organisation");
+            return redirect()->route('organisations.show')->withErrors(['validate'=>'Enregistrement de votre client avec succès']);
+        } catch (\Throwable $th) {
+            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: "+$th]);
+        }
     }
 
     /**
@@ -98,17 +102,21 @@ class OrganisationController extends Controller
             'address' => 'required',
             'type' => 'required',
         ]);
-        $organisation = Organisation::find($request->organisation_id)->update(
-            [
-                'name' => $request->name,
-                'email' => $request->email,
-                'tel' => $request->tel,
-                'address' => $request->address,
-                'type' => $request->type,
-            ]
-        );
-        Log::notice("Update de l'organisation ".$request->organisation_id);
-        return redirect()->route('organisations.show')->withErrors(['validate'=>'Modification du client avec succès']);
+        try{
+            Organisation::find($request->organisation_id)->update(
+                [
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'tel' => $request->tel,
+                    'address' => $request->address,
+                    'type' => $request->type,
+                ]
+            );
+            Log::notice("Update de l'organisation ".$request->organisation_id);
+            return redirect()->route('organisations.show')->withErrors(['validate'=>'Modification du client avec succès']);
+        } catch (\Throwable $th) {
+            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: "+$th]);
+        }
     }
 
     /**
@@ -122,8 +130,12 @@ class OrganisationController extends Controller
         $this->validate($request, [
             'organisation_id' => 'required',
         ]);
-        $organisation = Organisation::find($request->organisation_id)->delete();
-        Log::notice("Delete de l'organisation ".$request->organisation_id);
-        return redirect()->route('organisations.show')->withErrors(['validate'=>'Suppression de votre client avec succès']);
+        try{
+            $organisation = Organisation::find($request->organisation_id)->delete();
+            Log::notice("Delete de l'organisation ".$request->organisation_id);
+            return redirect()->route('organisations.show')->withErrors(['validate'=>'Suppression de votre client avec succès']);
+        } catch (\Throwable $th) {
+            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: "+$th]);
+        }
     }
 }

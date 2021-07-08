@@ -24,27 +24,31 @@ class MailController extends Controller
      */
     public function sendToClient(Request $request)
     {
-        $this->validate($request, [
-            'client_id' => 'required',
-            'email' => 'mission_id',
-        ]);
-        $client = Organisation::find($request->client_id);
-        $user = Auth::user();
-        $parametre = Parametre::where('user_id', $user->id)->first();
-        $facture = Mission::find($request->mission_id);
-        $missionLines = MissionLine::where('mission_id', $facture->id)->where('user_id', Auth::user()->id)->get();
-        view()->share([
-            'mission' => $facture, 'organisation' => $client, 'missionLines' => $missionLines, 'parametre'=>$parametre,
-            'user'=>Auth::user(),
-        ]);
-        $pdfFile = PDF::loadView('auth.pdf.generate-facture')->setPaper('a4', 'landscape');
-        // $pdfFile->save('public/pdf/'.$user->id.'/'.$facture->reference.'.pdf');
-        Storage::put('public/pdf/'.$user->id.'/'.$facture->reference.'.pdf', $pdfFile->output());
-        $pdf=new stdClass();
-        $pdf->path = 'public/pdf/'.$user->id.'/'.$facture->reference.'.pdf';
-        $pdf->name = $facture->reference.'.pdf';
-        Mail::to($client->email)->queue(new SendFactureEmail($client, $user, $parametre, $facture, $pdf));
-        Log::info("Envoie d'une facture par email à ".$client->email." par l'utilisateur ".$user->id);
-        return redirect()->route('factures.show')->withErrors(['validate'=>'La facture/devis à bien été envoyé au destinataire']);
+        try{
+            $this->validate($request, [
+                'client_id' => 'required',
+                'email' => 'mission_id',
+            ]);
+            $client = Organisation::find($request->client_id);
+            $user = Auth::user();
+            $parametre = Parametre::where('user_id', $user->id)->first();
+            $facture = Mission::find($request->mission_id);
+            $missionLines = MissionLine::where('mission_id', $facture->id)->where('user_id', Auth::user()->id)->get();
+            view()->share([
+                'mission' => $facture, 'organisation' => $client, 'missionLines' => $missionLines, 'parametre'=>$parametre,
+                'user'=>Auth::user(),
+            ]);
+            $pdfFile = PDF::loadView('auth.pdf.generate-facture')->setPaper('a4', 'landscape');
+            // $pdfFile->save('public/pdf/'.$user->id.'/'.$facture->reference.'.pdf');
+            Storage::put('public/pdf/'.$user->id.'/'.$facture->reference.'.pdf', $pdfFile->output());
+            $pdf=new stdClass();
+            $pdf->path = 'public/pdf/'.$user->id.'/'.$facture->reference.'.pdf';
+            $pdf->name = $facture->reference.'.pdf';
+            Mail::to($client->email)->queue(new SendFactureEmail($client, $user, $parametre, $facture, $pdf));
+            Log::info("Envoie d'une facture par email à ".$client->email." par l'utilisateur ".$user->id);
+            return redirect()->route('factures.show')->withErrors(['validate'=>'La facture/devis à bien été envoyé au destinataire']);
+        } catch (\Throwable $th) {
+            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: "+$th]);
+        }
     }
 }

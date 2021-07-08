@@ -34,6 +34,20 @@
                     <div class="col-lg-12">
                         <hr class="solid">
                     </div>
+                    <div class="col-lg-12">
+                        @error('validate')
+                        <div class="alert alert-success alert-dismissible text-center">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <p>{{$message}}</p>
+                          </div>
+                        @enderror
+                        @error('error')
+                        <div class="alert alert-danger alert-dismissible text-center">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <p>{{$message}}</p>
+                          </div>
+                        @enderror
+                    </div>
                     <div class="col-lg-4 text-center text-danger mb-3"><a class="text-danger"
                             href="{{ route('register.google') }}"><button type="submit" id="btn_submit"
                                 class="btn btn-danger">Se connecter avec Google <i class="fab fa-google"></i></button></a>

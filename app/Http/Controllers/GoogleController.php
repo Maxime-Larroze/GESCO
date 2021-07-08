@@ -44,21 +44,7 @@ class GoogleController extends Controller
             return redirect()->route('dashboard');
         } catch (Exception $e) {
             Log::critical("Erreur de connexion Github: ".$e);
-            return redirect()->route('home');
-        }
-    }
-
-    /**
-     * function to Auto Login.
-     *
-     * @return void
-     */
-    public function autoLogin()
-    {
-        if (Auth::viaRemember()) {
-            return redirect()->route('dashboard');
-        } else {
-            return view('public.login');
+            return redirect()->route('home')->withErrors(['error'=>"Impossible de vous connecter. Veuillez vérifier votre identifiant / mot de passe"]);
         }
     }
 }
