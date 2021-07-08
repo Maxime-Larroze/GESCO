@@ -10,7 +10,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="shortcut icon" href="{{ asset('/Logos/logo_transparent.png') }}" />
+    <link rel="shortcut icon" href="{{ asset('/img/Hackenathon_System_logo.png') }}" />
 
     <script src="https://unpkg.com/boxicons@latest/dist/boxicons.js"></script>
     <title>Facture | Hackenathon-System - {{Crypt::decryptString($parametre->societe_name)}}</title>
@@ -36,7 +36,7 @@
             <div class="col-sm-12 col-md-12 col-lg-12 text-center card">
                 <div class="card-body">
                     <div class="text-center">
-                        <img src="https://hackenathon-system.ddns.net:35003/img/Hackenathon_System_logo.png"
+                        <img src="{{ asset('/img/Hackenathon_System_logo.png') }}"
                             class="img-fluid rounded-circle text-center mb-2" width="132" height="132" />
                             <img src="{{$user->picture}}"
                             class="img-fluid rounded-circle text-center mb-2" width="132" height="132" />
@@ -48,6 +48,9 @@
                         Vous venez de recevoir votre Devis/Facture n°{{$facture->reference}} de la part de la société {{Crypt::decryptString($parametre->societe_name)}}.
                         <br>
                         Vous trouverez en pièce-jointe le document PDF attendu.
+                        <br>
+                        Si le document en pièce-jointe est illisible, vous pouvez le consulter à <a href="{{URL::signedRoute('signed.exeternal.facture', ['id' => $facture->id])}}">cette adresse</a>
+                        <br>
                     </p>
                     <p class="mb-5">
                         Cordialement,
@@ -58,6 +61,7 @@
                         <br>
                         {{Crypt::decryptString($parametre->adresse)}} - {{Crypt::decryptString($parametre->domiciliation)}}
                     </p>
+                    <p>Lien de consultation de votre devis/facture: {{URL::signedRoute('signed.exeternal.facture', ['id' => $facture->id])}}</p>
                     <br><br><br>
                     <p class="mt-5 font-weight-light font-italic">Message envoyé automatiquement par le système de gestion commerciale <a href="https://hackenathon-system.ddns.net:35003">Hackenathon-System</a></p>
                 </div>

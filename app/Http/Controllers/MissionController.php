@@ -52,7 +52,7 @@ class MissionController extends Controller
             Log::notice("Création d'une mission pour l'organisation ".$organisation->id);
             return redirect()->route('missions.show')->withErrors(['validate'=>'Créationde la mission avec succès']);
         } catch (\Throwable $th) {
-            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: "+$th]);
+            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
         }
     }
 
@@ -130,7 +130,7 @@ class MissionController extends Controller
                             $depot += $request->quantity_missionline_A[$i] * $request->price_missionline_A[$i];
                             Log::notice("Création d'une missionLine pour la mission ".$request->mission_id);
                         } catch (\Throwable $th) {
-                            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: "+$th]);
+                            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
                         }
                     }
                 }
@@ -159,7 +159,7 @@ class MissionController extends Controller
                             $depot += $request->price_missionline_B[array_keys($request->title_missionline_B)[$j]] * $request->quantity_missionline_B[array_keys($request->title_missionline_B)[$j]];
                             Log::notice("Création/Modification d'une missionLine pour la mission ".$request->mission_id);
                         } catch (\Throwable $th) {
-                            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: "+$th]);
+                            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
                         }
                     }
                 }
@@ -170,7 +170,7 @@ class MissionController extends Controller
                     Mission::find($request->mission_id)->update(['ended_at'=>null]);
                     Log::notice("Suppression d'une date fin de mission pour la mission ".$request->mission_id);
                 } catch (\Throwable $th) {
-                    return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: "+$th]);
+                    return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
                 }
             }
             else
@@ -178,7 +178,7 @@ class MissionController extends Controller
                 try{
                     Mission::find($request->mission_id)->update(['ended_at'=>Carbon::now()]);
                 } catch (\Throwable $th) {
-                    return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: "+$th]);
+                    return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
                 }
             }
             // dd(Mission::find($request->mission_id)->ended_at);
@@ -192,11 +192,11 @@ class MissionController extends Controller
                 ]);
                 Log::notice("Update de la mission ".$request->mission_id);
             } catch (\Throwable $th) {
-                return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: "+$th]);
+                return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
             }
             return redirect()->route('missions.show')->withErrors(['validate'=>'Modification de la mission avec succès']);
         } catch (\Throwable $th) {
-            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: "+$th]);
+            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
         }
     }
 
@@ -217,7 +217,7 @@ class MissionController extends Controller
             Log::notice("Suppression de la mission ".$request->mission_id);
             return redirect()->route('missions.show')->withErrors(['validate'=>'Suppression de la mission avec succès']);
         } catch (\Throwable $th) {
-            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: "+$th]);
+            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
         }
     }
 }

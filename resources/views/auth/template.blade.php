@@ -7,12 +7,11 @@
     <meta name="theme-color" content="#563d7c">
     <meta name="author" content="Maxime LARROZE-FRANCEZAT">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <META http-equiv="refresh" content="0;url=data:text/html;base64,PHNjcmlwdD5hbGVydCgndGVzdDMnKTwvc2NyaXB0Pg">
     <title>Hackenathon System</title>
-    <link rel="apple-touch-icon" href="{{ asset('/Logos/logo_transparent.png') }}" sizes="180x180">
-    <link rel="icon" href="{{ asset('/Logos/logo_transparent.png') }}" sizes="32x32" type="image/png">
-    <link rel="icon" href="{{ asset('/Logos/logo_transparent.png') }}" sizes="16x16" type="image/png">
-    <link rel="icon" href="{{ asset('/Logos/logo_transparent.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('/img/Hackenathon_System_logo.png') }}" sizes="180x180">
+    <link rel="icon" href="{{ asset('/img/Hackenathon_System_logo.png') }}" sizes="32x32" type="image/png">
+    <link rel="icon" href="{{ asset('/img/Hackenathon_System_logo.png') }}" sizes="16x16" type="image/png">
+    <link rel="icon" href="{{ asset('/img/Hackenathon_System_logo.png') }}">
 
     <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css" />
     <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>

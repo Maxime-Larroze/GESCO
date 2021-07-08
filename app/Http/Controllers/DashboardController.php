@@ -28,7 +28,7 @@ class DashboardController extends Controller
             return view('auth.dashboard.interface', ['user' => $user, 'nbMissionEnCours'=>$nbMissionEnCours, 'nbMissionTermine'=>$nbMissionTermine, 
             'endMissions'=>$endMissions, 'MissionEnCours'=>$MissionEnCours, 'organisations'=>$organisations, 'parametre'=>$parametre]);
         } catch (\Throwable $th) {
-            return back()->withErrors(['error'=>"une erreur est survenue: "+$th]);
+            return back()->withErrors(['error'=>"une erreur est survenue: ".$th]);
         }
     }
 

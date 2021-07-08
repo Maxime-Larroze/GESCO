@@ -65,6 +65,9 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/parametres', [ParametreController::class, 'update'])->name('parametres.update');
 
         Route::post('/email/facture/envoie', [MailController::class, 'sendToClient'])->name('email.facture.send');
-
     });
+});
+
+Route::middleware('signed')->group(function(){
+    Route::get('public/telechargement/facture/{id}', [PDFController::class, 'externalDownloadSigned'])->name('signed.exeternal.facture');
 });

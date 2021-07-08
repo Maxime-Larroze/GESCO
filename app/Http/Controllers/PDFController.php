@@ -54,7 +54,7 @@ class PDFController extends Controller
             Log::notice("Génération du PDF ".$id." pour l'utilisateur ".Auth::user()->id);
             return $pdf->download($mission->reference . '.pdf')->withErrors(['validate'=>'Génération de votre facture avec succès']);
         } catch (\Throwable $th) {
-            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: "+$th]);
+            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
         }
     }
 
@@ -75,6 +75,25 @@ class PDFController extends Controller
             'mission' => $mission, 'organisation' => $organisation, 'missionLines' => $missionLines, 'parametre'=>$parametre,
             'user'=>Auth::user(),
         ]);
+    }
+
+    public function externalDownloadSigned(Request $request, $id)
+    {
+        if (!$request->hasValidSignature()) {
+            return redirect()->route('home');
+        }
+        else
+        {
+            $mission = Mission::find($id);
+            $organisation = Organisation::find($mission->organisation_id);
+            $missionLines = MissionLine::where('mission_id', $mission->id)->where('user_id', Auth::user()->id)->get();
+            $parametre = Parametre::where('user_id', Auth::user()->id)->first();
+            Log::notice("Consultation de la facture ".$id." par l'utilisateur ".Auth::user()->id);
+            return view('auth.pdf.generate-facture', [
+                'mission' => $mission, 'organisation' => $organisation, 'missionLines' => $missionLines, 'parametre'=>$parametre,
+                'user'=>Auth::user(),
+            ]);
+        }
     }
 
     /**
