@@ -16,7 +16,7 @@
             <hr>
             <a data-toggle="modal" data-target="#NewModalMission"><button class="btn btn-success"><i
                         class="far fa-plus-square"></i> Créer une nouvelle mission</button></a>
-            <table class="table table-responsive table-hover table-striped mb-5 text-center mt-2" id="mission_Table">
+            <table class="table table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl table-hover table-striped mb-5 text-center mt-2" id="mission_Table">
                 <thead class="thead-light">
                     <tr>
                         <th><span onclick="sortTable('mission_Table', 0)">Référence</span></th>
@@ -166,7 +166,7 @@
                                                         } 
                                                     </script>
                                                     <div class="mt-3 col-md-12">
-                                                        <table class="table table-responsive table-hover table-striped mb-5 text-center mt-2"
+                                                        <table class="table table-responsive-sm table-responsive-md table-responsive table-hover table-striped mb-5 text-center mt-2"
                                                             id="MissionTab{{ str_replace('-', '', $mission->id) }}">
                                                             <thead class="thead-light">
                                                                 <tr>

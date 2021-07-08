@@ -28,7 +28,7 @@ class MailController extends Controller
         $user = Auth::user();
         $parametre = Parametre::where('user_id', $user->id)->first();
         $facture = Mission::find($request->mission_id);
-        $missionLines = MissionLine::where('mission_id', $facture->id)->where('user_id', Auth::user())->get();
+        $missionLines = MissionLine::where('mission_id', $facture->id)->where('user_id', Auth::user()->id)->get();
         view()->share([
             'mission' => $facture, 'organisation' => $client, 'missionLines' => $missionLines, 'parametre'=>$parametre,
             'user'=>Auth::user(),

@@ -9,7 +9,7 @@
                     <img src="{{$user->picture}}" class="img-fluid" width="22%" alt="Image sexe F">
                 </div>
                 <div class="mt-3 col-lg-12 text-center">
-                    <h5>Date de dernière modification {{date('d-m-Y à H:i', strtotime($user->updated_at))}}</h5>
+                    <h5>Membre depuis le {{date('d-m-Y à H:i', strtotime($user->created_at))}}</h5>
                 </div>
                 <div class="mt-3 col-lg-12 text-center input-group input-group-ml">
                     <div class="input-group-prepend">

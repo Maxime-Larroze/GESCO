@@ -160,7 +160,8 @@ class MissionController extends Controller
      */
     public function destroy(Request $request)
     {
-        $mission = Mission::find($request->mission_id)->delete();
+        MissionLine::where('mission_id', $request->mission_id)->delete();
+        Mission::find($request->mission_id)->delete();
         Log::notice("Suppression de la mission ".$request->mission_id);
         return redirect()->route('missions.show')->withErrors(['validate'=>'Suppression de la mission avec succès']);
     }

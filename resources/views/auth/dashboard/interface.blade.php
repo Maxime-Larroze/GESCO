@@ -29,7 +29,7 @@
         <div class="col-lg-12 text-center">
             <hr>
             <h2>Mission(s) terminée(s)</h2>
-            <table class="table table-responsive table-hover table-striped mb-5 text-center mt-2" id="mission_termine_table">
+            <table class="table table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl table-hover table-striped mb-5 text-center mt-2" id="mission_termine_table">
                 <thead class="thead-light">
                     <tr>
                         <th onclick="sortTable('mission_termine_table', 0)">Référence</th>
@@ -65,7 +65,7 @@
         <div class="col-lg-12 text-center mt-5">
             <hr>
             <h2>Mission(s) en cours</h2>
-            <table class="table table-responsive table-hover table-striped mb-5 text-center mt-2" id="mission_encours_table">
+            <table class="table table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl table-hover table-striped mb-5 text-center mt-2" id="mission_encours_table">
                 <thead class="thead-light">
                     <tr>
                         <th onclick="sortTable('mission_encours_table', 0">Référence</th>
