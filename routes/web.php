@@ -24,22 +24,22 @@ use App\Http\Controllers\PDFController;
 |
 */
 
-Route::middleware('guest')->group(function () {
+Route::middleware(['guest'])->group(function () {
     Route::get('/', [DashboardController::class, 'autoLogin'])->name('home');
     Route::post('public/login', [DashboardController::class, 'login'])->name('login');
 
     Route::get('public/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('callback.google');
-Route::get('public/google', [GoogleController::class, 'redirectToGoogle'])->name('register.google');
+    Route::get('public/google', [GoogleController::class, 'redirectToGoogle'])->name('register.google');
 
-Route::get('public/github/callback', [GithubController::class, 'handleGithubCallback'])->name('callback.github');
-Route::get('public/github', [GithubController::class, 'redirectToGithub'])->name('register.github');
+    Route::get('public/github/callback', [GithubController::class, 'handleGithubCallback'])->name('callback.github');
+    Route::get('public/github', [GithubController::class, 'redirectToGithub'])->name('register.github');
 
-Route::get('public/facebook/callback', [FacebookController::class, 'handleFacebookCallback'])->name('callback.facebook');
-Route::get('public/facebook', [FacebookController::class, 'redirectToFacebook'])->name('register.facebook');
+    Route::get('public/facebook/callback', [FacebookController::class, 'handleFacebookCallback'])->name('callback.facebook');
+    Route::get('public/facebook', [FacebookController::class, 'redirectToFacebook'])->name('register.facebook');
 });
 
 
-Route::middleware(['auth','isuser'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::prefix('/auth')->group(function () {
         Route::post('/logout', [DashboardController::class, 'logout'])->name('logout');
         Route::get('/dashboard', [DashboardController::class, 'dashboardView'])->name('dashboard');

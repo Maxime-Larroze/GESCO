@@ -9,10 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
-use Laravel\Socialite\Facades\Socialite as FacadesSocialite;
-use Laravel\Socialite\SocialiteServiceProvider;
-use Laravel\Socialite\Facades\Socialite;
-use App\Models\User;
 
 class DashboardController extends Controller
 {
@@ -56,12 +52,14 @@ class DashboardController extends Controller
     public function autoLogin()
     {
         try{
-            if (!empty(Auth::viaRemember()) && Auth::viaRemember()) {
+            $remember = Auth::viaRemember();
+            if (!empty($remember) && $remember) {
                 return redirect()->route('dashboard');
             } else {
                 return view('public.login');
             }
         } catch (\Throwable $th) {
+            Log::info("Autologin impossible: ".Carbon::now());
             return view('public.login');
         }
     }

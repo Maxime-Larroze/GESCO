@@ -9,7 +9,6 @@ use App\Models\Organisation;
 use App\Models\Parametre;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
@@ -40,7 +39,7 @@ class MissionController extends Controller
                 'comment' => 'required',
             ]);
             $organisation = Organisation::find($request->organisation_id);
-            $mission = Mission::create(
+            Mission::create(
                 [
                     'reference' => Uuid::uuid4(),
                     'organisation_id' => $request->organisation_id,
@@ -104,7 +103,7 @@ class MissionController extends Controller
         try{
             $taux = Crypt::decryptString(Parametre::where('user_id', Auth::user()->id)->first()->taux_accompte);
             $depot = 0;
-            $missionlines = MissionLine::where("mission_id", $request->mission_id)->where('user_id', Auth::user()->id)->delete();
+            MissionLine::where("mission_id", $request->mission_id)->where('user_id', Auth::user()->id)->delete();
             if(!empty($request->title_missionline_A))
             {
                 $this->validate($request, [

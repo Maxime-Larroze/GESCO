@@ -7,6 +7,7 @@
     <meta name="description" content="Gesco Hackenathon-System">
     <meta name="author" content="Maxime LARROZE-F.">
     <meta name="keywords" content="Hackenathon-System Gestion Commerciale">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="shortcut icon" href="{{ asset('/Logos/logo_transparent.png') }}" />

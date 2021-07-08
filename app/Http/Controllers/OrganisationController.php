@@ -131,7 +131,7 @@ class OrganisationController extends Controller
             'organisation_id' => 'required',
         ]);
         try{
-            $organisation = Organisation::find($request->organisation_id)->delete();
+            Organisation::find($request->organisation_id)->delete();
             Log::notice("Delete de l'organisation ".$request->organisation_id);
             return redirect()->route('organisations.show')->withErrors(['validate'=>'Suppression de votre client avec succès']);
         } catch (\Throwable $th) {
