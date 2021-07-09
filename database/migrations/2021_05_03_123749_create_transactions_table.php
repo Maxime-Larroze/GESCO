@@ -15,10 +15,11 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
-            $table->integer('source_type');
+            $table->enum("source_type", ["missions", "contribution"]);
             $table->uuid('source_id');
             $table->unsignedBigInteger('user_id');
             $table->integer('price');
+            $table->timestamp('payed_at')->nullable();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');
         });

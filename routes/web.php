@@ -12,6 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrganisationController;
 use App\Http\Controllers\ParametreController;
 use App\Http\Controllers\PDFController;
+use App\Http\Controllers\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,6 +64,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/parametres', [ParametreController::class, 'show'])->name('parametres.show');
         Route::post('/parametres', [ParametreController::class, 'store'])->name('parametres.store');
         Route::put('/parametres', [ParametreController::class, 'update'])->name('parametres.update');
+
+        Route::get('/transactions', [TransactionController::class, 'show'])->name('transactions.show');
+        Route::post('/transactions', [TransactionController::class, 'create'])->name('transactions.create');
+
 
         Route::post('/email/facture/envoie', [MailController::class, 'sendToClient'])->name('email.facture.send');
     });

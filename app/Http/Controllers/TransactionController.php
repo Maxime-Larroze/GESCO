@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contribution;
+use App\Models\Mission;
+use App\Models\Parametre;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
@@ -44,9 +48,15 @@ class TransactionController extends Controller
      * @param  \App\Models\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function show(Transaction $transaction)
+    public function show()
     {
-        //
+        $user = Auth::user();
+        $parametre = Parametre::where('user_id', $user->id)->first();
+        $transactions = Transaction::where('user_id', $user->id)->get();
+        $missions = Mission::where('user_id', $user->id)->get();
+        $contributions = Contribution::where('user_id', $user->id)->get();
+        return view('auth.transaction.interface', ['user'=>$user, 'transactions'=>$transactions, 'missions'=>$missions, 
+        'contributions'=>$contributions, 'parametre'=>$parametre]);
     }
 
     /**
