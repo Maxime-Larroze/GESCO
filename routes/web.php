@@ -74,3 +74,7 @@ Route::middleware('signed')->group(function(){
 
 Route::get('/404', [DashboardController::class, 'error404'])->name('error.404');
 Route::get('/403', [DashboardController::class, 'error403'])->name('error.403');
+
+Route::fallback(function() {
+    return redirect()->route('dashboard');
+});
