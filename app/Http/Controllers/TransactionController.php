@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contribution;
 use App\Models\Mission;
+use App\Models\Organisation;
 use App\Models\Parametre;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
@@ -26,9 +27,37 @@ class TransactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $this->validate($request, [
+            'source_type' => 'required',
+            'source_id' => 'required',
+            'price' => 'required',
+        ]);
+        try{
+            if(!empty($request->payed_at))
+            {
+                Transaction::create([
+                    'source_type'=>$request->source_type,
+                    'source_id'=>$request->source_id,
+                    'user_id'=>Auth::user()->id,
+                    'price'=>$request->price,
+                    'payed_at'=>$request->payed_at,
+                ]);
+            }
+            else
+            {
+                Transaction::create([
+                    'source_type'=>$request->source_type,
+                    'source_id'=>$request->source_id,
+                    'user_id'=>Auth::user()->id,
+                    'price'=>$request->price,
+                ]);
+            }
+            return redirect()->route('transactions.show')->withErrors(['validate'=>'Transaction enregistrée avec succès']);
+        } catch (\Throwable $th) {
+            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
+        }
     }
 
     /**
@@ -55,8 +84,9 @@ class TransactionController extends Controller
         $transactions = Transaction::where('user_id', $user->id)->get();
         $missions = Mission::where('user_id', $user->id)->get();
         $contributions = Contribution::where('user_id', $user->id)->get();
+        $organisations = Organisation::where('user_id', $user->id)->get();
         return view('auth.transaction.interface', ['user'=>$user, 'transactions'=>$transactions, 'missions'=>$missions, 
-        'contributions'=>$contributions, 'parametre'=>$parametre]);
+        'contributions'=>$contributions, 'parametre'=>$parametre, 'organisations'=>$organisations]);
     }
 
     /**
@@ -79,7 +109,34 @@ class TransactionController extends Controller
      */
     public function update(Request $request, Transaction $transaction)
     {
-        //
+        $this->validate($request, [
+            'source_type' => 'required',
+            'source_id' => 'required',
+            'price' => 'required',
+            'transaction_id' => 'required',
+        ]);
+        try{
+            if(!empty($request->payed_at))
+            {
+                Transaction::find($request->transaction_id)->update([
+                    'source_type'=>$request->source_type,
+                    'source_id'=>$request->source_id,
+                    'price'=>$request->price,
+                    'payed_at'=>$request->payed_at,
+                ]);
+            }
+            else
+            {
+                Transaction::find($request->transaction_id)->update([
+                    'source_type'=>$request->source_type,
+                    'source_id'=>$request->source_id,
+                    'price'=>$request->price,
+                ]);
+            }
+            return redirect()->route('transactions.show')->withErrors(['validate'=>'Transaction enregistrée avec succès']);
+        } catch (\Throwable $th) {
+            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
+        }
     }
 
     /**
