@@ -70,6 +70,7 @@ class ParametreController extends Controller
             Log::notice("Création des paramètres de l'utilisateur ".Auth::user()->id);
             return redirect()->route('parametres.show')->withErrors(['validate'=>'Enregistrement des paramètres avec succès']);
         } catch (\Throwable $th) {
+            Log::error("Parametre::create: ".$th);
             return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
         }
     }
@@ -136,6 +137,7 @@ class ParametreController extends Controller
             Log::notice("Update des paramètres ".$request->parametre_id." de l'utilisateur ".Auth::user()->id);
             return redirect()->route('parametres.show')->withErrors(['validate','Enregistrement des paramètres avec succès']);
         } catch (\Throwable $th) {
+            Log::error("Parametre::update: ".$th);
             return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
         }
     }

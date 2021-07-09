@@ -26,6 +26,57 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-lg-4 mt-3">
+            <div class="card">
+                <div class="card-body text-center">
+                <p class="card-text">Total transactions 6 mois (€)</p>
+                <h3>{{$transactions6}}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mt-3">
+            <div class="card">
+                <div class="card-body text-center">
+                <p class="card-text">Total transactions 12 mois (€)</p>
+                <h3>{{$transactions12}}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mt-3">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                <p class="card-text">Nombre transactions (1 an)</p>
+                <h3>{{$nbtransactions}}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mt-3">
+            <div class="card">
+                <div class="card-body text-center">
+                <p class="card-text">Total contributions 6 mois (€)</p>
+                <h3>{{$contributions6}}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mt-3">
+            <div class="card">
+                <div class="card-body text-center">
+                <p class="card-text">Total contributions 12 mois (€)</p>
+                <h3>{{$contributions12}}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mt-3">
+            <div class="card bg-danger text-white">
+                <div class="card-body text-center">
+                <p class="card-text">Nombre contributions (1 an)</p>
+                <h3>{{$nbcontributions}}</h3>
+                </div>
+            </div>
+        </div>
+
         <div class="col-lg-12 text-center">
             <hr>
             <h2>Mission(s) terminée(s)</h2>

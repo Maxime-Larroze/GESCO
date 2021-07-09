@@ -58,6 +58,7 @@ class TransactionController extends Controller
             Log::notice("Création d'une nouvelle transaction par ".Auth::user()->id);
             return redirect()->route('transactions.show')->withErrors(['validate'=>'Transaction enregistrée avec succès']);
         } catch (\Throwable $th) {
+            Log::error("Transaction::create: ".$th);
             return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
         }
     }
@@ -139,6 +140,7 @@ class TransactionController extends Controller
             Log::notice("Modification de la transaction ".$request->transaction_id);
             return redirect()->route('transactions.show')->withErrors(['validate'=>'Transaction enregistrée avec succès']);
         } catch (\Throwable $th) {
+            Log::error("Transaction::update: ".$th);
             return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
         }
     }
@@ -159,6 +161,7 @@ class TransactionController extends Controller
             Transaction::find($request->transaction_id)->delete();
             return redirect()->route('transactions.show')->withErrors(['validate'=>'Transaction supprimée avec succès']);
         } catch (\Throwable $th) {
+            Log::error("Transaction::destroy: ".$th);
             return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
         }
     }

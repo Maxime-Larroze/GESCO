@@ -36,22 +36,32 @@ class MissionController extends Controller
             $this->validate($request, [
                 'organisation_id' => 'required',
                 'title' => 'required',
-                'comment' => 'required',
             ]);
             $organisation = Organisation::find($request->organisation_id);
-            Mission::create(
-                [
-                    'reference' => Uuid::uuid4(),
-                    'organisation_id' => $request->organisation_id,
-                    'title' => $request->title,
-                    'comment' => $request->comment,
-                    'deposit' => 0,
-                    'user_id'=>Auth::user()->id,
-                ]
-            );
+            if(!empty($request->comment))
+            {
+                Mission::create([
+                        'reference' => Uuid::uuid4(),
+                        'organisation_id' => $request->organisation_id,
+                        'title' => $request->title,
+                        'comment' => $request->comment,
+                        'deposit' => 0,
+                        'user_id'=>Auth::user()->id,
+                ]);
+            }
+            else{
+                Mission::create([
+                        'reference' => Uuid::uuid4(),
+                        'organisation_id' => $request->organisation_id,
+                        'title' => $request->title,
+                        'deposit' => 0,
+                        'user_id'=>Auth::user()->id,
+                ]);
+            }
             Log::notice("Création d'une mission pour l'organisation ".$organisation->id);
             return redirect()->route('missions.show')->withErrors(['validate'=>'Créationde la mission avec succès']);
         } catch (\Throwable $th) {
+            Log::error("Mission::create: ".$th);
             return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
         }
     }
@@ -113,7 +123,6 @@ class MissionController extends Controller
                     'price_missionline_A' => 'required',
                     'unity_missionline_A' => 'required',
                     'title' => 'required',
-                    'comment' => 'required',
                 ]);
                 for ($i=0; $i < count($request->title_missionline_A); $i++) { 
                     if(!empty($request->title_missionline_A[$i]))
@@ -130,6 +139,7 @@ class MissionController extends Controller
                             $depot += $request->quantity_missionline_A[$i] * $request->price_missionline_A[$i];
                             Log::notice("Création d'une missionLine pour la mission ".$request->mission_id);
                         } catch (\Throwable $th) {
+                            Log::error("Mission::update: ".$th);
                             return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
                         }
                     }
@@ -159,6 +169,7 @@ class MissionController extends Controller
                             $depot += $request->price_missionline_B[array_keys($request->title_missionline_B)[$j]] * $request->quantity_missionline_B[array_keys($request->title_missionline_B)[$j]];
                             Log::notice("Création/Modification d'une missionLine pour la mission ".$request->mission_id);
                         } catch (\Throwable $th) {
+                            Log::error("Mission::update: ".$th);
                             return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
                         }
                     }
@@ -170,6 +181,7 @@ class MissionController extends Controller
                     Mission::find($request->mission_id)->update(['ended_at'=>null]);
                     Log::notice("Suppression d'une date fin de mission pour la mission ".$request->mission_id);
                 } catch (\Throwable $th) {
+                    Log::error("Mission::update: ".$th);
                     return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
                 }
             }
@@ -178,24 +190,37 @@ class MissionController extends Controller
                 try{
                     Mission::find($request->mission_id)->update(['ended_at'=>Carbon::now()]);
                 } catch (\Throwable $th) {
+                    Log::error("Mission::update: ".$th);
                     return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
                 }
             }
             // dd(Mission::find($request->mission_id)->ended_at);
 
             try{
-                Mission::find($request->mission_id)->update([
-                    'title'=>$request->title,
-                    'deposit'=>$depot*$taux??45/100,
-                    'organisation_id'=>$request->organisation_id,
-                    'comment'=>$request->comment,
-                ]);
+                if(!empty($request->comment))
+                {
+                    Mission::find($request->mission_id)->update([
+                            'organisation_id' => $request->organisation_id,
+                            'title' => $request->title,
+                            'comment' => $request->comment,
+                            'deposit'=>$depot*$taux??45/100,
+                    ]);
+                }
+                else{
+                    Mission::find($request->mission_id)->update([
+                            'organisation_id' => $request->organisation_id,
+                            'title' => $request->title,
+                            'deposit'=>$depot*$taux??45/100,
+                    ]);
+                }
                 Log::notice("Update de la mission ".$request->mission_id);
             } catch (\Throwable $th) {
+                Log::error("Mission::update: ".$th);
                 return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
             }
             return redirect()->route('missions.show')->withErrors(['validate'=>'Modification de la mission avec succès']);
         } catch (\Throwable $th) {
+            Log::error("Mission::update: ".$th);
             return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
         }
     }
@@ -217,6 +242,7 @@ class MissionController extends Controller
             Log::notice("Suppression de la mission ".$request->mission_id);
             return redirect()->route('missions.show')->withErrors(['validate'=>'Suppression de la mission avec succès']);
         } catch (\Throwable $th) {
+            Log::error("Mission::destroy: ".$th);
             return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
         }
     }

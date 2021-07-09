@@ -26,7 +26,7 @@ use App\Http\Controllers\TransactionController;
 |
 */
 
-Route::middleware(['guest'])->group(function () {
+Route::middleware('guest')->group(function () {
     Route::get('/', [DashboardController::class, 'autoLogin'])->name('home');
     Route::post('public/login', [DashboardController::class, 'login'])->name('login');
 
@@ -41,7 +41,7 @@ Route::middleware(['guest'])->group(function () {
 });
 
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware('auth')->group(function () {
     Route::prefix('/auth')->group(function () {
         Route::post('/logout', [DashboardController::class, 'logout'])->name('logout');
         Route::get('/dashboard', [DashboardController::class, 'dashboardView'])->name('dashboard');

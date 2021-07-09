@@ -56,6 +56,7 @@ class ContributionController extends Controller
             Log::notice("Création d'une nouvelle contribution par ".Auth::user()->id." sur ".$request->organisation_id);
             return redirect()->route('contributions.show')->withErrors(['validate'=>'Contribution enregistrée avec succès']);
         } catch (\Throwable $th) {
+            Log::error("Contribution::create: ".$th);
             return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
         }
     }
@@ -134,6 +135,7 @@ class ContributionController extends Controller
             Log::notice("Update de la contribution ".$request->contribution_id." par ".Auth::user()->id);
             return redirect()->route('contributions.show')->withErrors(['validate'=>'Contribution modifiée avec succès']);
         } catch (\Throwable $th) {
+            Log::error("Contribution::update: ".$th);
             return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
         }
     }
@@ -154,6 +156,7 @@ class ContributionController extends Controller
             Contribution::find($request->contribution_id)->delete();
             return redirect()->route('contributions.show')->withErrors(['validate'=>'Contribution supprimée avec succès']);
         } catch (\Throwable $th) {
+            Log::error("Contribution::delete: ".$th);
             return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
         }
     }

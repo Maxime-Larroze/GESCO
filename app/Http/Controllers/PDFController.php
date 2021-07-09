@@ -55,6 +55,7 @@ class PDFController extends Controller
             Log::notice("Génération du PDF ".$id." pour l'utilisateur ".Auth::user()->id);
             return $pdf->download($mission->reference . '.pdf')->withErrors(['validate'=>'Génération de votre facture avec succès']);
         } catch (\Throwable $th) {
+            Log::error("PDF::store: ".$th);
             return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
         }
     }

@@ -49,6 +49,7 @@ class OrganisationController extends Controller
             Log::notice("Création d'une organisation");
             return redirect()->route('organisations.show')->withErrors(['validate'=>'Enregistrement de votre client avec succès']);
         } catch (\Throwable $th) {
+            Log::error("Organisation::create: ".$th);
             return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
         }
     }
@@ -115,6 +116,7 @@ class OrganisationController extends Controller
             Log::notice("Update de l'organisation ".$request->organisation_id);
             return redirect()->route('organisations.show')->withErrors(['validate'=>'Modification du client avec succès']);
         } catch (\Throwable $th) {
+            Log::error("Organisation::update: ".$th);
             return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
         }
     }
@@ -135,6 +137,7 @@ class OrganisationController extends Controller
             Log::notice("Delete de l'organisation ".$request->organisation_id);
             return redirect()->route('organisations.show')->withErrors(['validate'=>'Suppression de votre client avec succès']);
         } catch (\Throwable $th) {
+            Log::error("Organisation::destroy: ".$th);
             return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
         }
     }
