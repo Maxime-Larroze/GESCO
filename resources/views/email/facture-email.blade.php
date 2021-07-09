@@ -62,7 +62,7 @@
                         {{Crypt::decryptString($parametre->adresse)}} - {{Crypt::decryptString($parametre->domiciliation)}}
                     </p>
                     <p>Lien de consultation de votre devis/facture: {{URL::signedRoute('signed.exeternal.facture', ['id' => $facture->id, 'user_id'=>$user->id])}}</p>
-                    <br><br><br>
+                    <br><br>
                     <p class="mt-5 font-weight-light font-italic">Message envoyé automatiquement par le système de gestion commerciale <a href="https://hackenathon-system.ddns.net:35003">Hackenathon-System</a></p>
                 </div>
             </div>

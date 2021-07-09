@@ -71,3 +71,6 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware('signed')->group(function(){
     Route::get('public/telechargement/facture/{user_id}/{id}', [PDFController::class, 'externalDownloadSigned'])->name('signed.exeternal.facture');
 });
+
+Route::get('/404', [DashboardController::class, 'error404'])->name('error.404');
+Route::get('/403', [DashboardController::class, 'error403'])->name('error.403');
