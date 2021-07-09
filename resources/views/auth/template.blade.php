@@ -53,6 +53,7 @@
                                 class="far fa-registered"></i> Mes clients</a>
                         <a class="dropdown-item" href="{{ route('missions.show') }}"><i class="fas fa-thumbtack"></i> Mes missions</a>
                         <a class="dropdown-item" href="{{ route('transactions.show') }}"><i class="fas fa-exchange-alt"></i> Mes transactions</a>
+                        <a class="dropdown-item" href="{{ route('contributions.show') }}"><i class="fas fa-hand-holding-usd"></i> Mes contributions</a>
                         <a class="dropdown-item" href="{{ route('factures.show') }}"><i class="fas fa-briefcase"></i> Mes devis</a>
                         <a class="dropdown-item" href="{{ route('factures.show') }}"><i class="fas fa-money-check-alt"></i> Mes factures d'accompte</a>
                         <a class="dropdown-item" href="{{ route('factures.show') }}"><i class="fas fa-file-invoice-dollar"></i> Mes factures</a>
@@ -123,6 +124,7 @@
                       @yield('auth.dashboard.interface.show')
                       @yield('auth.facture.interface.show')
                       @yield('auth.transaction.interface.show')
+                      @yield('auth.contribution.interface.show')
                     @endif
                     @yield('auth.parametre.interface.show')
                     @yield('auth.profil.interface.update')

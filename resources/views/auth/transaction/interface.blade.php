@@ -12,7 +12,7 @@
                         <th><span onclick="sortTable('transaction_Table', 0)">ID</span></th>
                         <th><span onclick="sortTable('transaction_Table', 1)">Type</span></th>
                         <th><span onclick="sortTable('transaction_Table', 2)">Source</span></th>
-                        <th><span onclick="sortTable('transaction_Table', 3)">Montant</span></th>
+                        <th><span onclick="sortTable('transaction_Table', 3)">Montant (€)</span></th>
                         <th><span onclick="sortTable('transaction_Table', 4)">Payée</span></th>
                         <th>Options</th>
                     </tr>
@@ -55,7 +55,7 @@
                             <td>
                                 <div class="row">
                                     <div class="col-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6 text-center">
-                                        <a href="" data-toggle="modal" data-target="#updateModalTransaction"><button class="btn btn-warning"><i class="fas fa-edit" aria-hidden="true"></i></button></a>
+                                        <a href="" data-toggle="modal" data-target="#updateModalTransaction{{$transaction->id}}"><button class="btn btn-warning"><i class="fas fa-edit" aria-hidden="true"></i></button></a>
                                     </div>
                                     <div class="col-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6 text-center">
                                         <form action="" method="post">
@@ -66,8 +66,8 @@
                                         </form>
                                     </div>
                                 </div>
-                                <div class="modal" id="updateModalTransaction">
-                                    <div class="modal-dialog modal-xl modal-dialog-centered">
+                                <div class="modal" id="updateModalTransaction{{$transaction->id}}">
+                                    <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <form action="{{ route('transactions.update') }}" method="POST">
                                                 @csrf
@@ -139,7 +139,7 @@
     </div>
 
     <div class="modal" id="NewModalTransaction">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <form action="{{ route('transactions.create') }}" method="POST">
                     @csrf
@@ -183,13 +183,13 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text text-danger"><i class="fas fa-euro-sign"></i></span>
                             </div>
-                            <input type="number" class="input-group form-control" name="price" required>
+                            <input type="number" class="input-group form-control" placeholder="Montant de la transaction" name="price" value="{{old('price')}}" required>
                         </div>
                         <div class="mt-3 col-md-6 input-group form-group input-group-ml" id="cache_payed">
                             <div class="input-group-prepend">
                                 <span class="input-group-text text-danger"><i class="far fa-calendar-plus"></i></span>
                             </div>
-                            <input type="date" class="input-group form-control" name="payed_at">
+                            <input type="date" class="input-group form-control" value="{{old('payed_at')}}" name="payed_at">
                         </div>
                     </div>
                     <div class="modal-footer">

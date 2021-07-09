@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contribution;
+use App\Models\Organisation;
+use App\Models\Parametre;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ContributionController extends Controller
 {
@@ -22,9 +26,38 @@ class ContributionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $this->validate($request, [
+            'price' => 'required',
+            'title' => 'required',
+            'organisation_id' => 'required',
+        ]);
+        try{
+            if(!empty($request->comment))
+            {
+                Contribution::create([
+                    'price'=>$request->price,
+                    'title'=>$request->title,
+                    'user_id'=>Auth::user()->id,
+                    'organisation_id'=>$request->organisation_id,
+                    'comment'=>$request->comment,
+                ]);
+            }
+            else
+            {
+                Contribution::create([
+                    'price'=>$request->price,
+                    'title'=>$request->title,
+                    'user_id'=>Auth::user()->id,
+                    'organisation_id'=>$request->organisation_id,
+                ]);
+            }
+            Log::notice("Création d'une nouvelle contribution par ".Auth::user()->id." sur ".$request->organisation_id);
+            return redirect()->route('contributions.show')->withErrors(['validate'=>'Contribution enregistrée avec succès']);
+        } catch (\Throwable $th) {
+            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
+        }
     }
 
     /**
@@ -35,7 +68,7 @@ class ContributionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -44,9 +77,14 @@ class ContributionController extends Controller
      * @param  \App\Models\Contribution  $contribution
      * @return \Illuminate\Http\Response
      */
-    public function show(Contribution $contribution)
+    public function show()
     {
-        //
+        $user = Auth::user();
+        $parametre = Parametre::where('user_id', $user->id)->first();
+        $contributions = Contribution::where('user_id', $user->id)->get();
+        $organisations = Organisation::where('user_id', $user->id)->get();
+        return view('auth.contribution.interface', ['user'=>$user, 'contributions'=>$contributions, 
+        'parametre'=>$parametre, 'organisations'=>$organisations]);
     }
 
     /**
@@ -67,9 +105,37 @@ class ContributionController extends Controller
      * @param  \App\Models\Contribution  $contribution
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Contribution $contribution)
+    public function update(Request $request)
     {
-        //
+        $this->validate($request, [
+            'price' => 'required',
+            'title' => 'required',
+            'organisation_id' => 'required',
+        ]);
+        try{
+            if(!empty($request->comment))
+            {
+                Contribution::find($request->contribution_id)->update([
+                    'price'=>$request->price,
+                    'title'=>$request->title,
+                    'organisation_id'=>$request->organisation_id,
+                    'comment'=>$request->comment,
+                ]);
+            }
+            else
+            {
+                Contribution::find($request->contribution_id)->update([
+                    'price'=>$request->price,
+                    'title'=>$request->title,
+                    'organisation_id'=>$request->organisation_id,
+                    'comment'=>null,
+                ]);
+            }
+            Log::notice("Update de la contribution ".$request->contribution_id." par ".Auth::user()->id);
+            return redirect()->route('contributions.show')->withErrors(['validate'=>'Contribution modifiée avec succès']);
+        } catch (\Throwable $th) {
+            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
+        }
     }
 
     /**
@@ -78,8 +144,17 @@ class ContributionController extends Controller
      * @param  \App\Models\Contribution  $contribution
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Contribution $contribution)
+    public function destroy(Request $request)
     {
-        //
+        try{
+            $this->validate($request, [
+                'contribution_id' => 'required',
+            ]);
+            Log::notice("Delete de la contribution ".$request->contribution_id);
+            Contribution::find($request->contribution_id)->delete();
+            return redirect()->route('contributions.show')->withErrors(['validate'=>'Contribution supprimée avec succès']);
+        } catch (\Throwable $th) {
+            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
+        }
     }
 }

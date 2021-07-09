@@ -235,7 +235,7 @@
     </div>
 
     <div class="modal" id="NewModalMission">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <form action="{{ route('missions.create') }}" method="POST">
                     @csrf

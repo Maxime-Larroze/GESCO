@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContributionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\MissionController;
@@ -69,6 +70,11 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/transactions', [TransactionController::class, 'create'])->name('transactions.create');
         Route::put('/transactions', [TransactionController::class, 'update'])->name('transactions.update');
         Route::delete('/transactions', [TransactionController::class, 'destroy'])->name('transactions.destroy');
+
+        Route::get('/contributions', [ContributionController::class, 'show'])->name('contributions.show');
+        Route::post('/contributions', [ContributionController::class, 'create'])->name('contributions.create');
+        Route::put('/contributions', [ContributionController::class, 'update'])->name('contributions.update');
+        Route::delete('/contributions', [ContributionController::class, 'destroy'])->name('contributions.destroy');
 
         Route::post('/email/facture/envoie', [MailController::class, 'sendToClient'])->name('email.facture.send');
     });
