@@ -8,7 +8,7 @@ use App\Models\Parametre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class FactureController extends Controller
+class AccompteController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -50,10 +50,10 @@ class FactureController extends Controller
     public function show()
     {
         $user = Auth::user();
-        $missions = Mission::where('user_id', $user->id)->where('signed_at','!=',null)->where('deposed_at','!=',null)->get();
+        $missions = Mission::where('user_id', $user->id)->where('signed_at',null)->where('deposed_at',null)->get();
         $organisations = Organisation::where('user_id', $user->id)->get();
         $parametre = Parametre::where('user_id', $user->id);
-        return view('auth.facture.interface', ['user' => $user, 'missions'=>$missions, 'organisations'=>$organisations,
+        return view('auth.devis.interface', ['user' => $user, 'missions'=>$missions, 'organisations'=>$organisations,
             'parametre'=>$parametre]);
 
 

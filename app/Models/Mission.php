@@ -18,6 +18,8 @@ class Mission extends Model
         'title',
         'comment',
         'deposit',
+        'signed_at',
+        'deposed_at',
         'ended_at',
         'created_at',
         'updated_at',

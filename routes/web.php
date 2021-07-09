@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\MissionController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DevisController;
 use App\Http\Controllers\FacebookController;
 use App\Http\Controllers\FactureController;
 use App\Http\Controllers\GithubController;
@@ -58,10 +59,6 @@ Route::middleware('auth')->group(function () {
         Route::put('/missions', [MissionController::class, 'update'])->name('missions.update');
         Route::post('/missions', [MissionController::class, 'create'])->name('missions.create');
 
-        Route::get('/factures', [FactureController::class, 'show'])->name('factures.show');
-        Route::get('/factures/generate/{id}', [PDFController::class, 'show'])->name('factures.pdf.show');
-        Route::get('/factures/generate/{id}/download', [PDFController::class, 'store'])->name('factures.pdf.store');
-
         Route::get('/parametres', [ParametreController::class, 'show'])->name('parametres.show');
         Route::post('/parametres', [ParametreController::class, 'store'])->name('parametres.store');
         Route::put('/parametres', [ParametreController::class, 'update'])->name('parametres.update');
@@ -77,11 +74,21 @@ Route::middleware('auth')->group(function () {
         Route::delete('/contributions', [ContributionController::class, 'destroy'])->name('contributions.destroy');
 
         Route::post('/email/facture/envoie', [MailController::class, 'sendToClient'])->name('email.facture.send');
+
+        Route::get('/factures', [FactureController::class, 'show'])->name('factures.show');
+        Route::get('/devis', [DevisController::class, 'show'])->name('devis.show');
+        
+        Route::get('/factures/generate/{id}', [PDFController::class, 'show'])->name('factures.pdf.show');
+        Route::get('/factures/generate/{id}/download', [PDFController::class, 'factureStore'])->name('factures.pdf.store');
+
+        Route::get('/devis/generate/{id}', [PDFController::class, 'show'])->name('devis.pdf.show');
+        Route::get('/devis/generate/{id}/download', [PDFController::class, 'devisStore'])->name('devis.pdf.store');
     });
 });
 
 Route::middleware('signed')->group(function(){
-    Route::get('public/telechargement/facture/{user_id}/{id}', [PDFController::class, 'externalDownloadSigned'])->name('signed.exeternal.facture');
+    Route::get('public/telechargement/facture/{user_id}/{id}', [PDFController::class, 'externalFactureSigned'])->name('signed.exeternal.facture');
+    Route::get('public/telechargement/devis/{user_id}/{id}', [PDFController::class, 'externalDevisSigned'])->name('signed.exeternal.devis');
 });
 
 Route::get('/404', [DashboardController::class, 'error404'])->name('error.404');

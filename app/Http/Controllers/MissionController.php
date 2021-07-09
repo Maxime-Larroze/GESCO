@@ -211,8 +211,14 @@ class MissionController extends Controller
                             'organisation_id' => $request->organisation_id,
                             'title' => $request->title,
                             'deposit'=>$depot*$taux??45/100,
+                            'comment' => null,
+
                     ]);
                 }
+                if(!empty($request->signed_at)){Mission::find($request->mission_id)->update(['signed_at' => $request->signed_at]);}
+                else{Mission::find($request->mission_id)->update(['signed_at' => null]);}
+                if(!empty($request->deposed_at)){Mission::find($request->mission_id)->update(['deposed_at' => $request->deposed_at]);}
+                else{Mission::find($request->mission_id)->update(['deposed_at' => null]);}
                 Log::notice("Update de la mission ".$request->mission_id);
             } catch (\Throwable $th) {
                 Log::error("Mission::update: ".$th);

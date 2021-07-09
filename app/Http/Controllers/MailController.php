@@ -45,6 +45,7 @@ class MailController extends Controller
             $pdf->path = 'public/pdf/'.$user->id.'/'.$facture->reference.'.pdf';
             $pdf->name = $facture->reference.'.pdf';
             Mail::to($client->email)->queue(new SendFactureEmail($client, $user, $parametre, $facture, $pdf));
+            Storage::delete('public/pdf/'.$user->id.'/'.$facture->reference.'.pdf');
             Log::info("Envoie d'une facture par email à ".$client->email." par l'utilisateur ".$user->id);
             return redirect()->route('factures.show')->withErrors(['validate'=>'La facture à bien été envoyé au destinataire']);
         } catch (\Throwable $th) {

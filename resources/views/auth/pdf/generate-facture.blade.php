@@ -157,6 +157,30 @@
                                                 @endif
                                             </th>
                                         </tr>
+                                        <tr>
+                                            <th>&nbsp;</th>
+                                            <th>&nbsp;</th>
+                                            <th>Devis signé le</th>
+                                            <th>
+                                                @if(!empty($mission->signed_at))
+                                                {{Carbon\Carbon::parse($mission->signed_at)->format('d-m-Y')}}
+                                                @else
+                                                Non signé
+                                                @endif
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>&nbsp;</th>
+                                            <th>&nbsp;</th>
+                                            <th>Accompte versé le</th>
+                                            <th>
+                                                @if(!empty($mission->deposed_at))
+                                                {{Carbon\Carbon::parse($mission->deposed_at)->format('d-m-Y')}}
+                                                @else
+                                                Non versé 
+                                                @endif
+                                            </th>
+                                        </tr>
                                     </tbody>
                                 </table>
                                 <div class="col-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6">

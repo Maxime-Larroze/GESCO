@@ -21,6 +21,8 @@ class CreateMissionsTable extends Migration
             $table->string('title');
             $table->string('comment')->nullable();
             $table->integer('deposit');
+            $table->timestamp('signed_at')->nullable();
+            $table->timestamp('deposed_at')->nullable();
             $table->timestamp('ended_at')->nullable();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');

@@ -22,7 +22,7 @@
                         <th><span onclick="sortTable('mission_Table', 0)">Référence</span></th>
                         <th><span onclick="sortTable('mission_Table', 1)">Titre</span></th>
                         <th><span onclick="sortTable('mission_Table', 2)">Organisation</span></th>
-                        <th><span onclick="sortTable('mission_Table', 3)">Terminé</span></th>
+                        <th><span onclick="sortTable('mission_Table', 3)">Etat</span></th>
                         <th>Options</th>
                     </tr>
                 </thead>
@@ -41,11 +41,19 @@
                                     <td>{{ $organisation->name }}</td>
                                 @endif
                             @endforeach
-                            @if (!empty($mission->ended_at))
-                                <td>{{ date('d-m-Y H:i', strtotime($mission->ended_at)) }}</td>
-                            @else
-                                <td class="text-danger">Non terminé</td>
-                            @endif
+                            <td>
+                                @if (!empty($mission->signed_at) && !empty($mission->deposed_at && !empty($mission->ended_at)))
+                                    {{ date('d-m-Y H:i', strtotime($mission->ended_at)) }}
+                                @elseif(!empty($mission->signed_at) && !empty($mission->deposed_at && empty($mission->ended_at)))
+                                <span class="text-primary font-weight-bold">Mission en cours</span>
+                                @elseif(!empty($mission->signed_at) && empty($mission->deposed_at && empty($mission->ended_at)))
+                                <span class="text-warning font-weight-bold">En attente de dépôt</span>
+                                @elseif(empty($mission->signed_at) && empty($mission->deposed_at && empty($mission->ended_at)))
+                                    <span class="text-danger font-weight-bold">En attente signature</span>
+                                @else
+                                    <span class="text-danger font-weight-bold">En attente</span>
+                                @endif
+                            </td> 
                             <td>
                                 <div class="row">
                                     <div class="col-lg-6"><button class="btn btn-warning form-check-inline" type="button"
@@ -117,14 +125,25 @@
                                                         </select>
                                                     </div>
                                                     <div class="mt-3 col-md-6  text-center">
+                                                        <div class="mt-3 input-group form-group input-group-ml">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text text-danger">Signature le</span>
+                                                            </div>
+                                                            <input type="date" class="input-group form-control" name="signed_at" value="{{Carbon\Carbon::parse($mission->signed_at)->format('Y-m-d')}}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="mt-3 col-md-6  text-center">
+                                                        <div class="mt-3 input-group form-group input-group-ml">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text text-danger">Dépôt fait le</span>
+                                                            </div>
+                                                            <input type="date" class="input-group form-control" name="deposed_at" value="{{Carbon\Carbon::parse($mission->deposed_at)->format('Y-m-d')}}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="mt-3 col-md-6  text-center">
                                                         <label class="form-check-label">
-                                                            @if (!empty($mission->ended_at))
                                                                 <input type="checkbox" class="form-check-input"
-                                                                    name="ended_at" value="0" checked> Mission terminé
-                                                            @else
-                                                                <input type="checkbox" class="form-check-input"
-                                                                    name="ended_at" value="0"> Mission terminé
-                                                            @endif
+                                                                    name="ended_at" value="0" @if (!empty($mission->ended_at)) checked @endif> Mission terminé
                                                         </label>
                                                     </div>
                                                     <div class="mt-3 col-md-6 form-group input-group input-group-ml">
