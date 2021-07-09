@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contribution;
 use App\Models\Mission;
 use App\Models\Organisation;
 use App\Models\Parametre;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -50,18 +52,13 @@ class AccompteController extends Controller
     public function show()
     {
         $user = Auth::user();
-        $missions = Mission::where('user_id', $user->id)->where('signed_at',null)->where('deposed_at',null)->get();
+        $missions = Mission::where('user_id', $user->id)->where('signed_at','!=',null)->where('deposed_at','!=',null)->get();
         $organisations = Organisation::where('user_id', $user->id)->get();
-        $parametre = Parametre::where('user_id', $user->id);
-        return view('auth.devis.interface', ['user' => $user, 'missions'=>$missions, 'organisations'=>$organisations,
-            'parametre'=>$parametre]);
-
-
-        // return view('pdf.generate-devis', [
-        //     'mission' => $mission, 'tacheMissions' => $tacheMissions, 'taches' => $taches, 'client' => $client,
-        //     'client_addresse' => $client_addresse, 'societe' => $societe, 'societe_addresse' => $societe_addresse,
-        //     'tvas' => $tvas, 'banque' => $banque, 'cobanque' => $cobanque, 'sbanque' => $sbanque
-        // ]);
+        $parametre = Parametre::where('user_id', $user->id)->first();
+        $contributions = Contribution::where('user_id', $user->id)->get();
+        $transactions = Transaction::where('user_id', $user->id)->get();
+        return view('auth.facture-accompte.interface', ['user' => $user, 'missions'=>$missions, 'organisations'=>$organisations,
+            'parametre'=>$parametre, 'contributions'=>$contributions, 'transactions'=>$transactions]);
     }
 
     /**

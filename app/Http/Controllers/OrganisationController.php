@@ -73,7 +73,7 @@ class OrganisationController extends Controller
      */
     public function show(Organisation $organisation)
     {
-        return view('auth.organisation.interface', ['organisations' => Organisation::where('user_id', Auth::user()->id)->get(), 'user' => Auth::user(), 'parametre'=> Parametre::where('user_id', Auth::user()->id)]);
+        return view('auth.organisation.interface', ['organisations' => Organisation::where('user_id', Auth::user()->id)->get(), 'user' => Auth::user(), 'parametre'=> Parametre::where('user_id', Auth::user()->id)->first()]);
     }
 
     /**

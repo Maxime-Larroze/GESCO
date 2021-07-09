@@ -13,7 +13,7 @@
     <link rel="shortcut icon" href="{{ asset('/img/Hackenathon_System_logo.png') }}" />
 
     <script src="https://unpkg.com/boxicons@latest/dist/boxicons.js"></script>
-    <title>Devis | Hackenathon-System - {{Crypt::decryptString($parametre->societe_name)}}</title>
+    <title>Facture d'accompte | Hackenathon-System - {{Crypt::decryptString($parametre->societe_name)}}</title>
 
     <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css" />
     <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
@@ -41,11 +41,11 @@
                             <img src="{{$user->picture}}"
                             class="img-fluid rounded-circle text-center mb-2" width="132" height="132" />
                     </div>
-                    <h1>Devis {{$facture->reference}} / {{Crypt::decryptString($parametre->societe_name)}}</h1>
+                    <h1>Facture d'accompte {{$facture->reference}} / {{Crypt::decryptString($parametre->societe_name)}}</h1>
                     <hr>
                     <h4>Message destiné à: {{$client->name}}</h4>
                     <p class="text-center">
-                        Vous venez de recevoir votre Devis n°{{$facture->reference}} de la part de la société {{Crypt::decryptString($parametre->societe_name)}}.
+                        Vous venez de recevoir votre Facture d'accompte n°{{$facture->reference}} de la part de la société {{Crypt::decryptString($parametre->societe_name)}}.
                         <br>
                         Vous trouverez en pièce-jointe le document PDF attendu.
                         <br>
@@ -61,7 +61,7 @@
                         <br>
                         {{Crypt::decryptString($parametre->adresse)}} - {{Crypt::decryptString($parametre->domiciliation)}}
                     </p>
-                    <p>Lien de consultation de votre devis: {{URL::signedRoute('signed.exeternal.facture', ['id' => $facture->id, 'user_id'=>$user->id])}}</p>
+                    <p>Lien de consultation de votre facture d'accompte: {{URL::signedRoute('signed.exeternal.facture', ['id' => $facture->id, 'user_id'=>$user->id])}}</p>
                     <br><br>
                     <p class="mt-5 font-weight-light font-italic">Message envoyé automatiquement par le système de gestion commerciale <a href="https://hackenathon-system.ddns.net:35003">Hackenathon-System</a></p>
                 </div>

@@ -38,7 +38,7 @@
                                 <div class="col-lg-6"><a href="{{route('devis.pdf.show', $mission->id)}}"><button class="btn btn-info form-check-inline" type="button">
                                     <i class="fas fa-file-invoice"></i> Voir</button></a></div>
                                 <div class="col-lg-6">
-                                    <form class="form-check-inline" action="{{ route('email.facture.send') }}"method="POST">
+                                    <form class="form-check-inline" action="{{ route('email.devis.send') }}"method="POST">
                                         @csrf 
                                         <input type="hidden" name="mission_id"value="{{ $mission->id }}">
                                         <input type="hidden" name="client_id"value="{{ $mission->organisation_id }}">

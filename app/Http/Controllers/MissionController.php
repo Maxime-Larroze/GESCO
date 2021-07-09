@@ -87,7 +87,7 @@ class MissionController extends Controller
     {
         return view('auth.mission.interface', ['organisations' => Organisation::where('user_id', Auth::user()->id)->get(), 
         'user' => Auth::user(), 'missions' => Mission::where('user_id', Auth::user()->id)->get(), 
-        "missionLines" => MissionLine::where('user_id', Auth::user()->id)->get(), 'parametre'=>Parametre::where('user_id', Auth::user()->id)]);
+        "missionLines" => MissionLine::where('user_id', Auth::user()->id)->get(), 'parametre'=>Parametre::where('user_id', Auth::user()->id)->first()]);
     }
 
     /**

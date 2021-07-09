@@ -52,16 +52,9 @@ class DevisController extends Controller
         $user = Auth::user();
         $missions = Mission::where('user_id', $user->id)->where('signed_at',null)->where('deposed_at',null)->get();
         $organisations = Organisation::where('user_id', $user->id)->get();
-        $parametre = Parametre::where('user_id', $user->id);
+        $parametre = Parametre::where('user_id', $user->id)->first();
         return view('auth.devis.interface', ['user' => $user, 'missions'=>$missions, 'organisations'=>$organisations,
             'parametre'=>$parametre]);
-
-
-        // return view('pdf.generate-devis', [
-        //     'mission' => $mission, 'tacheMissions' => $tacheMissions, 'taches' => $taches, 'client' => $client,
-        //     'client_addresse' => $client_addresse, 'societe' => $societe, 'societe_addresse' => $societe_addresse,
-        //     'tvas' => $tvas, 'banque' => $banque, 'cobanque' => $cobanque, 'sbanque' => $sbanque
-        // ]);
     }
 
     /**

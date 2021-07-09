@@ -45,7 +45,7 @@
                     <hr>
                     <h4>Message destiné à: {{$client->name}}</h4>
                     <p class="text-center">
-                        Vous venez de recevoir votre Devis/Facture n°{{$facture->reference}} de la part de la société {{Crypt::decryptString($parametre->societe_name)}}.
+                        Vous venez de recevoir votre Facture n°{{$facture->reference}} de la part de la société {{Crypt::decryptString($parametre->societe_name)}}.
                         <br>
                         Vous trouverez en pièce-jointe le document PDF attendu.
                         <br>
@@ -61,7 +61,7 @@
                         <br>
                         {{Crypt::decryptString($parametre->adresse)}} - {{Crypt::decryptString($parametre->domiciliation)}}
                     </p>
-                    <p>Lien de consultation de votre devis/facture: {{URL::signedRoute('signed.exeternal.facture', ['id' => $facture->id, 'user_id'=>$user->id])}}</p>
+                    <p>Lien de consultation de votre facture: {{URL::signedRoute('signed.exeternal.facture', ['id' => $facture->id, 'user_id'=>$user->id])}}</p>
                     <br><br>
                     <p class="mt-5 font-weight-light font-italic">Message envoyé automatiquement par le système de gestion commerciale <a href="https://hackenathon-system.ddns.net:35003">Hackenathon-System</a></p>
                 </div>

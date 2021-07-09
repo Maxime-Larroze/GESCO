@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccompteController;
 use App\Http\Controllers\ContributionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GoogleController;
@@ -73,22 +74,29 @@ Route::middleware('auth')->group(function () {
         Route::put('/contributions', [ContributionController::class, 'update'])->name('contributions.update');
         Route::delete('/contributions', [ContributionController::class, 'destroy'])->name('contributions.destroy');
 
-        Route::post('/email/facture/envoie', [MailController::class, 'sendToClient'])->name('email.facture.send');
 
         Route::get('/factures', [FactureController::class, 'show'])->name('factures.show');
         Route::get('/devis', [DevisController::class, 'show'])->name('devis.show');
+        Route::get('/factures-accomptes', [AccompteController::class, 'show'])->name('accomptes.show');
         
-        Route::get('/factures/generate/{id}', [PDFController::class, 'show'])->name('factures.pdf.show');
+        Route::get('/factures/generate/{id}', [PDFController::class, 'showFacture'])->name('factures.pdf.show');
         Route::get('/factures/generate/{id}/download', [PDFController::class, 'factureStore'])->name('factures.pdf.store');
+        Route::post('/email/facture/envoie', [MailController::class, 'factureSendToClient'])->name('email.facture.send');
 
-        Route::get('/devis/generate/{id}', [PDFController::class, 'show'])->name('devis.pdf.show');
+        Route::get('/devis/generate/{id}', [PDFController::class, 'showDevis'])->name('devis.pdf.show');
         Route::get('/devis/generate/{id}/download', [PDFController::class, 'devisStore'])->name('devis.pdf.store');
+        Route::post('/email/devis/envoie', [MailController::class, 'devisSendToClient'])->name('email.devis.send');
+
+        Route::get('/factures-accomptes/generate/{id}', [PDFController::class, 'showAccompte'])->name('accomptes.pdf.show');
+        Route::get('/factures-accomptes/generate/{id}/download', [PDFController::class, 'accompteStore'])->name('accomptes.pdf.store');
+        Route::post('/email/factures-accomptes/envoie', [MailController::class, 'AccompteSendToClient'])->name('email.accomptes.send');
     });
 });
 
 Route::middleware('signed')->group(function(){
     Route::get('public/telechargement/facture/{user_id}/{id}', [PDFController::class, 'externalFactureSigned'])->name('signed.exeternal.facture');
     Route::get('public/telechargement/devis/{user_id}/{id}', [PDFController::class, 'externalDevisSigned'])->name('signed.exeternal.devis');
+    Route::get('public/telechargement/factures-accomptes/{user_id}/{id}', [PDFController::class, 'externalAccompteSigned'])->name('signed.exeternal.devis');
 });
 
 Route::get('/404', [DashboardController::class, 'error404'])->name('error.404');
