@@ -96,7 +96,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('signed')->group(function(){
     Route::get('public/telechargement/facture/{user_id}/{id}', [PDFController::class, 'externalFactureSigned'])->name('signed.exeternal.facture');
     Route::get('public/telechargement/devis/{user_id}/{id}', [PDFController::class, 'externalDevisSigned'])->name('signed.exeternal.devis');
-    Route::get('public/telechargement/factures-accomptes/{user_id}/{id}', [PDFController::class, 'externalAccompteSigned'])->name('signed.exeternal.devis');
+    Route::get('public/telechargement/factures-accomptes/{user_id}/{id}', [PDFController::class, 'externalAccompteSigned'])->name('signed.exeternal.accompte');
 });
 
 Route::get('/404', [DashboardController::class, 'error404'])->name('error.404');
