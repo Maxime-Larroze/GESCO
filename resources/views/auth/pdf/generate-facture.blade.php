@@ -114,8 +114,8 @@
                                             <tr>
                                                 <td class="font-weight-bold">{{ $missionLine->title }}</td>
                                                 <td>{{ $missionLine->quantity }}</td>
-                                                <td>{{ $missionLine->price }}</td>
-                                                <td>{{ $missionLine->quantity * $missionLine->price }} €</td>
+                                                <td>{{ number_format($missionLine->price, 2, ',', ' ') }}</td>
+                                                <td>{{ number_format($missionLine->quantity * $missionLine->price, 2, ',', ' ') }} €</td>
                                             </tr>
                                             @php
                                                 $total_ttc += $missionLine->quantity * $missionLine->price;
@@ -125,7 +125,7 @@
                                             <th>&nbsp;</th>
                                             <th>&nbsp;</th>
                                             <th>Total TTC</th>
-                                            <th>{{ $total_ttc }} €</th>
+                                            <th>{{ number_format($total_ttc, 2, ',', ' ') }} €</th>
                                         </tr>
                                         <tr>
                                             <th>&nbsp;</th>
@@ -137,13 +137,13 @@
                                             <th>&nbsp;</th>
                                             <th>&nbsp;</th>
                                             <th>Accompte en €</th>
-                                            <th>{{$total_ttc*0.45}} €</th>
+                                            <th>{{number_format($total_ttc*0.45, 2, ',', ' ')}} €</th>
                                         </tr>
                                         <tr>
                                             <th>&nbsp;</th>
                                             <th>&nbsp;</th>
                                             <th>Reste à payer</th>
-                                            <th>{{$total_ttc-$total_ttc*0.45}} €</th>
+                                            <th>{{number_format($total_ttc-$total_ttc*0.45, 2, ',', ' ')}} €</th>
                                         </tr>
                                         <tr>
                                             <th>&nbsp;</th>

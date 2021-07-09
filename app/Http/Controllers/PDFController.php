@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contribution;
 use App\Models\Mission;
 use App\Models\MissionLine;
 use App\Models\Organisation;
@@ -89,9 +90,10 @@ class PDFController extends Controller
             $missionLines = MissionLine::where('mission_id', $mission->id)->where('user_id', Auth::user()->id)->get();
             $parametre = Parametre::where('user_id', Auth::user()->id)->first();
             $transactions = Transaction::where('user_id', Auth::user()->id)->get();
+            $contributions = Contribution::where('user_id', Auth::user()->id)->get();
             view()->share([
                 'mission' => $mission, 'organisation' => $organisation, 'missionLines' => $missionLines, 'parametre'=>$parametre,
-                'user'=>Auth::user(), 'transactions'=>$transactions
+                'user'=>Auth::user(), 'transactions'=>$transactions, 'contributions'=>$contributions
             ]);
             $pdf = PDF::loadView('auth.pdf.generate-accompte')->setPaper('a4', 'landscape');
             Log::notice("Génération du PDF ".$id." pour l'utilisateur ".Auth::user()->id);
@@ -141,10 +143,11 @@ class PDFController extends Controller
         $missionLines = MissionLine::where('mission_id', $mission->id)->where('user_id', Auth::user()->id)->get();
         $parametre = Parametre::where('user_id', Auth::user()->id)->first();
         $transactions = Transaction::where('user_id', Auth::user()->id)->get();
+        $contributions = Contribution::where('user_id', Auth::user()->id)->get();
         Log::notice("Consultation de la facture ".$id." par l'utilisateur ".Auth::user()->id);
         return view('auth.pdf.generate-accompte', [
             'mission' => $mission, 'organisation' => $organisation, 'missionLines' => $missionLines, 'parametre'=>$parametre,
-            'user'=>Auth::user(), 'transactions'=>$transactions
+            'user'=>Auth::user(), 'transactions'=>$transactions, 'contributions'=>$contributions
         ]);
     }
 
@@ -201,10 +204,11 @@ class PDFController extends Controller
             $parametre = Parametre::where('user_id', $user_id)->first();
             $user = User::find($user_id);
             $transactions = Transaction::where('user_id', $user_id)->get();
+            $contributions = Contribution::where('user_id', Auth::user()->id)->get();
             Log::notice("Consultation externe d'un accompte ".$id);
             return view('auth.pdf.generate-accompte', [
                 'mission' => $mission, 'organisation' => $organisation, 'missionLines' => $missionLines, 'parametre'=>$parametre,
-                'user'=>$user, 'transactions'=>$transactions
+                'user'=>$user, 'transactions'=>$transactions, 'contributions'=>$contributions
             ]);
         }
     }

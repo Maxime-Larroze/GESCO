@@ -115,8 +115,8 @@
                                             <tr>
                                                 <td class="font-weight-bold">{{ $missionLine->title }}</td>
                                                 <td>{{ $missionLine->quantity }}</td>
-                                                <td>{{ $missionLine->price }}</td>
-                                                <td>{{ $missionLine->quantity * $missionLine->price }} €</td>
+                                                <td>{{ number_format($missionLine->price, 2, ',', ' ') }}</td>
+                                                <td>{{ number_format($missionLine->quantity * $missionLine->price, 2, ',', ' ') }} €</td>
                                             </tr>
                                             @php
                                                 $total_ttc += $missionLine->quantity * $missionLine->price;
@@ -126,7 +126,7 @@
                                             <th>&nbsp;</th>
                                             <th>&nbsp;</th>
                                             <th>Total TTC</th>
-                                            <th>{{ $total_ttc }} €</th>
+                                            <th>{{ number_format($total_ttc, 2, ',', ' ') }} €</th>
                                         </tr>
                                         <tr>
                                             <th>&nbsp;</th>
@@ -138,13 +138,13 @@
                                             <th>&nbsp;</th>
                                             <th>&nbsp;</th>
                                             <th>Accompte en €</th>
-                                            <th>{{$total_ttc*0.45}} €</th>
+                                            <th>{{number_format($total_ttc*0.45, 2, ',', ' ')}} €</th>
                                         </tr>
                                         <tr>
                                             <th>&nbsp;</th>
                                             <th>&nbsp;</th>
                                             <th>Reste à payer</th>
-                                            <th>{{$total_ttc-$total_ttc*0.45}} €</th>
+                                            <th>{{number_format($total_ttc-$total_ttc*0.45, 2, ',', ' ')}} €</th>
                                         </tr>
                                         <tr>
                                             <th>&nbsp;</th>
@@ -198,7 +198,7 @@
                                             @if($transaction->source_id == $mission->id)
                                                 <tr>
                                                     <td>{{ $mission->title }}</td>
-                                                    <td>{{ $transaction->price }}</td>
+                                                    <td>{{ number_format($transaction->price, 2, ',', ' ') }}</td>
                                                     <td>{{ Carbon\Carbon::parse($transaction->payed_at)->format('d-m-Y') }}</td>
                                                 </tr>
                                                 @php $total_transac += $transaction->price; @endphp
@@ -207,12 +207,12 @@
                                         <tr>
                                             <th>&nbsp;</th>
                                             <th>Total transaction</th>
-                                            <th>{{ $total_transac }} €</th>
+                                            <th>{{ number_format($total_transac, 2, ',', ' ') }} €</th>
                                         </tr>
                                     </tbody>
                                 </table>
                                 <div class="col-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6 border">
-                                    <p class="text-center">{{$user->firstname}} {{$user->lastname}} certifie avoir bien reçut l'accompte du client {{ $organisation->name }} le {{Carbon\Carbon::parse($mission->deposed_at)->format('d/m/Y')}} d'un motant de {{$mission->deposit}} €.</p>
+                                    <p class="text-center">{{$user->firstname}} {{$user->lastname}} certifie avoir bien reçut l'accompte du client {{ $organisation->name }} le {{Carbon\Carbon::parse($mission->deposed_at)->format('d/m/Y')}} d'un motant de {{number_format($total_transac, 2, ',', ' ')}} €.</p>
                                     <p>Date de la signature:</p>
                                     <p>Signature du client:</p>
                                    <div class="mt-5 mb-5"></div>
