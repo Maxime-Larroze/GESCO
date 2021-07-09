@@ -9,6 +9,7 @@ use App\Models\Parametre;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class TransactionController extends Controller
 {
@@ -54,6 +55,7 @@ class TransactionController extends Controller
                     'price'=>$request->price,
                 ]);
             }
+            Log::notice("Création d'une nouvelle transaction par ".Auth::user()->id);
             return redirect()->route('transactions.show')->withErrors(['validate'=>'Transaction enregistrée avec succès']);
         } catch (\Throwable $th) {
             return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
@@ -116,7 +118,7 @@ class TransactionController extends Controller
             'transaction_id' => 'required',
         ]);
         try{
-            if(!empty($request->payed_at))
+            if(!empty($request->payed_at) && isset($request->payed_at))
             {
                 Transaction::find($request->transaction_id)->update([
                     'source_type'=>$request->source_type,
@@ -131,8 +133,10 @@ class TransactionController extends Controller
                     'source_type'=>$request->source_type,
                     'source_id'=>$request->source_id,
                     'price'=>$request->price,
+                    'payed_at'=>null,
                 ]);
             }
+            Log::notice("Modification de la transaction ".$request->transaction_id);
             return redirect()->route('transactions.show')->withErrors(['validate'=>'Transaction enregistrée avec succès']);
         } catch (\Throwable $th) {
             return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
@@ -145,8 +149,17 @@ class TransactionController extends Controller
      * @param  \App\Models\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Transaction $transaction)
+    public function destroy(Request $request)
     {
-        //
+        try{
+            $this->validate($request, [
+                'transaction_id' => 'required',
+            ]);
+            Log::notice("Delete de la transaction ".$request->transaction_id);
+            Transaction::find($request->transaction_id)->delete();
+            return redirect()->route('transactions.show')->withErrors(['validate'=>'Transaction supprimée avec succès']);
+        } catch (\Throwable $th) {
+            return back()->withErrors(['error'=>"une erreur est survenue pendant l'opération: ".$th]);
+        }
     }
 }

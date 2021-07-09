@@ -47,7 +47,7 @@
                             <td>{{$transaction->price}}</td>
                             <td>
                                 @if(!empty($transaction->payed_at))
-                                    <span class="text-success font-weight-bold">{{Carbon\Carbon::format('d/m/Y', $transaction->source_type)}}</span>
+                                    <span class="text-success font-weight-bold">{{Carbon\Carbon::parse($transaction->payed_at)->format('d/m/Y')}}</span>
                                 @else
                                     <span class="text-danger font-weight-bold">Non payé</span>
                                 @endif
@@ -58,16 +58,21 @@
                                         <a href="" data-toggle="modal" data-target="#updateModalTransaction"><button class="btn btn-warning"><i class="fas fa-edit" aria-hidden="true"></i></button></a>
                                     </div>
                                     <div class="col-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6 text-center">
-                                        <a href=""><button class="btn btn-danger"><i class="far fa-trash-alt" aria-hidden="true"></i></button></a>
+                                        <form action="" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <input type="hidden" name="transaction_id" value="{{$transaction->id}}">
+                                            <button class="btn btn-danger" type="submit"><i class="far fa-trash-alt" aria-hidden="true"></i></button>
+                                        </form>
                                     </div>
                                 </div>
-                                
                                 <div class="modal" id="updateModalTransaction">
                                     <div class="modal-dialog modal-xl modal-dialog-centered">
                                         <div class="modal-content">
                                             <form action="{{ route('transactions.update') }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
+                                                <input type="hidden" name="transaction_id" value="{{$transaction->id}}">
                                                 <div class="modal-header">
                                                     <h4 class="modal-title">Modification d'une transaction</h4>
                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -114,7 +119,7 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text text-danger"><i class="far fa-calendar-plus"></i></span>
                                                         </div>
-                                                        <input type="date" class="input-group form-control" name="payed_at" value="{{Carbon\Carbon::parse($transaction->payed_at)}}">
+                                                        <input type="date" class="input-group form-control" name="payed_at" value="{{Carbon\Carbon::parse($transaction->payed_at)->format('Y-m-d')}}">
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -138,7 +143,6 @@
             <div class="modal-content">
                 <form action="{{ route('transactions.create') }}" method="POST">
                     @csrf
-                    <input type="hidden" name="transaction_id" value="{{$transaction->id}}">
                     <div class="modal-header">
                         <h4 class="modal-title">Création d'une transaction</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>

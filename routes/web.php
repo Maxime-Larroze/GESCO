@@ -68,7 +68,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/transactions', [TransactionController::class, 'show'])->name('transactions.show');
         Route::post('/transactions', [TransactionController::class, 'create'])->name('transactions.create');
         Route::put('/transactions', [TransactionController::class, 'update'])->name('transactions.update');
-
+        Route::delete('/transactions', [TransactionController::class, 'destroy'])->name('transactions.destroy');
 
         Route::post('/email/facture/envoie', [MailController::class, 'sendToClient'])->name('email.facture.send');
     });
