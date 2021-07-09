@@ -1,3 +1,5 @@
+<p align="center"><a href="https://hackenathon-system.ddns.net/uploads/-/system/appearance/logo/1/Hackenathon_System_logo.png" width="400"></a></p>
+
 # Changelog
 All notable changes to this project will be documented in this file.
 

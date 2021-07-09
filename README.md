@@ -1,4 +1,4 @@
-<p align="center"><a href="https://hackenathon-system.ddns.net:35003" target="_blank"><img src="https://hackenathon-system.ddns.net:35003/img/Hackenathon_System_logo.png" width="400"></a></p>
+<p align="center"><a href="https://hackenathon-system.ddns.net/uploads/-/system/appearance/logo/1/Hackenathon_System_logo.png" width="400"></a></p>
 
 <p align="center">
 <a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
