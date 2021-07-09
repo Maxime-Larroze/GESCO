@@ -231,13 +231,21 @@
                 </div>
             </div>
             @if (Route::is('accomptes.pdf.show'))
-                <div class="col-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 text-center mt-5">
-                    <a href="{{ route('devis.pdf.store', $mission->id) }}">
-                        <button class="btn btn-primary mb-5">Télécharger cette facture d'accompte</button></a>
+                <div class="row">
+                    <div class="col-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6 text-center mt-5">
+                        <a href="{{ route('devis.pdf.store', $mission->id) }}">
+                            <button class="btn btn-primary mb-5"><i class="fas fa-download"></i> Télécharger cette facture d'accompte</button></a>
+                    </div>
+                    <div class="col-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6 text-center mt-5">
+                        <button class="btn btn-danger mb-5" onclick="imprimer()"><i class="fas fa-print"></i> Imprimer cette facture d'accompte</button>
+                    </div>
                 </div>
             @endif
         </div>
     </main>
+    <script>
+        function imprimer() {window.print();}
+     </script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.bundle.min.js"></script>

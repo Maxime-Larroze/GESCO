@@ -27,15 +27,14 @@
                             <td>{{ $organisation->name }}</td>
                             <td><a href="mailto:{{ $organisation->email }}">{{ $organisation->email }}</a></td>
                             <td><a href="tel:+{{ $organisation->tel }}">{{ $organisation->tel }}</a></td>
-                            <td>{{ $organisation->type }}</td>
+                            <td>{{ $organisation->type }}</td> 
                             <td>
                                 <button class="btn btn-warning form-check-inline" type="button" data-toggle="modal"
-                                    data-target="#ModalOrganisation{{ $organisation->id }}"><i class="fas fa-edit"></i>
-                                    Editer</button>
+                                    data-target="#ModalOrganisation{{ $organisation->id }}"><i class="fas fa-edit"></i></button>
                                 <form class="form-check-inline" action="{{ route('organisations.destroy') }}" method="POST">
                                     @csrf @method('DELETE') <input type="hidden" name="organisation_id"
                                         value="{{ $organisation->id }}"> <button class="btn btn-danger" type="submit"><i
-                                            class="far fa-trash-alt"></i> Supprimer</button></form>
+                                            class="far fa-trash-alt"></i></button></form>
                             </td>
                         </tr>
                         <div class="modal" id="ModalOrganisation{{ $organisation->id }}">

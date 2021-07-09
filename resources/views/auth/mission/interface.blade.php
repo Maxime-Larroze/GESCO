@@ -58,12 +58,12 @@
                                 <div class="row">
                                     <div class="col-lg-6"><button class="btn btn-warning form-check-inline" type="button"
                                             data-toggle="modal" data-target="#ModalMission{{ $mission->id }}"><i
-                                                class="fas fa-edit"></i> Editer</button></div>
+                                                class="fas fa-edit"></i></button></div>
                                     <div class="col-lg-6">
                                         <form class="form-check-inline" action="{{ route('missions.destroy') }}"
                                             method="POST">@csrf @method('DELETE') <input type="hidden" name="mission_id"
                                                 value="{{ $mission->id }}"> <button class="btn btn-danger"
-                                                type="submit"><i class="far fa-trash-alt"></i> Supprimer</button></form>
+                                                type="submit"><i class="far fa-trash-alt"></i></button></form>
                                     </div>
                                 </div>
                                 <div class="modal" id="ModalMission{{ $mission->id }}">
