@@ -5,7 +5,11 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Gesco
+## Hébergement
+
+Ce projet est hébergé à l'adresse suivante: [https://hackenathon-system.ddns.net:35003](https://hackenathon-system.ddns.net:35003/)
+
+## A propos de Gesco
 
 Gesco est une application orientée web, axée sur le framework [Laravel](https://laravel.com).
 Le but de cette application est d'offrir un environnement minimal pour une société, ou association, en terme de gestion commerciale, à savoir l'enregistrement de coûts, la gestion des devis, factures, et clients.
@@ -14,9 +18,9 @@ Gesco pour Gestion Commerciale est accèssible, simple d'utilisation, efficace e
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Gesco  documentation](https://github.com/Maxime-Larroze/GESCO/contributing.md).
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Gesco  documentation](https://github.com/Maxime-Larroze/GESCO/blob/master/CONTRIBUTING.md).
 
-## Security Vulnerabilities
+## Vunérabilitées de sécurité
 
 If you discover a security vulnerability within Laravel, please send an e-mail to Maxime LARROZE via [maxime.larroze.francezat@gmail.com](mailto:maxime.larroze.francezat@gmail.com). All security vulnerabilities will be promptly addressed.
 
